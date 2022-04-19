@@ -8,8 +8,8 @@ let sections = [
     content: 'README.md',
   },
   {
-    name: 'Button Block',
-    components: ['src/components/Button/Button.js'],
+    name: 'Notepad Block',
+    components: ['src/components/Editor/Editor.js'],
   },
 ];
 
