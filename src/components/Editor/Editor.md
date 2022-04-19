@@ -5,7 +5,7 @@ import React from 'react';
 
 import { Editor } from '@texttree/notepad-rcl';
 
-<Button />;
+<Editor />;
 ```
 
 ### Extend example
@@ -15,7 +15,7 @@ import React from 'react';
 
 import { Editor } from '@texttree/notepad-rcl';
 
-<Button
+<Editor
   text="Button"
   onClick={() => {
     alert('Click');
