@@ -3,7 +3,7 @@
 ```jsx
 import React from 'react';
 
-import { Editor } from '@texttree/notepad-rcl';
+import { Editor } from '@texttree/template-rcl';
 
 <Editor />;
 ```
@@ -13,7 +13,7 @@ import { Editor } from '@texttree/notepad-rcl';
 ```jsx
 import React from 'react';
 
-import { Editor } from '@texttree/notepad-rcl';
+import { Editor } from '@texttree/template-rcl';
 
 <Editor
   text="Button"
