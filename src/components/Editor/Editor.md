@@ -3,17 +3,19 @@
 ```jsx
 import React from 'react';
 
-import { Editor } from '@texttree/template-rcl';
+import { Editor } from '@texttree/notepad-rcl';
 
 <Editor />;
 ```
 
+#### If you want to use an Editor twice or more, give each Editor a unique id
+
 ### Extend example
 
 ```jsx
-// import React from 'react';
+import React from 'react';
 
-// import { Editor } from '@texttree/template-rcl';
+import { Editor } from '@texttree/notepad-rcl';
 
-// <Editor />;
+<Editor id="some_new_id" />;
 ```

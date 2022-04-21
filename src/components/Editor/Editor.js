@@ -1,29 +1,14 @@
 import { default as React, useState, useEffect, useRef } from 'react';
 import EditorJS from '@editorjs/editorjs';
-import Header from '@editorjs/header';
 
 const DEFAULT_INITIAL_DATA = () => {
-  //   return {
-  //     time: new Date().getTime(),
-  //     blocks: [
-  //       {
-  //         type: 'paragraph',
-  //         data: {
-  //           text: 'Hey. Meet the new Editor!',
-  //         },
-  //       },
-  //     ],
-  //   };
-  // };
-
   return {
     time: new Date().getTime(),
     blocks: [
       {
-        type: 'header',
+        type: 'paragraph',
         data: {
-          text: 'This is my awesome editor!',
-          level: 1,
+          text: 'Hey. Meet the new Editor!',
         },
       },
     ],
@@ -37,20 +22,22 @@ function Editor({ id }) {
   const [editorData, setEditorData] = useState(
     localStorage.editorData ? JSON.parse(localStorage.editorData) : DEFAULT_INITIAL_DATA
   );
-  useEffect(() => {
-    localStorage.setItem('editorData', JSON.stringify(editorData));
-  }, [editorData]);
-  console.log(editorData);
   // This will run only once
   useEffect(() => {
     if (!ejInstance.current) {
       initEditor();
     }
+
     return () => {
       ejInstance.current.destroy();
       ejInstance.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('editorData', JSON.stringify(editorData));
+  }, [editorData]);
+  console.log(editorData);
 
   const initEditor = () => {
     const editor = new EditorJS({
@@ -66,10 +53,7 @@ function Editor({ id }) {
         setEditorData(content);
         console.log(content);
       },
-      autofocus: true,
-      tools: {
-        header: Header,
-      },
+      autofocus: false,
     });
     console.log(editorData);
   };
