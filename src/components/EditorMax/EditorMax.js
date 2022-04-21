@@ -1,5 +1,15 @@
 import { default as React, useState, useEffect, useRef } from 'react';
 import EditorJS from '@editorjs/editorjs';
+import Header from '@editorjs/header';
+import Embed from '@editorjs/embed';
+import Table from '@editorjs/table';
+import List from '@editorjs/list';
+import LinkTool from '@editorjs/link';
+import Quote from '@editorjs/quote';
+import Marker from '@editorjs/marker';
+import CheckList from '@editorjs/checklist';
+import Delimiter from '@editorjs/delimiter';
+import InlineCode from '@editorjs/inline-code';
 
 const DEFAULT_INITIAL_DATA = () => {
   return {
@@ -17,7 +27,7 @@ const DEFAULT_INITIAL_DATA = () => {
 
 const EDITTOR_HOLDER_ID = 'editorjs';
 
-function Editor({ id }) {
+function EditorMax({ id }) {
   const ejInstance = useRef();
   const [editorData, setEditorData] = useState(
     localStorage.editorData ? JSON.parse(localStorage.editorData) : DEFAULT_INITIAL_DATA
@@ -52,6 +62,18 @@ function Editor({ id }) {
         setEditorData(content);
       },
       autofocus: false,
+      tools: {
+        header: Header,
+        embed: Embed,
+        table: Table,
+        list: List,
+        linkTool: LinkTool,
+        quote: Quote,
+        marker: Marker,
+        checklist: CheckList,
+        delimiter: Delimiter,
+        inlineCode: InlineCode,
+      },
     });
   };
   return (
@@ -61,4 +83,4 @@ function Editor({ id }) {
   );
 }
 
-export default Editor;
+export default EditorMax;
