@@ -11,9 +11,9 @@ import { Editor } from '@texttree/template-rcl';
 ### Extend example
 
 ```jsx
-import React from 'react';
+// import React from 'react';
 
-import { Editor } from '@texttree/template-rcl';
+// import { Editor } from '@texttree/template-rcl';
 
-<Editor />;
+// <Editor />;
 ```

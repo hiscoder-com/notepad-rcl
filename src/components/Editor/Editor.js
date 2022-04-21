@@ -1,16 +1,29 @@
-import { default as React, useEffect, useRef } from 'react';
+import { default as React, useState, useEffect, useRef } from 'react';
 import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header';
 
 const DEFAULT_INITIAL_DATA = () => {
+  //   return {
+  //     time: new Date().getTime(),
+  //     blocks: [
+  //       {
+  //         type: 'paragraph',
+  //         data: {
+  //           text: 'Hey. Meet the new Editor!',
+  //         },
+  //       },
+  //     ],
+  //   };
+  // };
+
   return {
     time: new Date().getTime(),
     blocks: [
       {
         type: 'header',
         data: {
-          text: 'Your Title',
-          level: 2,
+          text: 'This is my awesome editor!',
+          level: 1,
         },
       },
     ],
@@ -19,10 +32,15 @@ const DEFAULT_INITIAL_DATA = () => {
 
 const EDITTOR_HOLDER_ID = 'editorjs';
 
-function Editor({ text, onClick }) {
+function Editor({ id }) {
   const ejInstance = useRef();
-  const [editorData, setEditorData] = React.useState(DEFAULT_INITIAL_DATA);
-
+  const [editorData, setEditorData] = useState(
+    localStorage.editorData ? JSON.parse(localStorage.editorData) : DEFAULT_INITIAL_DATA
+  );
+  useEffect(() => {
+    localStorage.setItem('editorData', JSON.stringify(editorData));
+  }, [editorData]);
+  console.log(editorData);
   // This will run only once
   useEffect(() => {
     if (!ejInstance.current) {
@@ -36,7 +54,7 @@ function Editor({ text, onClick }) {
 
   const initEditor = () => {
     const editor = new EditorJS({
-      holder: EDITTOR_HOLDER_ID,
+      holder: id || EDITTOR_HOLDER_ID,
       logLevel: 'ERROR',
       data: editorData,
       onReady: () => {
@@ -46,16 +64,18 @@ function Editor({ text, onClick }) {
         let content = await this.editorjs.saver.save();
         // Put your logic here to save this data to your DB
         setEditorData(content);
+        console.log(content);
       },
       autofocus: true,
       tools: {
         header: Header,
       },
     });
+    console.log(editorData);
   };
   return (
     <React.Fragment>
-      <div id={EDITTOR_HOLDER_ID}> </div>
+      <div id={id || EDITTOR_HOLDER_ID}> </div>
     </React.Fragment>
   );
 }
