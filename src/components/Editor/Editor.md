@@ -1,5 +1,3 @@
-### Default example
-
 ```jsx
 import React from 'react';
 
@@ -9,8 +7,6 @@ import { Editor } from '@texttree/notepad-rcl';
 ```
 
 #### If you want to use an Editor twice or more, give each Editor a unique id
-
-### Extend example
 
 ```jsx
 import React from 'react';

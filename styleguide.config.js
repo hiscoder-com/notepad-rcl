@@ -9,11 +9,11 @@ let sections = [
   },
   {
     name: 'Notepad Block',
-    components: [
-      'src/components/Editor/Editor.js',
-      'src/components/EditorMax/EditorMax.js',
-      'src/components/ToolsInstallation/ToolsInstallation.js',
-    ],
+    components: ['src/components/Editor/Editor.js'],
+  },
+  {
+    name: 'EditorTools',
+    content: 'src/components/Editor/EditorTools.md',
   },
 ];
 
