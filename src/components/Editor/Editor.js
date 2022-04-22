@@ -1,4 +1,4 @@
-import { default as React, useState, useEffect, useRef } from 'react';
+import { default as React, useState, useEffect, useRef, useMemo } from 'react';
 import EditorJS from '@editorjs/editorjs';
 
 const DEFAULT_INITIAL_DATA = () => {
@@ -8,7 +8,7 @@ const DEFAULT_INITIAL_DATA = () => {
       {
         type: 'paragraph',
         data: {
-          text: 'Hey. Meet the new Editor!',
+          text: '',
         },
       },
     ],
@@ -17,11 +17,15 @@ const DEFAULT_INITIAL_DATA = () => {
 
 const EDITTOR_HOLDER_ID = 'editorjs';
 
-function Editor({ id }) {
+function Editor({ id, editorTools }) {
+  const holder = useMemo(() => id || EDITTOR_HOLDER_ID, [id]);
   const ejInstance = useRef();
   const [editorData, setEditorData] = useState(
-    localStorage.editorData ? JSON.parse(localStorage.editorData) : DEFAULT_INITIAL_DATA
+    localStorage.getItem(holder)
+      ? JSON.parse(localStorage.getItem(holder))
+      : DEFAULT_INITIAL_DATA
   );
+
   // This will run only once
   useEffect(() => {
     if (!ejInstance.current) {
@@ -35,7 +39,7 @@ function Editor({ id }) {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('editorData', JSON.stringify(editorData));
+    localStorage.setItem(holder, JSON.stringify(editorData));
   }, [editorData]);
 
   const initEditor = () => {
@@ -46,12 +50,13 @@ function Editor({ id }) {
       onReady: () => {
         ejInstance.current = editor;
       },
-      onChange: async () => {
-        let content = await this.editorjs.saver.save();
+      onChange: async (api, event) => {
+        let content = await api.saver.save();
         // Put your logic here to save this data to your DB
         setEditorData(content);
       },
       autofocus: false,
+      tools: editorTools,
     });
   };
   return (
