@@ -1,29 +1,13 @@
 import { default as React, useState, useEffect, useRef, useMemo } from 'react';
 import EditorJS from '@editorjs/editorjs';
 
-const DEFAULT_INITIAL_DATA = () => {
-  return {
-    time: new Date().getTime(),
-    blocks: [
-      {
-        type: 'paragraph',
-        data: {
-          text: '',
-        },
-      },
-    ],
-  };
-};
-
 const EDITTOR_HOLDER_ID = 'editorjs';
 
-function Editor({ id, editorTools }) {
+function Editor({ id, editorTools, placeholder }) {
   const holder = useMemo(() => id || EDITTOR_HOLDER_ID, [id]);
   const ejInstance = useRef();
   const [editorData, setEditorData] = useState(
-    localStorage.getItem(holder)
-      ? JSON.parse(localStorage.getItem(holder))
-      : DEFAULT_INITIAL_DATA
+    localStorage.getItem(holder) ? JSON.parse(localStorage.getItem(holder)) : {}
   );
 
   // This will run only once
@@ -45,6 +29,7 @@ function Editor({ id, editorTools }) {
   const initEditor = () => {
     const editor = new EditorJS({
       holder: id || EDITTOR_HOLDER_ID,
+      placeholder: placeholder || 'Let`s write an awesome note!',
       logLevel: 'ERROR',
       data: editorData,
       onReady: () => {
@@ -54,6 +39,7 @@ function Editor({ id, editorTools }) {
         let content = await api.saver.save();
         // Put your logic here to save this data to your DB
         setEditorData(content);
+        console.log(content.blocks[0].data.text);
       },
       autofocus: false,
       tools: editorTools,

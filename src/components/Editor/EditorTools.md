@@ -9,7 +9,9 @@ import { Editor } from '@texttree/notepad-rcl';
 
 const addTools = { header: Header };
 
-<Editor editorTools={addTools} />;
+const changePlaceholder = 'new note';
+
+<Editor editorTools={addTools} placeholder={changePlaceholder} />;
 ```
 
 #### Write a new property for the Tools object and pass it to the Editor via the addTools variable
