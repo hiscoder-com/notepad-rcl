@@ -25,7 +25,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/texttree/template-rcl">
+  <a href="https://github.com/texttree/notepad-rcl">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -34,14 +34,14 @@
   <p align="center">
     project_description
     <br />
-    <a href="https://github.com/texttree/template-rcl"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/texttree/notepad-rcl"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://example.netlify.app">View Demo</a>
     ·
-    <a href="https://github.com/texttree/template-rcl/issues">Report Bug</a>
+    <a href="https://github.com/texttree/notepad-rcl/issues">Report Bug</a>
     ·
-    <a href="https://github.com/texttree/template-rcl/issues">Request Feature</a>
+    <a href="https://github.com/texttree/notepad-rcl/issues">Request Feature</a>
   </p>
 </div>
 
@@ -93,7 +93,7 @@
 
 - What led us to this point? How did we get here?
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `texttree`, `template-rcl`, `telegram`, `linkedin_username`, `email`, `email_client`, `project_title`, `project_description`
+Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `texttree`, `notepad-rcl`, `telegram`, `linkedin_username`, `email`, `email_client`, `project_title`, `project_description`
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -133,7 +133,7 @@ This is an example of how to list things you need to use the software and how to
 1. Get a free API Key at [https://example.com](https://example.com)
 2. Clone the repo
    ```bash
-   git clone https://github.com/texttree/template-rcl.git
+   git clone https://github.com/texttree/notepad-rcl.git
    ```
 3. Install NPM packages
    ```bash
@@ -167,7 +167,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_ Po
 - [] Feature 3
   - [] Nested Feature
 
-See the [open issues](https://github.com/texttree/template-rcl/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/texttree/notepad-rcl/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -204,7 +204,7 @@ Distributed under the MIT License. See [LICENSE](license-url) for more informati
 
 Your Name - [@telegram](https://t.me/telegram) - email@email_client.com
 
-Project Link: [https://github.com/texttree/template-rcl](https://github.com/texttree/template-rcl)
+Project Link: [https://github.com/texttree/notepad-rcl](https://github.com/texttree/notepad-rcl)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -221,14 +221,14 @@ Project Link: [https://github.com/texttree/template-rcl](https://github.com/text
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/texttree/template-rcl.svg?style=for-the-badge
-[contributors-url]: https://github.com/texttree/template-rcl/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/texttree/template-rcl.svg?style=for-the-badge
-[forks-url]: https://github.com/texttree/template-rcl/network/members
-[stars-shield]: https://img.shields.io/github/stars/texttree/template-rcl.svg?style=for-the-badge
-[stars-url]: https://github.com/texttree/template-rcl/stargazers
-[issues-shield]: https://img.shields.io/github/issues/texttree/template-rcl.svg?style=for-the-badge
-[issues-url]: https://github.com/texttree/template-rcl/issues
-[license-shield]: https://img.shields.io/github/license/texttree/template-rcl.svg?style=for-the-badge
-[license-url]: https://github.com/texttree/template-rcl/blob/master/LICENSE
+[contributors-shield]: https://img.shields.io/github/contributors/texttree/notepad-rcl.svg?style=for-the-badge
+[contributors-url]: https://github.com/texttree/notepad-rcl/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/texttree/notepad-rcl.svg?style=for-the-badge
+[forks-url]: https://github.com/texttree/notepad-rcl/network/members
+[stars-shield]: https://img.shields.io/github/stars/texttree/notepad-rcl.svg?style=for-the-badge
+[stars-url]: https://github.com/texttree/notepad-rcl/stargazers
+[issues-shield]: https://img.shields.io/github/issues/texttree/notepad-rcl.svg?style=for-the-badge
+[issues-url]: https://github.com/texttree/notepad-rcl/issues
+[license-shield]: https://img.shields.io/github/license/texttree/notepad-rcl.svg?style=for-the-badge
+[license-url]: https://github.com/texttree/notepad-rcl/blob/master/LICENSE
 [product-screenshot]: images/screenshot.png

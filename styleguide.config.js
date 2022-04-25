@@ -11,6 +11,10 @@ let sections = [
     name: 'Notepad Block',
     components: ['src/components/Editor/Editor.js'],
   },
+  {
+    name: 'EditorTools',
+    content: 'src/components/Editor/EditorTools.md',
+  },
 ];
 
 module.exports = {
