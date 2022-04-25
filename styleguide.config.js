@@ -12,8 +12,14 @@ let sections = [
   //   components: ['src/components/Button/Button.js'],
   // },
   {
-    name: 'Editor Block',
+
+    name: 'Notepad Block',
     components: ['src/components/Editor/Editor.js'],
+  },
+  {
+    name: 'EditorTools',
+    content: 'src/components/Editor/EditorTools.md',
+
   },
 ];
 

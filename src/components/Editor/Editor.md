@@ -1,45 +1,30 @@
-### Default example
 
 ```jsx
 import React from 'react';
 
 import { Editor } from '@texttree/notepad-rcl';
 
-const Empty = () => <>Empty Layout</>;
 
-<Editor Layout={Empty} />;
+<Editor />;
 ```
 
-### Extend example
+#### If you want to use an Editor twice or more, give each Editor a unique **`id`**
+
 
 ```jsx
 import React from 'react';
 
 import { Editor } from '@texttree/notepad-rcl';
 
-localStorage.setItem(
-  'projector_data',
-  JSON.stringify({
-    fontSize: '150',
-    verse: 'Verse Text',
-    reference: 'Gen 4:3',
-  })
-);
 
-const ScreenLayout = ({ fontSize, verse, reference }) => {
-  return (
-    <div style={{ fontSize: fontSize + '%' }}>
-      <p>{verse}</p>
-      <b>
-        <small>{reference}</small>
-      </b>
-    </div>
-  );
-};
+<Editor id="some_new_id" />;
+```
 
-const Component = () => {
-  return <Editor Layout={ScreenLayout} />;
-};
+### **Placeholder**
 
-<Component />;
+#### Pass the **`placeholder`** option if you want to set a custom placeholder:
+
+```jsx
+placeholder: 'Let`s write an awesome note!';
+
 ```

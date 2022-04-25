@@ -93,7 +93,9 @@
 
 - What led us to this point? How did we get here?
 
-Here's a blank notepad to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `texttree`, `notepad-rcl`, `telegram`, `linkedin_username`, `email`, `email_client`, `project_title`, `project_description`
+
+Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `texttree`, `notepad-rcl`, `telegram`, `linkedin_username`, `email`, `email_client`, `project_title`, `project_description`
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

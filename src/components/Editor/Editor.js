@@ -1,84 +1,61 @@
-import { default as React, useEffect, useRef } from 'react';
-import EditorJS from '@editorjs/editorjs';
-import Header from '@editorjs/header';
-import { log } from '../../utils';
-import PropTypes from 'prop-types';
-import { Box, Container, Typography } from '@material-ui/core';
 
-const DEFAULT_INITIAL_DATA = () => {
-  return {
-    time: new Date().getTime(),
-    blocks: [
-      {
-        type: 'header',
-        data: {
-          text: 'This is my awesome editor!',
-          level: 1,
-        },
-      },
-    ],
-  };
-};
+import { default as React, useState, useEffect, useRef, useMemo } from 'react';
+import EditorJS from '@editorjs/editorjs';
 
 const EDITTOR_HOLDER_ID = 'editorjs';
 
-const Editor = (props) => {
+function Editor({ id, editorTools, placeholder }) {
+  const holder = useMemo(() => id || EDITTOR_HOLDER_ID, [id]);
   const ejInstance = useRef();
-  const [editorData, setEditorData] = React.useState(DEFAULT_INITIAL_DATA);
+  const [editorData, setEditorData] = useState(
+    localStorage.getItem(holder) ? JSON.parse(localStorage.getItem(holder)) : {}
+  );
+
 
   // This will run only once
   useEffect(() => {
     if (!ejInstance.current) {
       initEditor();
     }
+
     return () => {
       ejInstance.current.destroy();
       ejInstance.current = null;
     };
   }, []);
 
+
+  useEffect(() => {
+    localStorage.setItem(holder, JSON.stringify(editorData));
+  }, [editorData]);
+
   const initEditor = () => {
     const editor = new EditorJS({
-      holder: EDITTOR_HOLDER_ID,
+      holder: id || EDITTOR_HOLDER_ID,
+      placeholder: placeholder || 'Let`s write an awesome note!',
+
       logLevel: 'ERROR',
       data: editorData,
       onReady: () => {
         ejInstance.current = editor;
       },
-      onChange: async () => {
-        let content = await this.editorjs.saver.save();
+
+      onChange: async (api, event) => {
+        let content = await api.saver.save();
         // Put your logic here to save this data to your DB
         setEditorData(content);
+        console.log(content.blocks[0].data.text);
       },
-      autofocus: true,
-      tools: {
-        header: Header,
-      },
+      autofocus: false,
+      tools: editorTools,
     });
   };
-
   return (
     <React.Fragment>
-      <Container style={{ backgroundColor: '#d4ecff', minHeight: '100vh' }} maxWidth="xl">
-        <Box p={5}>
-          <Box>
-            <Typography variant="h6" component="span">
-              EditorJS With React
-            </Typography>
-          </Box>
-          <Box
-            mt={2}
-            style={{
-              backgroundColor: '#ffffff',
-              border: '1px solid #cccccc',
-            }}
-          >
-            <div id={EDITTOR_HOLDER_ID}> </div>
-          </Box>
-        </Box>
-      </Container>
+      <div id={id || EDITTOR_HOLDER_ID}> </div>
     </React.Fragment>
   );
-};
+}
+
 
 export default Editor;
