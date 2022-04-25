@@ -33,7 +33,7 @@
   "scripts": {
     "prepare": "husky install",
     "start": "styleguidist server",
-    "build": "react-scripts build",
+    "build": "styleguidist build",
     "lint": "eslint --fix .",
     "prettier": "prettier --write .",
     "prepublishOnly": "rm -fr ./dist & babel ./src --out-dir ./dist -s inline",
