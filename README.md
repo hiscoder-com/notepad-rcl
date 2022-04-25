@@ -8,8 +8,19 @@
 
   <p align="center">
     This component library allows you to create a Notepad with flexible text editing options.
-    <br />
-    <a href="https://github.com/texttree/notepad-rcl"><strong>Explore the docs »</strong></a>
+		<br/>
+		<br/>
+		Key features:
+		<br/>
+		<br/>
+		<ul>
+			<li>It is a block-styled editor</li>
+			<li>It returns clean data output in JSON</li>
+			<li>Designed to be extendable and pluggable with a simple API</li>
+		</ul>
+    <br/>
+    <br/>
+    <a href="https://editorjs.io/base-concepts"><strong>Explore the docs »</strong></a>
     <br/>
     <br/>
 		<br/>
@@ -39,6 +50,7 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
+    <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -62,16 +74,17 @@
 
 **Purpose**
 
-- Creating and editing notes while working in BSA
-
-<br/>
+- Convenient and compact note editor
+- note storage
+- Note sharing
+  <br/>
 
 **Problem**
 
-- The need to take notes
-
-<br/>
-<br/>
+- The developer has a need to implement a convenient note-taking tool in his application
+- While reading, studying Scripture, or translating, it is often necessary to take notes. You have to use third party apps.
+  <br/>
+  <br/>
 
 ### Built With
 
@@ -107,8 +120,17 @@ To get a local copy up and running follow these simple example steps.
 ### Installation/First Steps
 
 1. Clone the repo: <br/> `git clone https://github.com/texttree/notepad-rcl.git`
-2. Install NPM packages: <br/> **`npm install`**
+2. Install NPM packages: <br/> **`yarn`**
 3. Run the project with the command **`yarn start`**
+
+<br/>
+<br/>
+
+## Usage/Integration
+
+_For more examples, please refer to the [Documentation](https://editorjs.io/getting-started)_ Possibly JS Docs.
+
+[Styleguidist link](https://example.netlify.app)
 
 <br/>
 <br/>
@@ -147,6 +169,6 @@ Distributed under the MIT License. See [**LICENSE**](license-url) for more infor
 
 ## Contact
 
-Texttree - [**Discord**](https://discord.com/channels/867746700390563850/894978969613520956)
+TextTree - [**Discord**](https://discord.com/channels/867746700390563850/894978969613520956)
 
 Project Link: [**https://github.com/texttree/notepad-rcl**](https://github.com/texttree/notepad-rcl)
