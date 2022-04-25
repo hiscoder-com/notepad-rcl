@@ -13,18 +13,18 @@
     <br/>
     <br/>
 		<br/>
-    <a href="https://notepad-rcl.netlify.app/">**View Demo**</a>
+    <a href="https://notepad-rcl.netlify.app/">View Demo</a>
     ·
-    <a href="https://github.com/texttree/notepad-rcl/issues">**Report Bug**</a>
+    <a href="https://github.com/texttree/notepad-rcl/issues">Report Bug</a>
     ·
-    <a href="https://github.com/texttree/notepad-rcl/issues">**Request Feature**</a>
+    <a href="https://github.com/texttree/notepad-rcl/issues">Request Feature</a>
   </p>
 
 <br/>
 <br/>
 
 <details>
-  <summary>**Table of Contents**</summary>
+  <summary>Table of Contents</summary>
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
@@ -94,7 +94,7 @@ To get a local copy up and running follow these simple example steps.
 
 ### Installation/First Steps
 
-1. Clone the repo: <br/> `git clone **https://github.com/texttree/notepad-rcl.git`\*\*
+1. Clone the repo: <br/> `git clone https://github.com/texttree/notepad-rcl.git`
 2. Install NPM packages: <br/> **`npm install`**
 3. Run the project with the command **`yarn start`**
 
