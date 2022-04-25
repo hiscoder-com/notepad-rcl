@@ -34,6 +34,10 @@
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
+		  <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
     </li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
@@ -83,6 +87,8 @@ This is an example of how you may give instructions on setting up your project l
 To get a local copy up and running follow these simple example steps.
 
 <br/>
+
+### Prerequisites
 
 #### Data
 
