@@ -1,3 +1,4 @@
+
 import { default as React, useState, useEffect, useRef, useMemo } from 'react';
 import EditorJS from '@editorjs/editorjs';
 
@@ -9,6 +10,7 @@ function Editor({ id, editorTools, placeholder }) {
   const [editorData, setEditorData] = useState(
     localStorage.getItem(holder) ? JSON.parse(localStorage.getItem(holder)) : {}
   );
+
 
   // This will run only once
   useEffect(() => {
@@ -22,6 +24,7 @@ function Editor({ id, editorTools, placeholder }) {
     };
   }, []);
 
+
   useEffect(() => {
     localStorage.setItem(holder, JSON.stringify(editorData));
   }, [editorData]);
@@ -30,11 +33,13 @@ function Editor({ id, editorTools, placeholder }) {
     const editor = new EditorJS({
       holder: id || EDITTOR_HOLDER_ID,
       placeholder: placeholder || 'Let`s write an awesome note!',
+
       logLevel: 'ERROR',
       data: editorData,
       onReady: () => {
         ejInstance.current = editor;
       },
+
       onChange: async (api, event) => {
         let content = await api.saver.save();
         // Put your logic here to save this data to your DB
@@ -51,5 +56,6 @@ function Editor({ id, editorTools, placeholder }) {
     </React.Fragment>
   );
 }
+
 
 export default Editor;

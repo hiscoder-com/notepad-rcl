@@ -1,6 +1,6 @@
 <div id="top"></div>
 <!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
+*** Thanks for checking out the Best-README-notepad. If you have a suggestion
 *** that would make this better, please fork the repo and create a pull request
 *** or simply open an issue with the tag "enhancement".
 *** Don't forget to give the project a star!
@@ -93,7 +93,9 @@
 
 - What led us to this point? How did we get here?
 
+
 Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `texttree`, `notepad-rcl`, `telegram`, `linkedin_username`, `email`, `email_client`, `project_title`, `project_description`
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
