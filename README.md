@@ -4,10 +4,10 @@
 <br/>
 <br/>
 
-<h2 align="center">Notepad</h2>
+<h2 align="center">Notepad Component Library</h2>
 
   <p align="center">
-    A Notepad Component Library.
+    This component library allows you to create a Notepad with flexible text editing options.
     <br />
     <a href="https://github.com/texttree/notepad-rcl"><strong>Explore the docs »</strong></a>
     <br/>
@@ -47,6 +47,12 @@
 <br/>
 
 ## About The Project
+
+<br/>
+
+<a href="https://github.com/texttree/notepad-rcl">
+    <img src="images/editorjs-screenshot.png" >
+  </a>
 
 <br/>
 
