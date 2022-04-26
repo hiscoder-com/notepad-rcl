@@ -10,35 +10,29 @@
 <br/>
 <br/>
 
-<h2 align="center">Notepad Component Library</h2>
+<h2>Notepad Component Library</h2>
 
-  <p align="center">
-    This component library allows you to create a Notepad with flexible text editing options.
-		<br/>
-		<br/>
-		Key features:
-		<br/>
-		<br/>
-		<ul align="left">
-			<li>It is a block-styled editor</li>
-			<li>It returns clean data output in JSON</li>
-			<li>Designed to be extendable and pluggable with a simple API</li>
-		</ul>
-    <br/>
-    <a href="https://editorjs.io/base-concepts"><strong>Explore the docs »</strong></a>
-    <br/>
-    <br/>
-		<br/>
-    <a href="https://notepad-rcl.netlify.app/">View Demo</a>
-    ·
-    <a href="https://github.com/texttree/notepad-rcl/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/texttree/notepad-rcl/issues">Request Feature</a>
-  </p>
+  <p>
+    This component library allows you to create a Notepad with flexible text editing options.</p>
+
+  <br/>
+
+  <a href="https://notepad-rcl.netlify.app/">View Demo</a>
+  ·
+  <a href="https://github.com/texttree/notepad-rcl/issues">Report Bug</a>
+  ·
+  <a href="https://github.com/texttree/notepad-rcl/issues">Request Feature</a>
 </div>
+  <br/>
 
-<br/>
-<br/>
+  **Key features:**
+  <br/>
+
+  - It is a block-styled editor based on [Editor.js](https://editorjs.io/)
+  - There is an autosave in browser
+  - Storing multiple notes
+
+  <br/>
 
 <details>
   <summary>Table of Contents</summary>
@@ -70,18 +64,16 @@
 
 ## About The Project
 
-<br/>
 
 <a href="https://github.com/texttree/notepad-rcl">
     <img src="images/editorjs-screenshot.png" >
   </a>
 
-<br/>
 
 **Purpose**
 
 - Convenient and compact note editor
-- note storage
+- Note storage
 - Note sharing
   <br/>
 
@@ -90,64 +82,48 @@
 - The developer has a need to implement a convenient note-taking tool in his application
 - While reading, studying Scripture, or translating, it is often necessary to take notes. You have to use third party apps.
   <br/>
-  <br/>
+
 
 ### Built With
 
-- [React.js](https://reactjs.org/)
+- [React](https://reactjs.org/)
 - [Editor.js](https://editorjs.io/)
+
+<br/>
 
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
 
-<br/>
+### Installation
 
-### Prerequisites
+1. Install the package:
 
-This is an example of how to list things you need to use the software and how to install them.
+```sh
+yarn add @texttree/notepad-rcl
+```
 
-`yarn add npm@latest -g`
+or
 
-<br/>
-<br/>
+```sh
+npm install @texttree/notepad-rcl
+```
 
-### Installation/First Steps
+2. Import Editor in app:
 
-<br/>
-<br/>
+```js
+import { Editor } from '@texttree/notepad-rcl';
 
-#### Local installation
+<Editor />;
+```
 
-1. Clone the repo: <br/> `git clone https://github.com/texttree/notepad-rcl.git`
-2. Install NPM packages: <br/> **`yarn`**
-3. **`yarn start`** is used to start the local server listening on `localhost:6060`
+For more examples, please refer to the [Styleguidist link](https://notepad-rcl.netlify.app/)
 
-<br/>
-<br/>
-
-#### Installing a Library in an Application
-
-Install the package using yarn:
-
-`yarn add @texttree/notepad-rcl`
-
-<br/>
-<br/>
-
-## Usage
-
-_For more examples, please refer to the [Styleguidist link](https://notepad-rcl.netlify.app/)_
-
-<br/>
 <br/>
 
 ## Roadmap
 
 See the [**open issues**](https://github.com/texttree/notepad-rcl/issues) for a full list of proposed features (and known issues).
 
-<br/>
 <br/>
 
 ## Contributing
@@ -166,13 +142,11 @@ If you would like to fork the repo and create a pull request.
 5. Open a Pull Request
 
 <br/>
-<br/>
 
 ## License
 
 Distributed under the MIT License. See [**LICENSE**](license-url) for more information.
 
-<br/>
 <br/>
 
 ## Contact
