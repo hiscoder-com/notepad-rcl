@@ -97,9 +97,6 @@
 - [React.js](https://reactjs.org/)
 - [Editor.js](https://editorjs.io/)
 
-<br/>
-<br/>
-
 ## Getting Started
 
 This is an example of how you may give instructions on setting up your project locally.
