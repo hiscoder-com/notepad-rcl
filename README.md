@@ -3,6 +3,12 @@
 <br/>
 <br/>
 <br/>
+<div align="center">
+  <a href="https://github.com/texttree/template-rcl">
+    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  </a>
+<br/>
+<br/>
 
 <h2 align="center">Notepad Component Library</h2>
 
@@ -29,6 +35,7 @@
     ·
     <a href="https://github.com/texttree/notepad-rcl/issues">Request Feature</a>
   </p>
+</div>
 
 <br/>
 <br/>
