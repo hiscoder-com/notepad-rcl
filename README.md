@@ -19,7 +19,7 @@
 		Key features:
 		<br/>
 		<br/>
-		<ul>
+		<ul align="left">
 			<li>It is a block-styled editor</li>
 			<li>It returns clean data output in JSON</li>
 			<li>Designed to be extendable and pluggable with a simple API</li>
