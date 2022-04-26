@@ -19,7 +19,6 @@
 			<li>Designed to be extendable and pluggable with a simple API</li>
 		</ul>
     <br/>
-    <br/>
     <a href="https://editorjs.io/base-concepts"><strong>Explore the docs »</strong></a>
     <br/>
     <br/>
