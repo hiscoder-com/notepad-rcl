@@ -89,7 +89,7 @@
 ### Built With
 
 - [React.js](https://reactjs.org/)
-- [Editorjs](https://editorjs.io/)
+- [Editor.js](https://editorjs.io/)
 
 <br/>
 <br/>
@@ -103,34 +103,39 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-#### Data
+This is an example of how to list things you need to use the software and how to install them.
 
-- The source must be cloned from its repository
-- **`yarn install`** is used to resolve/install dependencies
-- **`yarn start`** is used to start the local server listening on **`localhost:6060`**
+`yarn add npm@latest -g`
 
 <br/>
-
-#### Local
-
-- [**Yarn**](https://yarnpkg.com/) 1.x: please refer to their [**installation guide**](https://classic.yarnpkg.com/en/docs/install).
-
 <br/>
 
 ### Installation/First Steps
 
+<br/>
+<br/>
+
+#### Local installation
+
 1. Clone the repo: <br/> `git clone https://github.com/texttree/notepad-rcl.git`
 2. Install NPM packages: <br/> **`yarn`**
-3. Run the project with the command **`yarn start`**
+3. **`yarn start`** is used to start the local server listening on `localhost:6060`
 
 <br/>
 <br/>
 
-## Usage/Integration
+#### Installing a Library in an Application
 
-_For more examples, please refer to the [Documentation](https://editorjs.io/getting-started)_ Possibly JS Docs.
+Install the package using yarn:
 
-[Styleguidist link](https://example.netlify.app)
+`yarn add @texttree/notepad-rcl`
+
+<br/>
+<br/>
+
+## Usage
+
+_For more examples, please refer to the [Styleguidist link](https://notepad-rcl.netlify.app/)_
 
 <br/>
 <br/>
