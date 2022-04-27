@@ -1,4 +1,3 @@
-
 import { default as React, useState, useEffect, useRef, useMemo } from 'react';
 import EditorJS from '@editorjs/editorjs';
 
@@ -11,7 +10,6 @@ function Editor({ id, editorTools, placeholder }) {
     localStorage.getItem(holder) ? JSON.parse(localStorage.getItem(holder)) : {}
   );
 
-
   // This will run only once
   useEffect(() => {
     if (!ejInstance.current) {
@@ -23,7 +21,6 @@ function Editor({ id, editorTools, placeholder }) {
       ejInstance.current = null;
     };
   }, []);
-
 
   useEffect(() => {
     localStorage.setItem(holder, JSON.stringify(editorData));
@@ -56,6 +53,5 @@ function Editor({ id, editorTools, placeholder }) {
     </React.Fragment>
   );
 }
-
 
 export default Editor;

@@ -7,19 +7,17 @@ let sections = [
     name: 'README',
     content: 'README.md',
   },
-  // {
-  //   name: 'Notepad Block',
-  //   components: ['src/components/Button/Button.js'],
-  // },
   {
-
     name: 'Notepad Block',
     components: ['src/components/Editor/Editor.js'],
   },
   {
     name: 'EditorTools',
     content: 'src/components/Editor/EditorTools.md',
-
+  },
+  {
+    name: 'NoteList Block',
+    components: ['src/components/NoteList/NoteList.js'],
   },
 ];
 
