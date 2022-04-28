@@ -47,6 +47,7 @@ function Editor({ id, editorTools, placeholder }) {
       tools: editorTools,
     });
   };
+
   return (
     <React.Fragment>
       <div id={id || EDITTOR_HOLDER_ID}> </div>
