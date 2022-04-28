@@ -6,6 +6,7 @@ function NoteList() {
   const [notesArray, setNotesArray] = useState(
     localStorage.notesArray ? JSON.parse(localStorage.notesArray) : []
   );
+
   const addNote = () => {
     const newNote = {
       id: uuidv4(),
@@ -15,6 +16,10 @@ function NoteList() {
     };
 
     setNotesArray([newNote, ...notesArray]);
+  };
+
+  const deleteNote = (noteId) => {
+    setNotesArray(notesArray.filter(({ id }) => id !== noteId));
   };
   return (
     <div className="app-sidebar">
@@ -39,7 +44,7 @@ function NoteList() {
           overflowY: 'scroll',
         }}
       >
-        {notesArray.map((note) => (
+        {notesArray.map(({ id, title, body, lastModified }) => (
           <div
             className="app-sidebar-note"
             style={{
@@ -54,8 +59,9 @@ function NoteList() {
                 justifyContent: 'space-between',
               }}
             >
-              <strong>title</strong>
+              <strong>{title}</strong>
               <button
+                onClick={() => deleteNote(id)}
                 style={{
                   color: 'red',
                 }}
@@ -65,10 +71,10 @@ function NoteList() {
             </div>
             <small className="note-meta">
               Last modified{' '}
-              {/* {new Date(lastModified).toLocaleDateString('ru-RU', {
-              hour: '2-digit',
-              minute: '2-digit',
-            })} */}
+              {new Date(lastModified).toLocaleDateString('ru-RU', {
+                hour: '2-digit',
+                minute: '2-digit',
+              })}
             </small>
           </div>
         ))}
