@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 import React, { useState } from 'react';
-import uuid from 'react-uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 function NoteList() {
   const [notesArray, setNotesArray] = useState(
@@ -8,7 +8,7 @@ function NoteList() {
   );
   const addNote = () => {
     const newNote = {
-      id: uuid(),
+      id: uuidv4(),
       title: 'Untitled Note',
       body: '',
       lastModified: Date.now(),
