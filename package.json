@@ -71,6 +71,7 @@
   },
   "dependencies": {
     "@editorjs/editorjs": "^2.23.2",
+    "@ionic/storage": "^3.0.6",
     "react-uuid": "^1.0.2"
   }
 }

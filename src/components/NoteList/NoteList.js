@@ -1,11 +1,19 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/jsx-key */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import localForage from 'localforage';
 import { v4 as uuidv4 } from 'uuid';
 
 function NoteList() {
   const [notesArray, setNotesArray] = useState(
-    localStorage.notesArray ? JSON.parse(localStorage.notesArray) : []
+    localForage.notesArray ? JSON.parse(localForage.notesArray) : []
   );
+  const [activeNoteId, setActiveNoteId] = useState(false);
+
+  useEffect(() => {
+    localForage.setItem('notesArray', notesArray);
+  }, [notesArray]);
 
   const addNote = () => {
     const newNote = {
@@ -44,9 +52,11 @@ function NoteList() {
           overflowY: 'scroll',
         }}
       >
-        {notesArray.map(({ id, title, body, lastModified }) => (
+        {notesArray.map(({ id, title, lastModified }, i) => (
           <div
-            className="app-sidebar-note"
+            className={`app-sidebar-note ${id === activeNoteId && 'active'}`}
+            key={i}
+            onClick={() => setActiveNoteId(id)}
             style={{
               padding: '25px',
               cursor: 'pointer',
