@@ -16,8 +16,8 @@ let sections = [
     content: 'src/components/Editor/EditorTools.md',
   },
   {
-    name: 'NoteList Block',
-    components: ['src/components/NoteList/NoteList.js'],
+    name: 'SaveDataInLF Block',
+    components: ['src/components/SaveDataInLF/SaveDataInLF.js'],
   },
 ];
 

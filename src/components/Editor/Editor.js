@@ -50,7 +50,7 @@ function Editor({ id, editorTools, placeholder }) {
 
   return (
     <React.Fragment>
-      <div id={id || EDITTOR_HOLDER_ID}> </div>
+      <div id={id || EDITTOR_HOLDER_ID} dataToSave={editorData}></div>
     </React.Fragment>
   );
 }
