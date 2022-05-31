@@ -1,41 +1,41 @@
-
 import { default as React, useState, useEffect, useRef, useMemo } from 'react';
 import EditorJS from '@editorjs/editorjs';
+import localforage from 'localforage';
 
 const EDITTOR_HOLDER_ID = 'editorjs';
-
+localforage.config({
+  name: 'NotepadRCL',
+});
 function Editor({ id, editorTools, placeholder }) {
   const holder = useMemo(() => id || EDITTOR_HOLDER_ID, [id]);
   const ejInstance = useRef();
-  const [editorData, setEditorData] = useState(
-    localStorage.getItem(holder) ? JSON.parse(localStorage.getItem(holder)) : {}
-  );
-
+  const [editorData, setEditorData] = useState({});
 
   // This will run only once
   useEffect(() => {
     if (!ejInstance.current) {
       initEditor();
     }
-
+    localforage.keys().then((res) => console.log(res));
     return () => {
       ejInstance.current.destroy();
       ejInstance.current = null;
     };
   }, []);
 
-
   useEffect(() => {
-    localStorage.setItem(holder, JSON.stringify(editorData));
+    localforage.setItem(holder, editorData);
   }, [editorData]);
 
-  const initEditor = () => {
+  const initEditor = async () => {
+    const defData = await localforage.getItem(holder);
+    setEditorData(defData);
     const editor = new EditorJS({
-      holder: id || EDITTOR_HOLDER_ID,
+      holder,
       placeholder: placeholder || 'Let`s write an awesome note!',
 
       logLevel: 'ERROR',
-      data: editorData,
+      data: defData,
       onReady: () => {
         ejInstance.current = editor;
       },
@@ -50,12 +50,12 @@ function Editor({ id, editorTools, placeholder }) {
       tools: editorTools,
     });
   };
+
   return (
     <React.Fragment>
-      <div id={id || EDITTOR_HOLDER_ID}> </div>
+      <div id={holder}></div>
     </React.Fragment>
   );
 }
-
 
 export default Editor;
