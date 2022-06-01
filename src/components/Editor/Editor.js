@@ -16,7 +16,8 @@ function Editor({ id, editorTools, placeholder }) {
     if (!ejInstance.current) {
       initEditor();
     }
-    localforage.keys().then((res) => console.log(res));
+    localforage.keys();
+    // localforage.keys().then((result) => console.log(result));
     return () => {
       ejInstance.current.destroy();
       ejInstance.current = null;
