@@ -1,7 +1,12 @@
 ```jsx
 import React from 'react';
 
-import { ListOfNotes } from '@texttree/notepad-rcl';
+import { ListOfNotes, useGetList } from '@texttree/notepad-rcl';
 
-<ListOfNotes />;
+function Component() {
+  const notes = useGetList();
+  return <div>{JSON.stringify(notes)}</div>;
+}
+
+<Component />;
 ```

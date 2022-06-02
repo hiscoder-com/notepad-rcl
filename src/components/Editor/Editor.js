@@ -45,7 +45,7 @@ function Editor({ id, editorTools, placeholder }) {
         let content = await api.saver.save();
         // Put your logic here to save this data to your DB
         setEditorData(content);
-        console.log(content.blocks[0].data.text);
+        // console.log(content.blocks[0].data.text);
       },
       autofocus: false,
       tools: editorTools,
