@@ -3,8 +3,9 @@ import React from 'react';
 import { ListOfNotes, useData } from '@texttree/notepad-rcl';
 
 const notes = useData();
+// const listName = 'List of Notes'
 
-<ListOfNotes data={notes} />;
+<ListOfNotes data={notes} listName="List of Notes" />;
 ```
 
 <!--
