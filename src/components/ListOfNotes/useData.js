@@ -23,16 +23,8 @@ function useData() {
       });
   }, []);
   // console.log('notes: ', notes);
-  const updateArray = () => {
-    const newArr = [...notes];
-    setNotes(newArr);
-    console.log(newArr);
 
-    return newArr;
-  };
-  // метод, который обновляет список заметок
-
-  return { notes, updateArray };
+  return { notes, setNotes };
 }
 
 export default useData;

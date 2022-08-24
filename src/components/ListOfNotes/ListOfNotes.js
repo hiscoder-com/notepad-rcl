@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import localforage from 'localforage';
-import useData from './useData';
 
-function ListOfNotes({ data, listName }) {
-  const { notes, updateArray } = useData();
-
+function ListOfNotes({ data, listName, onRemove }) {
   const removeItem = (id) => {
     localforage
       .removeItem(id)
       .then(function () {
         // Run this code once the key has been removed.
         console.log('Key is cleared!');
-        console.log('arr', updateArray());
-        updateArray();
-        // console.log('removeItem: ', data);
+        onRemove(id);
       })
       .catch(function (err) {
         // This code runs if there were any errors
@@ -31,7 +26,7 @@ function ListOfNotes({ data, listName }) {
         <h1>{listName}</h1>
       </div>
       <div className="notes" style={{ width: '300px' }}>
-        {notes.map(({ key }) => (
+        {data.map(({ key }) => (
           <div
             key={key}
             className="note"
@@ -44,6 +39,7 @@ function ListOfNotes({ data, listName }) {
           >
             <div className="note-title">{key}</div>
             <div className="note-btn">
+              {/* <button onClick={() => console.log(key)}>Delete</button> */}
               <button onClick={() => removeItem(key)}>Delete</button>
             </div>
           </div>
