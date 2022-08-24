@@ -1,11 +1,26 @@
-import React from 'react';
-
-import { useData } from '@texttree/notepad-rcl';
+import React, { useEffect, useState } from 'react';
+import localforage from 'localforage';
+import useData from './useData';
 
 function ListOfNotes({ data, listName }) {
-  const hookCall = useData('editorjs');
+  const { notes, updateArray } = useData();
 
-  console.log('useData:', useData());
+  const removeItem = (id) => {
+    localforage
+      .removeItem(id)
+      .then(function () {
+        // Run this code once the key has been removed.
+        console.log('Key is cleared!');
+        console.log('arr', updateArray());
+        updateArray();
+        // console.log('removeItem: ', data);
+      })
+      .catch(function (err) {
+        // This code runs if there were any errors
+        console.log(err);
+      });
+  };
+  // console.log(data);
 
   return (
     <div
@@ -16,7 +31,7 @@ function ListOfNotes({ data, listName }) {
         <h1>{listName}</h1>
       </div>
       <div className="notes" style={{ width: '300px' }}>
-        {data.map(({ key }) => (
+        {notes.map(({ key }) => (
           <div
             key={key}
             className="note"
@@ -29,7 +44,7 @@ function ListOfNotes({ data, listName }) {
           >
             <div className="note-title">{key}</div>
             <div className="note-btn">
-              <button onClick={() => console.log(hookCall)}>Delete</button>
+              <button onClick={() => removeItem(key)}>Delete</button>
             </div>
           </div>
         ))}

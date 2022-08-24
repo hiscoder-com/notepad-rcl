@@ -1,8 +1,13 @@
 import localforage from 'localforage';
 import { default as React, useState, useEffect } from 'react';
-
-function useData(test = '') {
+/**
+ *
+ * @param {*} test
+ * @returns
+ */
+function useData() {
   const [notes, setNotes] = useState([]);
+
   useEffect(() => {
     const arr = [];
     localforage
@@ -11,17 +16,23 @@ function useData(test = '') {
         arr.push(obj);
       })
       .then(function () {
-        test ? setNotes(arr.filter(({ key }) => key !== test)) : setNotes(arr);
-
-        // setNotes(arr.filter(({ key }) => key !== 'editorjs'));
+        setNotes(arr);
       })
       .catch(function (err) {
         console.log(err);
       });
   }, []);
   // console.log('notes: ', notes);
+  const updateArray = () => {
+    const newArr = [...notes];
+    setNotes(newArr);
+    console.log(newArr);
 
-  return notes;
+    return newArr;
+  };
+  // метод, который обновляет список заметок
+
+  return { notes, updateArray };
 }
 
 export default useData;
