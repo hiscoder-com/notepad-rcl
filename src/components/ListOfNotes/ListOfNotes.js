@@ -1,6 +1,12 @@
 import React from 'react';
 
+import { useData } from '@texttree/notepad-rcl';
+
 function ListOfNotes({ data, listName }) {
+  const hookCall = useData('editorjs');
+
+  console.log('useData:', useData());
+
   return (
     <div
       className="list-of-notes"
@@ -23,7 +29,7 @@ function ListOfNotes({ data, listName }) {
           >
             <div className="note-title">{key}</div>
             <div className="note-btn">
-              <button>Delete</button>
+              <button onClick={() => console.log(hookCall)}>Delete</button>
             </div>
           </div>
         ))}

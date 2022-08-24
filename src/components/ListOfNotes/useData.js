@@ -1,7 +1,7 @@
 import localforage from 'localforage';
 import { default as React, useState, useEffect } from 'react';
 
-function useData() {
+function useData(test = '') {
   const [notes, setNotes] = useState([]);
   useEffect(() => {
     const arr = [];
@@ -11,13 +11,14 @@ function useData() {
         arr.push(obj);
       })
       .then(function () {
-        setNotes(arr);
+        test ? setNotes(arr.filter(({ key }) => key !== test)) : setNotes(arr);
+
+        // setNotes(arr.filter(({ key }) => key !== 'editorjs'));
       })
       .catch(function (err) {
         console.log(err);
       });
   }, []);
-
   // console.log('notes: ', notes);
 
   return notes;
