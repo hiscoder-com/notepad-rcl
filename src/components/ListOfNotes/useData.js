@@ -22,9 +22,13 @@ function useData() {
         console.log(err);
       });
   }, []);
-  // console.log('notes: ', notes);
 
-  return { notes, setNotes };
+  const updateNotes = (id) => {
+    const newLists = notes.filter((obj) => obj.key !== id);
+    setNotes(newLists);
+  };
+
+  return { notes, setNotes, updateNotes };
 }
 
 export default useData;

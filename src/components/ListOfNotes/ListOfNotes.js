@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import localforage from 'localforage';
 
-function ListOfNotes({ data, listName, onRemove }) {
+function ListOfNotes({ data, listName, onRemove, passIdInMD }) {
+  const passId = (id) => {
+    passIdInMD(id);
+  };
   const removeItem = (id) => {
     localforage
       .removeItem(id)
       .then(function () {
         // Run this code once the key has been removed.
         console.log('Key is cleared!');
-        onRemove(id);
+        passId(id);
       })
       .catch(function (err) {
         // This code runs if there were any errors
@@ -39,7 +42,6 @@ function ListOfNotes({ data, listName, onRemove }) {
           >
             <div className="note-title">{key}</div>
             <div className="note-btn">
-              {/* <button onClick={() => console.log(key)}>Delete</button> */}
               <button onClick={() => removeItem(key)}>Delete</button>
             </div>
           </div>
