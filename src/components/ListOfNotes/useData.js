@@ -23,12 +23,21 @@ function useData() {
       });
   }, []);
 
-  const updateNotes = (id) => {
-    const newLists = notes.filter((obj) => obj.key !== id);
-    setNotes(newLists);
+  const removeItem = (id) => {
+    localforage
+      .removeItem(id)
+      .then(function () {
+        // Run this code once the key has been removed.
+        const newLists = notes.filter((obj) => obj.key !== id);
+        setNotes(newLists);
+      })
+      .catch(function (err) {
+        // This code runs if there were any errors
+        console.log(err);
+      });
   };
 
-  return { notes, setNotes, updateNotes };
+  return { notes, setNotes, removeItem };
 }
 
 export default useData;
