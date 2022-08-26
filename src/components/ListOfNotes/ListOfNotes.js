@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ListOfNotes({ data, listName, passId }) {
+function ListOfNotes({ data, listName, passId, btnName }) {
   return (
     <div
       className="list-of-notes"
@@ -23,7 +23,7 @@ function ListOfNotes({ data, listName, passId }) {
           >
             <div className="note-title">{key}</div>
             <div className="note-btn">
-              <button onClick={() => passId(key)}>Delete</button>
+              <button onClick={() => passId(key)}>{btnName}</button>
             </div>
           </div>
         ))}

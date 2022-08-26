@@ -17,7 +17,6 @@ function Editor({ id, editorTools, placeholder }) {
       initEditor();
     }
     localforage.keys();
-    // localforage.keys().then((result) => console.log(result));
     return () => {
       ejInstance.current.destroy();
       ejInstance.current = null;
@@ -25,12 +24,18 @@ function Editor({ id, editorTools, placeholder }) {
   }, []);
 
   useEffect(() => {
-    localforage.setItem(holder, editorData);
+    localforage.getItem(holder).then(function (value) {
+      // This code runs once the value has been loaded
+      value
+        ? localforage.setItem(holder, { ...value, data: editorData })
+        : localforage.setItem(holder, { date: new Date(), data: editorData });
+    });
   }, [editorData]);
 
   const initEditor = async () => {
     const defData = await localforage.getItem(holder);
     setEditorData(defData);
+    console.log('defData:', defData);
     const editor = new EditorJS({
       holder,
       placeholder: placeholder || 'Let`s write an awesome note!',
@@ -45,7 +50,7 @@ function Editor({ id, editorTools, placeholder }) {
         let content = await api.saver.save();
         // Put your logic here to save this data to your DB
         setEditorData(content);
-        // console.log(content.blocks[0].data.text);
+        console.log('content:', content);
       },
       autofocus: false,
       tools: editorTools,
