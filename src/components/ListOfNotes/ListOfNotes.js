@@ -10,7 +10,7 @@ function ListOfNotes({ data, listName, passId, btnName }) {
         <h1>{listName}</h1>
       </div>
       <div className="notes" style={{ width: '300px' }}>
-        {data.map(({ key }) => (
+        {data.map(({ key, value }) => (
           <div
             key={key}
             className="note"
@@ -21,7 +21,7 @@ function ListOfNotes({ data, listName, passId, btnName }) {
               marginBottom: '10px',
             }}
           >
-            <div className="note-title">{key}</div>
+            <div className="note-title">{value.title}</div>
             <div className="note-btn">
               <button onClick={() => passId(key)}>{btnName}</button>
             </div>

@@ -26,23 +26,30 @@ function Editor({ id, editorTools, placeholder }) {
 
   useEffect(() => {
     localforage.getItem(holder).then(function (value) {
-      // This code runs once the value has been loaded
+      console.log('value:', value);
       value
-        ? localforage.setItem(holder, { ...value, data: editorData })
-        : localforage.setItem(holder, { date: new Date(), data: editorData });
+        ? localforage.setItem(holder, { ...value, title: inputValue, data: editorData })
+        : localforage.setItem(holder, {
+            title: inputValue,
+            data: editorData,
+            created: new Date(),
+          });
     });
-  }, [editorData]);
+  }, [editorData, inputValue]);
 
   const initEditor = async () => {
     const defData = await localforage.getItem(holder);
-    setEditorData(defData);
+    setEditorData(defData.data);
+    setInputValue(defData.title);
+    console.log('defData.data:', defData.data);
     console.log('defData:', defData);
+
     const editor = new EditorJS({
       holder,
       placeholder: placeholder || 'Let`s write an awesome note!',
 
       logLevel: 'ERROR',
-      data: defData,
+      data: defData.data,
       onReady: () => {
         ejInstance.current = editor;
       },
@@ -59,7 +66,7 @@ function Editor({ id, editorTools, placeholder }) {
   };
 
   return (
-    <React.Fragment style={{}}>
+    <React.Fragment>
       <div
         style={{
           display: 'inline-flex',
@@ -70,11 +77,14 @@ function Editor({ id, editorTools, placeholder }) {
         <input
           type="text"
           placeholder="Title"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
           style={{
             width: '650px',
             height: '38px',
             fontSize: 'large',
             border: 'none',
+            outline: 'none',
           }}
         ></input>
       </div>
