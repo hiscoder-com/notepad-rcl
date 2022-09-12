@@ -10,6 +10,7 @@ function Editor({ id, editorTools, placeholder }) {
   const holder = useMemo(() => id || EDITTOR_HOLDER_ID, [id]);
   const ejInstance = useRef();
   const [editorData, setEditorData] = useState({});
+  const [inputValue, setInputValue] = useState('');
 
   // This will run only once
   useEffect(() => {
@@ -58,7 +59,25 @@ function Editor({ id, editorTools, placeholder }) {
   };
 
   return (
-    <React.Fragment>
+    <React.Fragment style={{}}>
+      <div
+        style={{
+          display: 'inline-flex',
+          justifyContent: 'center',
+          width: '100%',
+        }}
+      >
+        <input
+          type="text"
+          placeholder="Title"
+          style={{
+            width: '650px',
+            height: '38px',
+            fontSize: 'large',
+            border: 'none',
+          }}
+        ></input>
+      </div>
       <div id={holder}></div>
     </React.Fragment>
   );

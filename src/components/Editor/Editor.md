@@ -25,5 +25,3 @@ const changePlaceholder = 'changed default text';
 
 <Editor id="new_id_new" placeholder={changePlaceholder} />;
 ```
-
-placeholder: 'Let`s write an awesome note!';
