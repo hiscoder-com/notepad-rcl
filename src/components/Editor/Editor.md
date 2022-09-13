@@ -13,7 +13,7 @@ import React from 'react';
 
 import { Editor } from '@texttree/notepad-rcl';
 
-<Editor id="some_new_iddddd" />;
+<Editor id="some_new_id" />;
 ```
 
 ### **Placeholder**

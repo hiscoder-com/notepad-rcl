@@ -21,7 +21,7 @@ function useData() {
       .catch(function (err) {
         console.log(err);
       });
-  }, []);
+  }, [notes]);
 
   const removeItem = (id) => {
     localforage
@@ -37,7 +37,18 @@ function useData() {
       });
   };
 
-  return { notes, setNotes, removeItem };
+  const addItem = () => {
+    const holder = ('000000000' + Math.random().toString(36).substr(2, 9)).slice(-9);
+    localforage
+      .setItem(holder, {
+        title: 'New note',
+        data: {},
+        created: new Date(),
+      })
+      .then((value) => console.log('value:', value));
+  };
+
+  return { notes, setNotes, removeItem, addItem };
 }
 
 export default useData;

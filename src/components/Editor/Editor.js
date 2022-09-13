@@ -6,6 +6,7 @@ const EDITTOR_HOLDER_ID = 'editorjs';
 localforage.config({
   name: 'NotepadRCL',
 });
+
 function Editor({ id, editorTools, placeholder }) {
   const holder = useMemo(() => id || EDITTOR_HOLDER_ID, [id]);
   const ejInstance = useRef();
@@ -14,7 +15,7 @@ function Editor({ id, editorTools, placeholder }) {
 
   // This will run only once
   useEffect(() => {
-    if (!ejInstance.current) {
+    if (!ejInstance?.current) {
       initEditor();
     }
     localforage.keys();
@@ -25,6 +26,8 @@ function Editor({ id, editorTools, placeholder }) {
   }, []);
 
   useEffect(() => {
+    // localforage.setItem(holder, editorData); // Так работает
+
     localforage.getItem(holder).then(function (value) {
       console.log('value:', value);
       value
@@ -38,18 +41,24 @@ function Editor({ id, editorTools, placeholder }) {
   }, [editorData, inputValue]);
 
   const initEditor = async () => {
+    console.log('holder:', holder);
     const defData = await localforage.getItem(holder);
+    console.log('defData:', defData);
+    // setEditorData(defData); // Так работает
     setEditorData(defData.data);
     setInputValue(defData.title);
-    console.log('defData.data:', defData.data);
-    console.log('defData:', defData);
+
+    // console.log('defData.data:', defData.data);
 
     const editor = new EditorJS({
       holder,
       placeholder: placeholder || 'Let`s write an awesome note!',
 
       logLevel: 'ERROR',
+
+      // data: defData, // Так работает
       data: defData.data,
+
       onReady: () => {
         ejInstance.current = editor;
       },
