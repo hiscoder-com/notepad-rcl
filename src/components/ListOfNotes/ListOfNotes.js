@@ -1,10 +1,12 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 
-function ListOfNotes({ data, listName, passId, btnName, addItem }) {
+function ListOfNotes({ data, listName, passIdToDel, btnName, addItem, passIdToOpen }) {
   return (
     <div
       className="list-of-notes"
-      style={{ display: 'flex', flexDirection: 'column', width: '500px' }}
+      style={{ display: 'flex', flexDirection: 'column', width: 'full' }}
     >
       <div
         className="header"
@@ -12,7 +14,7 @@ function ListOfNotes({ data, listName, passId, btnName, addItem }) {
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-between',
-          width: '300px',
+          width: '80%',
           marginBottom: '20px',
         }}
       >
@@ -24,7 +26,7 @@ function ListOfNotes({ data, listName, passId, btnName, addItem }) {
           Add
         </button>
       </div>
-      <div className="notes" style={{ width: '300px' }}>
+      <div className="notes" style={{ width: '80%' }}>
         {data.map(({ key, value }) => (
           <div
             key={key}
@@ -35,10 +37,14 @@ function ListOfNotes({ data, listName, passId, btnName, addItem }) {
               justifyContent: 'space-between',
               marginBottom: '10px',
             }}
+            // eslint-disable-next-line react/jsx-no-comment-textnodes
           >
-            <div className="note-title">{value.title}</div>
+            <div onClick={(key) => console.log(key)} className="note-title">
+              {/* <div onClick={(key) => passIdToOpen(key)} className="note-title"> */}
+              {value.title}
+            </div>
             <div className="note-btn">
-              <button style={{ borderRadius: '5px' }} onClick={() => passId(key)}>
+              <button style={{ borderRadius: '5px' }} onClick={() => passIdToDel(key)}>
                 {btnName}
               </button>
             </div>

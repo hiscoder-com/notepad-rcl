@@ -31,7 +31,11 @@ function Editor({ id, editorTools, placeholder }) {
     localforage.getItem(holder).then(function (value) {
       console.log('value:', value);
       value
-        ? localforage.setItem(holder, { ...value, title: inputValue, data: editorData })
+        ? localforage.setItem(holder, {
+            ...value,
+            title: inputValue || 'New note',
+            data: editorData,
+          })
         : localforage.setItem(holder, {
             title: inputValue,
             data: editorData,
@@ -45,8 +49,8 @@ function Editor({ id, editorTools, placeholder }) {
     const defData = await localforage.getItem(holder);
     console.log('defData:', defData);
     // setEditorData(defData); // Так работает
-    setEditorData(defData.data);
-    setInputValue(defData.title);
+    setEditorData(defData?.data);
+    setInputValue(defData?.title);
 
     // console.log('defData.data:', defData.data);
 
@@ -57,7 +61,7 @@ function Editor({ id, editorTools, placeholder }) {
       logLevel: 'ERROR',
 
       // data: defData, // Так работает
-      data: defData.data,
+      data: defData?.data,
 
       onReady: () => {
         ejInstance.current = editor;
