@@ -1,51 +1,57 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 
-function ListOfNotes({ data, listName, passIdToDel, btnName, addItem, passIdToOpen }) {
+function ListOfNotes({
+  data,
+  listName,
+  passIdToDel,
+  AddBtnName,
+  delBtnName,
+  addItem,
+  passIdToOpen,
+  headerStyle,
+  headerBlockStyle,
+  addBtnStyle,
+  noteTitleStyle,
+  listOfNotesStyle,
+  noteStyle,
+}) {
+  const defaultHeaderBlockStyle = {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '80%',
+    marginBottom: '20px',
+  };
+  const defaultHeaderStyle = { fontSize: '20px' };
+  const defaultAddBtnStyle = { width: '54.5px', borderRadius: '12px' };
+  const defaultListOfNotesStyle = { width: '80%' };
+  const defaultNoteStyle = {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: '10px',
+  };
+  const defaultDelBtnStyle = { borderRadius: '5px' };
+
   return (
-    <div
-      className="list-of-notes"
-      style={{ display: 'flex', flexDirection: 'column', width: 'full' }}
-    >
-      <div
-        className="header"
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          width: '80%',
-          marginBottom: '20px',
-        }}
-      >
-        <div style={{ fontSize: '20px' }}>{listName}</div>
-        <button
-          onClick={() => addItem()}
-          style={{ width: '54.5px', borderRadius: '12px' }}
-        >
-          Add
+    <div style={{ display: 'flex', flexDirection: 'column', width: 'full' }}>
+      <div style={headerBlockStyle || defaultHeaderBlockStyle}>
+        <div style={headerStyle || defaultHeaderStyle}>{listName}</div>
+        <button onClick={() => addItem()} style={addBtnStyle || defaultAddBtnStyle}>
+          {AddBtnName || 'Add'}
         </button>
       </div>
-      <div className="notes" style={{ width: '80%' }}>
+      <div style={listOfNotesStyle || defaultListOfNotesStyle}>
         {data.map(({ key, value }) => (
-          <div
-            key={key}
-            className="note"
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginBottom: '10px',
-            }}
-            // eslint-disable-next-line react/jsx-no-comment-textnodes
-          >
-            <div onClick={(key) => console.log(key)} className="note-title">
-              {/* <div onClick={(key) => passIdToOpen(key)} className="note-title"> */}
+          <div key={key} style={noteStyle || defaultNoteStyle}>
+            <div onClick={() => passIdToOpen(key)} style={noteTitleStyle}>
               {value.title}
             </div>
             <div className="note-btn">
-              <button style={{ borderRadius: '5px' }} onClick={() => passIdToDel(key)}>
-                {btnName}
+              <button style={defaultDelBtnStyle} onClick={() => passIdToDel(key)}>
+                {delBtnName || 'Delete'}
               </button>
             </div>
           </div>

@@ -44,6 +44,8 @@ function useData() {
         title: 'New note',
         data: {},
         created: new Date(),
+        isParent: null,
+        isFolder: false,
       })
       .then((value) => console.log('value:', value));
   };

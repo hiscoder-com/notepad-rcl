@@ -7,12 +7,18 @@ localforage.config({
   name: 'NotepadRCL',
 });
 
-function Editor({ id, editorTools, placeholder }) {
+function Editor({ id, editorTools, placeholder, inputStyle }) {
   const holder = useMemo(() => id || EDITTOR_HOLDER_ID, [id]);
   const ejInstance = useRef();
   const [editorData, setEditorData] = useState({});
   const [inputValue, setInputValue] = useState('');
-
+  const defaultTitleStyle = {
+    width: '650px',
+    height: '38px',
+    fontSize: 'large',
+    border: 'none',
+    outline: 'none',
+  };
   // This will run only once
   useEffect(() => {
     if (!ejInstance?.current) {
@@ -26,10 +32,7 @@ function Editor({ id, editorTools, placeholder }) {
   }, []);
 
   useEffect(() => {
-    // localforage.setItem(holder, editorData); // Так работает
-
     localforage.getItem(holder).then(function (value) {
-      console.log('value:', value);
       value
         ? localforage.setItem(holder, {
             ...value,
@@ -40,19 +43,16 @@ function Editor({ id, editorTools, placeholder }) {
             title: inputValue,
             data: editorData,
             created: new Date(),
+            isParent: null,
+            isFolder: false,
           });
     });
   }, [editorData, inputValue]);
 
   const initEditor = async () => {
-    console.log('holder:', holder);
     const defData = await localforage.getItem(holder);
-    console.log('defData:', defData);
-    // setEditorData(defData); // Так работает
     setEditorData(defData?.data);
     setInputValue(defData?.title);
-
-    // console.log('defData.data:', defData.data);
 
     const editor = new EditorJS({
       holder,
@@ -60,7 +60,6 @@ function Editor({ id, editorTools, placeholder }) {
 
       logLevel: 'ERROR',
 
-      // data: defData, // Так работает
       data: defData?.data,
 
       onReady: () => {
@@ -71,7 +70,6 @@ function Editor({ id, editorTools, placeholder }) {
         let content = await api.saver.save();
         // Put your logic here to save this data to your DB
         setEditorData(content);
-        console.log('content:', content);
       },
       autofocus: false,
       tools: editorTools,
@@ -92,13 +90,7 @@ function Editor({ id, editorTools, placeholder }) {
           placeholder="Title"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          style={{
-            width: '650px',
-            height: '38px',
-            fontSize: 'large',
-            border: 'none',
-            outline: 'none',
-          }}
+          style={inputStyle || defaultTitleStyle}
         ></input>
       </div>
       <div id={holder}></div>
