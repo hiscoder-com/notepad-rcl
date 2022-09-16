@@ -7,8 +7,9 @@ import { default as React, useState, useEffect } from 'react';
  */
 function useData() {
   const [notes, setNotes] = useState([]);
-
+  console.log(notes);
   useEffect(() => {
+    console.log('notes');
     const arr = [];
     localforage
       .iterate(function (value, key) {
@@ -21,15 +22,14 @@ function useData() {
       .catch(function (err) {
         console.log(err);
       });
-  }, [notes]);
+  }, []);
 
   const removeItem = (id) => {
     localforage
       .removeItem(id)
       .then(function () {
         // Run this code once the key has been removed.
-        const newLists = notes.filter((obj) => obj.key !== id);
-        setNotes(newLists);
+        setNotes((prev) => prev.filter((obj) => obj.key !== id));
       })
       .catch(function (err) {
         // This code runs if there were any errors
@@ -38,16 +38,16 @@ function useData() {
   };
 
   const addItem = () => {
-    const holder = ('000000000' + Math.random().toString(36).substr(2, 9)).slice(-9);
+    const holder = ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9);
     localforage
       .setItem(holder, {
         title: 'New note',
         data: {},
         created: new Date(),
-        isParent: null,
+        parent: null,
         isFolder: false,
       })
-      .then((value) => console.log('value:', value));
+      .then((value) => setNotes((prev) => [...prev, { key: holder, value }]));
   };
 
   return { notes, setNotes, removeItem, addItem };

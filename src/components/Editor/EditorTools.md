@@ -36,7 +36,3 @@ const addTools = { header: Header };
 ```
 
 <!-- #### Write a new property for the Tools object and pass it to the Editor via the addTools variable -->
-
-```jsx
-
-```

@@ -6,7 +6,7 @@ function ListOfNotes({
   data,
   listName,
   passIdToDel,
-  AddBtnName,
+  addBtnName,
   delBtnName,
   addItem,
   passIdToOpen,
@@ -39,8 +39,8 @@ function ListOfNotes({
     <div style={{ display: 'flex', flexDirection: 'column', width: 'full' }}>
       <div style={headerBlockStyle || defaultHeaderBlockStyle}>
         <div style={headerStyle || defaultHeaderStyle}>{listName}</div>
-        <button onClick={() => addItem()} style={addBtnStyle || defaultAddBtnStyle}>
-          {AddBtnName || 'Add'}
+        <button onClick={addItem} style={addBtnStyle || defaultAddBtnStyle}>
+          {addBtnName || 'Add'}
         </button>
       </div>
       <div style={listOfNotesStyle || defaultListOfNotesStyle}>

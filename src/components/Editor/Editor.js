@@ -3,11 +3,31 @@ import EditorJS from '@editorjs/editorjs';
 import localforage from 'localforage';
 
 const EDITTOR_HOLDER_ID = 'editorjs';
+
+// Assign a name to the database
 localforage.config({
   name: 'NotepadRCL',
 });
 
-function Editor({ id, editorTools, placeholder, inputStyle }) {
+function defaultSaveNote(key, title, note) {
+  localforage.getItem(key).then(function (value) {
+    value
+      ? localforage.setItem(key, {
+          ...value,
+          title: title || 'New note',
+          data: note,
+        })
+      : localforage.setItem(key, {
+          title: title,
+          data: note,
+          created: new Date(),
+          parent: null,
+          isFolder: false,
+        });
+  });
+}
+
+function Editor({ id, editorTools, placeholder, inputStyle, SaveNoteFn }) {
   const holder = useMemo(() => id || EDITTOR_HOLDER_ID, [id]);
   const ejInstance = useRef();
   const [editorData, setEditorData] = useState({});
@@ -24,31 +44,26 @@ function Editor({ id, editorTools, placeholder, inputStyle }) {
     if (!ejInstance?.current) {
       initEditor();
     }
-    localforage.keys();
     return () => {
       ejInstance.current.destroy();
       ejInstance.current = null;
     };
-  }, []);
+  }, [id]);
+
+  // Track the status of the note. If it changes, then save the changes in localforage
 
   useEffect(() => {
-    localforage.getItem(holder).then(function (value) {
-      value
-        ? localforage.setItem(holder, {
-            ...value,
-            title: inputValue || 'New note',
-            data: editorData,
-          })
-        : localforage.setItem(holder, {
-            title: inputValue,
-            data: editorData,
-            created: new Date(),
-            isParent: null,
-            isFolder: false,
-          });
-    });
+    const timer = setTimeout(() => {
+      typeof SaveNoteFn === 'function'
+        ? SaveNoteFn(holder, inputValue, editorData)
+        : defaultSaveNote(holder, inputValue, editorData);
+    }, 3000);
+    return () => {
+      clearTimeout(timer);
+    };
   }, [editorData, inputValue]);
 
+  // Запуск Editor.js
   const initEditor = async () => {
     const defData = await localforage.getItem(holder);
     setEditorData(defData?.data);
