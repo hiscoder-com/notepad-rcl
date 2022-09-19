@@ -8,7 +8,6 @@ import { default as React, useState, useEffect } from 'react';
 function useData() {
   const [notes, setNotes] = useState([]);
   useEffect(() => {
-    console.log('notes');
     const arr = [];
     localforage
       .iterate(function (value, key) {
@@ -36,7 +35,7 @@ function useData() {
       });
   };
 
-  const addItem = () => {
+  const addNote = () => {
     const holder = ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9);
     localforage
       .setItem(holder, {
@@ -49,7 +48,7 @@ function useData() {
       .then((value) => setNotes((prev) => [...prev, { key: holder, value }]));
   };
 
-  return { notes, setNotes, removeItem, addItem };
+  return { notes, setNotes, removeItem, addNote };
 }
 
 export default useData;

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { ListOfNotes, useData, Editor } from '@texttree/notepad-rcl';
 
 function Component() {
-  const { notes, setNotes, removeItem, addItem } = useData();
+  const { notes, setNotes, removeItem, addNote } = useData();
 
   const changePlaceholder = 'changed default text';
 
@@ -22,10 +22,10 @@ function Component() {
     <div style={{ display: 'inline-flex' }}>
       <div style={{ width: '50%' }}>
         <ListOfNotes
-          data={notes}
+          notesArray={notes}
           listName="List of Notes"
           passIdToDel={removeItem}
-          addItem={addItem}
+          addNote={addNote}
           passIdToOpen={setIdToLoadNote}
         />
       </div>
