@@ -7,7 +7,6 @@ import { default as React, useState, useEffect } from 'react';
  */
 function useData() {
   const [notes, setNotes] = useState([]);
-  console.log(notes);
   useEffect(() => {
     console.log('notes');
     const arr = [];
