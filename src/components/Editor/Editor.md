@@ -13,7 +13,7 @@ import React from 'react';
 
 import { Editor } from '@texttree/notepad-rcl';
 
-<Editor id="some_new_id" />;
+<Editor id="second_note" />;
 ```
 
 ### **Placeholder**
@@ -23,5 +23,5 @@ import { Editor } from '@texttree/notepad-rcl';
 ```jsx
 const changePlaceholder = 'changed default text';
 
-<Editor id="new_id_new" placeholder={changePlaceholder} />;
+<Editor id="third_note" placeholder={changePlaceholder} />;
 ```

@@ -1,8 +1,11 @@
 import { default as React, useState, useEffect, useRef, useMemo } from 'react';
-import EditorJS from '@editorjs/editorjs';
-import localforage from 'localforage';
 
-const EDITTOR_HOLDER_ID = 'editorjs';
+import localforage from 'localforage';
+import PropTypes from 'prop-types';
+
+import EditorJS from '@editorjs/editorjs';
+
+const EDITTOR_HOLDER_ID = 'note_id';
 
 // Assign a name to the database
 localforage.config({
@@ -112,5 +115,26 @@ function Editor({ id, editorTools, placeholder, inputStyle, SaveNoteFn }) {
     </React.Fragment>
   );
 }
+
+Editor.defaultProps = {
+  id: 'note_id',
+  editorTools: '',
+  placeholder: 'Let`s write an awesome note!',
+  SaveNoteFn: '(key, title, note) => {}',
+  // SaveNoteFn: (key, title, note) => {},
+};
+
+Editor.propTypes = {
+  // inputStyle,
+  /** Write a new property for the Tools object and pass it to the Editor via the addTools variable */
+  editorTools: PropTypes.object,
+  /** note ID */
+  id: PropTypes.string,
+  /** note Placeholder */
+  placeholder: PropTypes.string,
+  /** note save method (by default note is stored in localforage).
+Receives the key title and note at the entrance */
+  SaveNoteFn: PropTypes.func,
+};
 
 export default Editor;
