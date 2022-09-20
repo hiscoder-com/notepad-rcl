@@ -1,7 +1,9 @@
 ```jsx
 import React from 'react';
 
-import { Editor } from '@texttree/notepad-rcl';
+import { useData, Editor } from '@texttree/notepad-rcl';
+
+// const { DBNameRegistration, defaultSaveNote, GetNote } = useData();
 
 <Editor />;
 ```

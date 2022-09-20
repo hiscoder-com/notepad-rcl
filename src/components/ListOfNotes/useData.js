@@ -22,7 +22,7 @@ function useData() {
       });
   }, []);
 
-  const removeItem = (id) => {
+  const removeNote = (id) => {
     localforage
       .removeItem(id)
       .then(function () {
@@ -48,7 +48,7 @@ function useData() {
       .then((value) => setNotes((prev) => [...prev, { key: holder, value }]));
   };
 
-  return { notes, setNotes, removeItem, addNote };
+  return { notes, setNotes, removeNote, addNote };
 }
 
 export default useData;

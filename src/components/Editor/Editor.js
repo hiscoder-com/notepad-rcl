@@ -7,10 +7,12 @@ import EditorJS from '@editorjs/editorjs';
 
 const EDITTOR_HOLDER_ID = 'note_id';
 
-// Assign a name to the database
-localforage.config({
-  name: 'NotepadRCL',
-});
+function DBNameRegistration() {
+  // Assign a name to the database
+  localforage.config({
+    name: 'NotepadRCL',
+  });
+}
 
 function defaultSaveNote(key, title, note) {
   localforage.getItem(key).then(function (value) {
@@ -29,6 +31,13 @@ function defaultSaveNote(key, title, note) {
         });
   });
 }
+
+function GetNote(id) {
+  const result = localforage.getItem(id);
+  return result;
+}
+
+DBNameRegistration();
 
 function Editor({ id, editorTools, placeholder, inputStyle, SaveNoteFn }) {
   const holder = useMemo(() => id || EDITTOR_HOLDER_ID, [id]);
@@ -68,7 +77,9 @@ function Editor({ id, editorTools, placeholder, inputStyle, SaveNoteFn }) {
 
   // Запуск Editor.js
   const initEditor = async () => {
-    const defData = await localforage.getItem(holder);
+    // const defData = await localforage.getItem(holder);
+    const defData = await GetNote(holder);
+    console.log(defData);
     setEditorData(defData?.data);
     setInputValue(defData?.title);
 
@@ -118,10 +129,7 @@ function Editor({ id, editorTools, placeholder, inputStyle, SaveNoteFn }) {
 
 Editor.defaultProps = {
   id: 'note_id',
-  editorTools: '',
   placeholder: 'Let`s write an awesome note!',
-  SaveNoteFn: '(key, title, note) => {}',
-  // SaveNoteFn: (key, title, note) => {},
 };
 
 Editor.propTypes = {

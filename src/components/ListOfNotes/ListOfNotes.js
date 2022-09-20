@@ -68,12 +68,9 @@ function ListOfNotes({
 
 ListOfNotes.defaultProps = {
   addBtnName: 'Add',
-  addNote: (key) => {},
   notesArray: [],
   delBtnName: 'Delete',
   listName: 'List of Notes',
-  passIdToDel: (id) => {},
-  passIdToOpen: (id) => {},
 };
 
 ListOfNotes.propTypes = {
