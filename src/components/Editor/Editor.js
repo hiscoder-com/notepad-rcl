@@ -7,39 +7,15 @@ import EditorJS from '@editorjs/editorjs';
 
 const EDITTOR_HOLDER_ID = 'note_id';
 
-function DBNameRegistration() {
-  // Assign a name to the database
-  localforage.config({
-    name: 'NotepadRCL',
-  });
-}
-
-function defaultSaveNote(key, title, note) {
-  localforage.getItem(key).then(function (value) {
-    value
-      ? localforage.setItem(key, {
-          ...value,
-          title: title || 'New note',
-          data: note,
-        })
-      : localforage.setItem(key, {
-          title: title,
-          data: note,
-          created: new Date(),
-          parent: null,
-          isFolder: false,
-        });
-  });
-}
-
-function GetNote(id) {
-  const result = localforage.getItem(id);
-  return result;
-}
-
-DBNameRegistration();
-
-function Editor({ id, editorTools, placeholder, inputStyle, SaveNoteFn }) {
+function Editor({
+  id,
+  editorTools,
+  placeholder,
+  inputStyle,
+  SaveNoteFn,
+  getNote,
+  saveNote,
+}) {
   const holder = useMemo(() => id || EDITTOR_HOLDER_ID, [id]);
   const ejInstance = useRef();
   const [editorData, setEditorData] = useState({});
@@ -51,6 +27,7 @@ function Editor({ id, editorTools, placeholder, inputStyle, SaveNoteFn }) {
     border: 'none',
     outline: 'none',
   };
+
   // This will run only once
   useEffect(() => {
     if (!ejInstance?.current) {
@@ -63,12 +40,11 @@ function Editor({ id, editorTools, placeholder, inputStyle, SaveNoteFn }) {
   }, [id]);
 
   // Track the status of the note. If it changes, then save the changes in localforage
-
   useEffect(() => {
     const timer = setTimeout(() => {
       typeof SaveNoteFn === 'function'
         ? SaveNoteFn(holder, inputValue, editorData)
-        : defaultSaveNote(holder, inputValue, editorData);
+        : saveNote(holder, inputValue, editorData);
     }, 3000);
     return () => {
       clearTimeout(timer);
@@ -77,8 +53,7 @@ function Editor({ id, editorTools, placeholder, inputStyle, SaveNoteFn }) {
 
   // Запуск Editor.js
   const initEditor = async () => {
-    // const defData = await localforage.getItem(holder);
-    const defData = await GetNote(holder);
+    const defData = await getNote(holder);
     console.log(defData);
     setEditorData(defData?.data);
     setInputValue(defData?.title);

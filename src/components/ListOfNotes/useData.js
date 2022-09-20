@@ -22,6 +22,38 @@ function useData() {
       });
   }, []);
 
+  // Assign a name to the database
+  const dBNameRegistration = (name) => {
+    localforage.config({
+      name,
+    });
+  };
+
+  // Getting a note from localforage
+  const getNote = (id) => {
+    const result = localforage.getItem(id);
+    return result;
+  };
+
+  const saveNote = (key, title, note) => {
+    localforage.getItem(key).then(function (value) {
+      value
+        ? localforage.setItem(key, {
+            ...value,
+            title: title || 'New note',
+            data: note,
+          })
+        : localforage.setItem(key, {
+            title: title,
+            data: note,
+            created: new Date(),
+            parent: null,
+            isFolder: false,
+          });
+    });
+  };
+
+  // Removing a note from the list
   const removeNote = (id) => {
     localforage
       .removeItem(id)
@@ -35,6 +67,7 @@ function useData() {
       });
   };
 
+  // Adding a note to the list
   const addNote = () => {
     const holder = ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9);
     localforage
@@ -48,7 +81,15 @@ function useData() {
       .then((value) => setNotes((prev) => [...prev, { key: holder, value }]));
   };
 
-  return { notes, setNotes, removeNote, addNote };
+  return {
+    notes,
+    setNotes,
+    removeNote,
+    addNote,
+    dBNameRegistration,
+    getNote,
+    saveNote,
+  };
 }
 
 export default useData;

@@ -3,9 +3,11 @@ import React from 'react';
 
 import { useData, Editor } from '@texttree/notepad-rcl';
 
-// const { DBNameRegistration, defaultSaveNote, GetNote } = useData();
+const { dBNameRegistration, getNote, saveNote } = useData();
 
-<Editor />;
+dBNameRegistration('NotepadRCL');
+
+<Editor getNote={getNote} saveNote={saveNote} />;
 ```
 
 #### If you want to use an Editor twice or more, give each Editor a unique **`id`**

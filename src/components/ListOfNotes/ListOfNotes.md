@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import { ListOfNotes, useData, Editor } from '@texttree/notepad-rcl';
 
 function Component() {
-  const { notes, setNotes, removeNote, addNote } = useData();
+  const { notes, setNotes, removeNote, addNote, dBNameRegistration, getNote, saveNote } =
+    useData();
 
   const changePlaceholder = 'changed default text';
 
@@ -17,6 +18,8 @@ function Component() {
     border: 'none',
     outline: 'none',
   };
+
+  dBNameRegistration('NotepadRCL');
 
   return (
     <div style={{ display: 'inline-flex' }}>
@@ -35,6 +38,8 @@ function Component() {
           id={idToLoadNote}
           placeholder={changePlaceholder}
           inputStyle={inputStyle}
+          getNote={getNote}
+          saveNote={saveNote}
         />
       </div>
     </div>
