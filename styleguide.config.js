@@ -16,6 +16,10 @@ let sections = [
     content: 'src/components/Editor/EditorTools.md',
   },
   {
+    name: 'UseData',
+    content: 'src/components/ListOfNotes/useData.md',
+  },
+  {
     name: 'Getting a list of notes Block',
     components: ['src/components/ListOfNotes/ListOfNotes.js'],
   },

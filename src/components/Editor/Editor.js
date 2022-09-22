@@ -19,7 +19,7 @@ function Editor({
   const holder = useMemo(() => id || EDITTOR_HOLDER_ID, [id]);
   const ejInstance = useRef();
   const [editorData, setEditorData] = useState({});
-  const [inputValue, setInputValue] = useState('');
+  const [title, setTitle] = useState('');
   const defaultTitleStyle = {
     width: '650px',
     height: '38px',
@@ -43,20 +43,19 @@ function Editor({
   useEffect(() => {
     const timer = setTimeout(() => {
       typeof SaveNoteFn === 'function'
-        ? SaveNoteFn(holder, inputValue, editorData)
-        : saveNote(holder, inputValue, editorData);
+        ? SaveNoteFn(holder, title, editorData)
+        : saveNote(holder, title, editorData);
     }, 3000);
     return () => {
       clearTimeout(timer);
     };
-  }, [editorData, inputValue]);
+  }, [editorData, title]);
 
   // Запуск Editor.js
   const initEditor = async () => {
     const defData = await getNote(holder);
-    console.log(defData);
     setEditorData(defData?.data);
-    setInputValue(defData?.title);
+    setTitle(defData?.title);
 
     const editor = new EditorJS({
       holder,
@@ -92,8 +91,8 @@ function Editor({
         <input
           type="text"
           placeholder="Title"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
           style={inputStyle || defaultTitleStyle}
         ></input>
       </div>

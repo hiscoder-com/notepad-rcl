@@ -1,11 +1,9 @@
 ```jsx
 import { useState, useEffect } from 'react';
-
 import { ListOfNotes, useData, Editor } from '@texttree/notepad-rcl';
 
 function Component() {
-  const { notes, setNotes, removeNote, addNote, dBNameRegistration, getNote, saveNote } =
-    useData();
+  const { notes, removeNote, addNote, dBNameRegistration, getNote, saveNote } = useData();
 
   const changePlaceholder = 'changed default text';
 
@@ -34,7 +32,6 @@ function Component() {
       </div>
       <div style={{ width: '50%' }}>
         <Editor
-          setNotes={setNotes}
           id={idToLoadNote}
           placeholder={changePlaceholder}
           inputStyle={inputStyle}

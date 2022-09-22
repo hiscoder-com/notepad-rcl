@@ -83,7 +83,6 @@ function useData() {
 
   return {
     notes,
-    setNotes,
     removeNote,
     addNote,
     dBNameRegistration,
