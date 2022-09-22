@@ -1,8 +1,8 @@
 ```jsx
 import React from 'react';
-import { useData, Editor } from '@texttree/notepad-rcl';
+import { UseData, Editor } from '@texttree/notepad-rcl';
 
-const { dBNameRegistration, getNote, saveNote } = useData();
+const { dBNameRegistration, getNote, saveNote } = UseData();
 
 dBNameRegistration('NotepadRCL');
 
@@ -13,9 +13,9 @@ dBNameRegistration('NotepadRCL');
 
 ```jsx
 import React from 'react';
-import { useData, Editor } from '@texttree/notepad-rcl';
+import { UseData, Editor } from '@texttree/notepad-rcl';
 
-const { dBNameRegistration, getNote, saveNote } = useData();
+const { dBNameRegistration, getNote, saveNote } = UseData();
 
 dBNameRegistration('NotepadRCL');
 
@@ -28,9 +28,9 @@ dBNameRegistration('NotepadRCL');
 
 ```jsx
 import React from 'react';
-import { useData, Editor } from '@texttree/notepad-rcl';
+import { UseData, Editor } from '@texttree/notepad-rcl';
 
-const { dBNameRegistration, getNote, saveNote } = useData();
+const { dBNameRegistration, getNote, saveNote } = UseData();
 
 dBNameRegistration('NotepadRCL');
 

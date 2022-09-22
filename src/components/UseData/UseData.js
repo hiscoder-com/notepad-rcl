@@ -5,7 +5,7 @@ import { default as React, useState, useEffect } from 'react';
  * @param {*} test
  * @returns
  */
-function useData() {
+function UseData() {
   const [notes, setNotes] = useState([]);
   useEffect(() => {
     const arr = [];
@@ -91,4 +91,4 @@ function useData() {
   };
 }
 
-export default useData;
+export default UseData;

@@ -1,2 +1,3 @@
 export { default as Editor } from './Editor';
-export * from './ListOfNotes';
+export { default as ListOfNotes } from './ListOfNotes';
+export { default as UseData } from './UseData';

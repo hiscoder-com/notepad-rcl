@@ -2,9 +2,9 @@
 
 ```jsx
 import React from 'react';
-import { useData, Editor } from '@texttree/notepad-rcl';
+import { UseData, Editor } from '@texttree/notepad-rcl';
 
-const { getNote, saveNote } = useData();
+const { getNote, saveNote } = UseData();
 
 <Editor getNote={getNote} saveNote={saveNote} id="save_data_to_DB" />;
 ```
@@ -13,9 +13,9 @@ const { getNote, saveNote } = useData();
 
 ```jsx
 import React from 'react';
-import { useData, Editor } from '@texttree/notepad-rcl';
+import { UseData, Editor } from '@texttree/notepad-rcl';
 
-const { dBNameRegistration, getNote, saveNote } = useData();
+const { dBNameRegistration, getNote, saveNote } = UseData();
 
 dBNameRegistration('NotepadRCL');
 
@@ -26,10 +26,10 @@ dBNameRegistration('NotepadRCL');
 
 ```jsx
 import { useState, useEffect } from 'react';
-import { ListOfNotes, useData, Editor } from '@texttree/notepad-rcl';
+import { ListOfNotes, UseData, Editor } from '@texttree/notepad-rcl';
 
 function Component() {
-  const { notes, removeNote, addNote, dBNameRegistration, getNote, saveNote } = useData();
+  const { notes, removeNote, addNote, dBNameRegistration, getNote, saveNote } = UseData();
 
   const changePlaceholder = 'changed default text';
 
