@@ -1,9 +1,9 @@
 ```jsx
 import { useState, useEffect } from 'react';
-import { ListOfNotes, UseData, Editor } from '@texttree/notepad-rcl';
+import { ListOfNotes, useData, Editor } from '@texttree/notepad-rcl';
 
 function Component() {
-  const { notes, removeNote, addNote, dBNameRegistration, getNote, saveNote } = UseData();
+  const { notes, removeNote, addNote, dBNameRegistration, getNote, saveNote } = useData();
 
   const changePlaceholder = 'changed default text';
 

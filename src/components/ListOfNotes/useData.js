@@ -5,8 +5,10 @@ import { default as React, useState, useEffect } from 'react';
  * @param {*} test
  * @returns
  */
-function UseData() {
-  const [notes, setNotes] = useState([]);
+
+function useData() {
+  const [notesArray, setNotesArray] = useState([]);
+
   useEffect(() => {
     const arr = [];
     localforage
@@ -15,7 +17,7 @@ function UseData() {
         arr.push(obj);
       })
       .then(function () {
-        setNotes(arr);
+        setNotesArray(arr);
       })
       .catch(function (err) {
         console.log(err);
@@ -59,7 +61,7 @@ function UseData() {
       .removeItem(id)
       .then(function () {
         // Run this code once the key has been removed.
-        setNotes((prev) => prev.filter((obj) => obj.key !== id));
+        setNotesArray((prev) => prev.filter((obj) => obj.key !== id));
       })
       .catch(function (err) {
         // This code runs if there were any errors
@@ -78,17 +80,10 @@ function UseData() {
         parent: null,
         isFolder: false,
       })
-      .then((value) => setNotes((prev) => [...prev, { key: holder, value }]));
+      .then((value) => setNotesArray((prev) => [...prev, { key: holder, value }]));
   };
 
-  return {
-    notes,
-    removeNote,
-    addNote,
-    dBNameRegistration,
-    getNote,
-    saveNote,
-  };
+  return { notesArray, removeNote, addNote, dBNameRegistration, getNote, saveNote };
 }
 
-export default UseData;
+export default useData;

@@ -1,21 +1,31 @@
 ```jsx
 import React from 'react';
-import { UseData, Editor } from '@texttree/notepad-rcl';
+import { Editor } from '@texttree/notepad-rcl';
 
-const { dBNameRegistration, getNote, saveNote } = UseData();
+<Editor />;
+```
+
+### If you want to use your own method for saving notes, pass it in props
+
+```jsx
+import React from 'react';
+import { Editor, useData } from '@texttree/notepad-rcl';
+
+const { dBNameRegistration } = useData();
 
 dBNameRegistration('NotepadRCL');
 
-<Editor getNote={getNote} saveNote={saveNote} />;
+<Editor id="second_note" />;
 ```
 
+<!--
 #### If you want to use an Editor twice or more, give each Editor a unique **`id`**
 
 ```jsx
 import React from 'react';
-import { UseData, Editor } from '@texttree/notepad-rcl';
+import { useData, Editor } from '@texttree/notepad-rcl';
 
-const { dBNameRegistration, getNote, saveNote } = UseData();
+const { dBNameRegistration, getNote, saveNote } = useData();
 
 dBNameRegistration('NotepadRCL');
 
@@ -28,9 +38,9 @@ dBNameRegistration('NotepadRCL');
 
 ```jsx
 import React from 'react';
-import { UseData, Editor } from '@texttree/notepad-rcl';
+import { useData, Editor } from '@texttree/notepad-rcl';
 
-const { dBNameRegistration, getNote, saveNote } = UseData();
+const { dBNameRegistration, getNote, saveNote } = useData();
 
 dBNameRegistration('NotepadRCL');
 
@@ -43,4 +53,4 @@ const changePlaceholder = 'changed default text';
   id="third_note"
   placeholder={changePlaceholder}
 />;
-```
+``` -->

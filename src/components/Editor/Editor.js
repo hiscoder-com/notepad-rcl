@@ -7,15 +7,30 @@ import EditorJS from '@editorjs/editorjs';
 
 const EDITTOR_HOLDER_ID = 'note_id';
 
-function Editor({
-  id,
-  editorTools,
-  placeholder,
-  inputStyle,
-  SaveNoteFn,
-  getNote,
-  saveNote,
-}) {
+function DefaultSaveNote(key, title, note) {
+  localforage.getItem(key).then(function (value) {
+    value
+      ? localforage.setItem(key, {
+          ...value,
+          title: title || 'New note',
+          data: note,
+        })
+      : localforage.setItem(key, {
+          title: title,
+          data: note,
+          created: new Date(),
+          parent: null,
+          isFolder: false,
+        });
+  });
+}
+
+function DefaultGetNote(id) {
+  const result = localforage.getItem(id);
+  return result;
+}
+
+function Editor({ id, editorTools, placeholder, inputStyle, SaveNoteFn, GetNoteFn }) {
   const holder = useMemo(() => id || EDITTOR_HOLDER_ID, [id]);
   const ejInstance = useRef();
   const [editorData, setEditorData] = useState({});
@@ -44,16 +59,24 @@ function Editor({
     const timer = setTimeout(() => {
       typeof SaveNoteFn === 'function'
         ? SaveNoteFn(holder, title, editorData)
-        : saveNote(holder, title, editorData);
+        : DefaultSaveNote(holder, title, editorData);
     }, 3000);
     return () => {
       clearTimeout(timer);
     };
   }, [editorData, title]);
 
+  const isCustomGetNote = () => {
+    let res;
+    typeof GetNoteFn === 'function'
+      ? (res = GetNoteFn(holder))
+      : (res = DefaultGetNote(holder));
+    return res;
+  };
+
   // Запуск Editor.js
   const initEditor = async () => {
-    const defData = await getNote(holder);
+    const defData = await isCustomGetNote();
     setEditorData(defData?.data);
     setTitle(defData?.title);
 
