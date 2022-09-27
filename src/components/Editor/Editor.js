@@ -51,6 +51,7 @@ function Editor({ id, editorTools, placeholder, inputStyle, SaveNoteFn, GetNoteF
     return () => {
       if (ejInstance?.current) {
         ejInstance.current.destroy();
+        ejInstance.current = null;
       }
     };
   }, [id]);
