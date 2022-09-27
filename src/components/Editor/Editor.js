@@ -45,12 +45,18 @@ function Editor({ id, editorTools, placeholder, inputStyle, SaveNoteFn, GetNoteF
 
   // This will run only once
   useEffect(() => {
+    console.log('ejInstance?.current', ejInstance?.current);
+
     if (!ejInstance?.current) {
       initEditor();
+      console.log('ejInstance?.current 51', ejInstance?.current);
     }
     return () => {
-      ejInstance.current.destroy();
-      ejInstance.current = null;
+      console.log('ejInstance?.current 55', ejInstance?.current);
+
+      if (ejInstance.current) {
+        // ejInstance.current.destroy();
+      }
     };
   }, [id]);
 

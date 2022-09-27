@@ -70,7 +70,7 @@
     "webpack": "^5.72.0"
   },
   "dependencies": {
-    "@editorjs/editorjs": "^2.23.2",
+    "@editorjs/editorjs": "^2.25.0",
     "localforage": "^1.10.0",
     "react-uuid": "^1.0.2"
   }
