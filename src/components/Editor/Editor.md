@@ -11,9 +11,9 @@ import { Editor } from '@texttree/notepad-rcl';
 import React from 'react';
 import { Editor, useData } from '@texttree/notepad-rcl';
 
-const { dBNameRegistration } = useData();
+// const { dBNameRegistration } = useData();
 
-dBNameRegistration('NotepadRCL');
+// dBNameRegistration('NotepadRCL');
 
 <Editor id="second_note" />;
 ```

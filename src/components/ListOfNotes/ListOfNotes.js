@@ -49,7 +49,7 @@ function ListOfNotes({
               onClick={() => passIdToOpen(key)}
               style={style?.title || DEFAULT_STYLE.title}
             >
-              {value.title}
+              {value.title || 'New note'}
             </div>
             <div className="note-btn">
               <button
@@ -67,9 +67,7 @@ function ListOfNotes({
 }
 
 ListOfNotes.defaultProps = {
-  addBtnName: 'Add',
   notesArray: [],
-  delBtnName: 'Delete',
   listName: 'List of Notes',
 };
 

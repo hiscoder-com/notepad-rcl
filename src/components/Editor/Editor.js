@@ -45,17 +45,12 @@ function Editor({ id, editorTools, placeholder, inputStyle, SaveNoteFn, GetNoteF
 
   // This will run only once
   useEffect(() => {
-    console.log('ejInstance?.current', ejInstance?.current);
-
     if (!ejInstance?.current) {
       initEditor();
-      console.log('ejInstance?.current 51', ejInstance?.current);
     }
     return () => {
-      console.log('ejInstance?.current 55', ejInstance?.current);
-
-      if (ejInstance.current) {
-        // ejInstance.current.destroy();
+      if (ejInstance?.current) {
+        ejInstance.current.destroy();
       }
     };
   }, [id]);
@@ -129,11 +124,6 @@ function Editor({ id, editorTools, placeholder, inputStyle, SaveNoteFn, GetNoteF
     </React.Fragment>
   );
 }
-
-Editor.defaultProps = {
-  id: 'note_id',
-  placeholder: 'Let`s write an awesome note!',
-};
 
 Editor.propTypes = {
   // inputStyle,
