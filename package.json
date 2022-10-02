@@ -5,7 +5,8 @@
   "description": "",
   "keywords": [
     "rcl",
-    "react"
+    "react",
+    "notepad"
   ],
   "license": "MIT",
   "private": false,
@@ -36,7 +37,8 @@
     "build": "styleguidist build",
     "lint": "eslint --fix .",
     "prettier": "prettier --write .",
-    "prepublishOnly": "rm -fr ./dist & babel ./src --out-dir ./dist -s inline",
+    "build:babel": "babel src --out-dir dist --ignore src/components/**/*.jsx",
+    "prepublishOnly": "rm -fr ./dist & yarn build:babel",
     "precommit": "lint-staged"
   },
   "peerDependencies": {
@@ -46,14 +48,14 @@
     "react-dom": "^17.x"
   },
   "devDependencies": {
-    "@babel/cli": "^7.17.6",
-    "@babel/core": "^7.17.9",
-    "@babel/eslint-parser": "^7.17.0",
-    "@babel/preset-env": "^7.16.11",
-    "@babel/preset-react": "^7.16.7",
+    "@babel/cli": "^7.19.3",
+    "@babel/core": "^7.19.3",
+    "@babel/eslint-parser": "^7.19.1",
+    "@babel/preset-env": "^7.19.3",
+    "@babel/preset-react": "^7.18.6",
     "@editorjs/header": "^2.6.2",
     "@material-ui/core": "^4.12.4",
-    "babel-loader": "^8.2.4",
+    "babel-loader": "^8.2.5",
     "eslint": "^8.13.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-jsx-a11y": "^6.5.1",
@@ -67,10 +69,12 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-styleguidist": "^11.2.0",
-    "webpack": "^5.72.0"
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
   },
   "dependencies": {
     "@editorjs/editorjs": "^2.25.0",
+    "core-js": "^3.25.4",
     "localforage": "^1.10.0",
     "react-uuid": "^1.0.2"
   }

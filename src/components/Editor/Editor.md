@@ -5,7 +5,7 @@ import { Editor } from '@texttree/notepad-rcl';
 <Editor />;
 ```
 
-### If you want to use your own method for saving notes, pass it in props
+<!-- ### If you want to use your own method for saving notes, pass it in props
 
 ```jsx
 import React from 'react';
@@ -16,7 +16,7 @@ import { Editor, useData } from '@texttree/notepad-rcl';
 // dBNameRegistration('NotepadRCL');
 
 <Editor id="second_note" />;
-```
+``` -->
 
 <!--
 #### If you want to use an Editor twice or more, give each Editor a unique **`id`**

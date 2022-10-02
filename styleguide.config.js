@@ -15,10 +15,10 @@ let sections = [
     name: 'EditorTools',
     content: 'src/components/Editor/EditorTools.md',
   },
-  // {
-  //   name: 'UseData Block',
-  //   components: ['src/components/UseData/UseData.js'],
-  // },
+  {
+    name: 'UseData Block',
+    components: ['src/components/ListOfNotes/useData.jsx'],
+  },
   {
     name: 'Getting a list of notes Block',
     components: ['src/components/ListOfNotes/ListOfNotes.js'],
@@ -37,7 +37,7 @@ module.exports = {
       meta: [
         {
           name: 'description',
-          content: 'React component library template',
+          content: 'React component library for note taking',
         },
       ],
       links: [
@@ -84,7 +84,7 @@ module.exports = {
     module: {
       rules: [
         {
-          test: /\.js$/,
+          test: /\.jsx?$/,
           exclude: /node_modules/,
           loader: 'babel-loader',
         },
