@@ -1,3 +1,6 @@
+<!-- пустой Editor.js -->
+
+<!--
 ```jsx
 import React from 'react';
 import { Editor } from '@texttree/notepad-rcl';
@@ -5,52 +8,76 @@ import { Editor } from '@texttree/notepad-rcl';
 <Editor />;
 ```
 
-<!-- ### If you want to use your own method for saving notes, pass it in props
+ -->
+
+<!-- Editor.js  + id -->
+
+<!--
+### **id**
+
+ #### If you want to use an Editor twice or more, give each Editor a unique **`id`**
 
 ```jsx
 import React from 'react';
-import { Editor, useData } from '@texttree/notepad-rcl';
-
-// const { dBNameRegistration } = useData();
-
-// dBNameRegistration('NotepadRCL');
+import { Editor } from '@texttree/notepad-rcl';
 
 <Editor id="second_note" />;
 ``` -->
 
-<!--
-#### If you want to use an Editor twice or more, give each Editor a unique **`id`**
+<!-- Editor.js  + Placeholder -->
+
+<!-- ### **Placeholder**
+
+#### Pass the **`placeholder`** option if you want to set a custom placeholder
 
 ```jsx
 import React from 'react';
-import { useData, Editor } from '@texttree/notepad-rcl';
-
-const { dBNameRegistration, getNote, saveNote } = useData();
-
-dBNameRegistration('NotepadRCL');
-
-<Editor getNote={getNote} saveNote={saveNote} id="second_note" />;
-```
-
-### **Placeholder**
-
-#### Pass the **`placeholder`** option if you want to set a custom placeholder:
-
-```jsx
-import React from 'react';
-import { useData, Editor } from '@texttree/notepad-rcl';
-
-const { dBNameRegistration, getNote, saveNote } = useData();
-
-dBNameRegistration('NotepadRCL');
+import { Editor } from '@texttree/notepad-rcl';
 
 const changePlaceholder = 'changed default text';
 
-<Editor id="third_note" placeholder={changePlaceholder} />;
-<Editor
-  getNote={getNote}
-  saveNote={saveNote}
-  id="third_note"
-  placeholder={changePlaceholder}
-/>;
+<Editor id="placeholder_sample" placeholder={changePlaceholder} />;
 ``` -->
+
+<!-- Editor.js  + saveNote добавить кнопку сохранения!!! -->
+
+### If you want to use your own method for saving notes, pass it in props
+
+```jsx
+import { Editor, useData } from '@texttree/notepad-rcl';
+
+function Component() {
+  const { saveNote, getNote } = useData();
+  return (
+    <div>
+      <Editor saveBtn="true" id="saveNote_sample" saveNote={saveNote} getNote={getNote} />
+    </div>
+  );
+}
+<Component />;
+```
+
+<!-- Editor.js  + getNote -->
+
+<!-- <Editor
+  getNote={getNote}
+  id="getNote_sample"
+/>;
+ -->
+
+<!-- Editor.js  + dBNameRegistration -->
+<!--
+
+```jsx
+import React from 'react';
+import { Editor } from '@texttree/notepad-rcl';
+
+dBNameRegistration('NotepadRCL');
+
+<Editor />;
+```
+ -->
+
+```
+
+```
