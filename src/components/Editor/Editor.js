@@ -1,39 +1,23 @@
 import { default as React, useState, useEffect, useRef, useMemo } from 'react';
 
-import localforage from 'localforage';
 import PropTypes from 'prop-types';
-
 import EditorJS from '@editorjs/editorjs';
 
 const EDITTOR_HOLDER_ID = 'note_id';
 
-function DefaultSaveNote(key, title, note) {
-  localforage.getItem(key).then(function (value) {
-    value
-      ? localforage.setItem(key, {
-          ...value,
-          title: title || 'New note',
-          data: note,
-        })
-      : localforage.setItem(key, {
-          title: title,
-          data: note,
-          created: new Date(),
-          parent: null,
-          isFolder: false,
-        });
-  });
-}
-
-function DefaultGetNote(id) {
-  const result = localforage.getItem(id);
-  return result;
-}
-
-function Editor({ id, editorTools, placeholder, inputStyle, SaveNoteFn, GetNoteFn }) {
+function Editor({
+  id,
+  editorTools,
+  placeholder,
+  inputStyle,
+  saveNote,
+  getNote,
+  saveBtn,
+  saveBtnName,
+}) {
   const holder = useMemo(() => id || EDITTOR_HOLDER_ID, [id]);
-  const ejInstance = useRef();
-  const [editorData, setEditorData] = useState({});
+  const editorInstance = useRef();
+  const [editor, setEditor] = useState({});
   const [title, setTitle] = useState('');
   const defaultTitleStyle = {
     width: '650px',
@@ -45,42 +29,47 @@ function Editor({ id, editorTools, placeholder, inputStyle, SaveNoteFn, GetNoteF
 
   // This will run only once
   useEffect(() => {
-    if (!ejInstance?.current) {
-      initEditor();
-    }
-    return () => {
-      if (ejInstance?.current) {
-        ejInstance.current.destroy();
-        ejInstance.current = null;
-      }
-    };
-  }, [id]);
-
-  // Track the status of the note. If it changes, then save the changes in localforage
-  useEffect(() => {
     const timer = setTimeout(() => {
-      typeof SaveNoteFn === 'function'
-        ? SaveNoteFn(holder, title, editorData)
-        : DefaultSaveNote(holder, title, editorData);
-    }, 3000);
+      if (!editorInstance?.current) {
+        console.log('!editorInstance');
+        initEditor();
+      }
+      return () => {
+        if (editorInstance?.current) {
+          console.log('editorInstance.current');
+
+          editorInstance.current.destroy();
+          editorInstance.current = null;
+        }
+      };
+    }, 100);
     return () => {
       clearTimeout(timer);
     };
-  }, [editorData, title]);
+  }, [holder]);
 
-  const isCustomGetNote = () => {
-    let res;
-    typeof GetNoteFn === 'function'
-      ? (res = GetNoteFn(holder))
-      : (res = DefaultGetNote(holder));
-    return res;
+  // To get all entry's data from Editor.js, call the save() method on the class instance. It will return a Promise that resolves with clean data
+  const onSave = () => {
+    editor
+      .save()
+      .then((outputData) => {
+        saveNote(holder, title, outputData);
+      })
+      .catch((error) => {
+        console.log('Saving failed: ', error);
+      });
   };
 
-  // Запуск Editor.js
+  const showBtn = () => {
+    let result;
+    saveBtn === 'true' ? (result = { color: '#e67e22' }) : (result = { display: 'none' });
+    return result;
+  };
+
   const initEditor = async () => {
-    const defData = await isCustomGetNote();
-    setEditorData(defData?.data);
+    const defData = await getNote(holder);
     setTitle(defData?.title);
+    setEditor(defData?.data);
 
     const editor = new EditorJS({
       holder,
@@ -91,21 +80,20 @@ function Editor({ id, editorTools, placeholder, inputStyle, SaveNoteFn, GetNoteF
       data: defData?.data,
 
       onReady: () => {
-        ejInstance.current = editor;
+        editorInstance.current = editor;
       },
 
-      onChange: async (api, event) => {
-        let content = await api.saver.save();
-        // Put your logic here to save this data to your DB
-        setEditorData(content);
-      },
       autofocus: false,
       tools: editorTools,
     });
+    setEditor(editor);
   };
 
   return (
     <React.Fragment>
+      <button onClick={onSave} style={showBtn()}>
+        {saveBtnName}
+      </button>
       <div
         style={{
           display: 'inline-flex',
@@ -125,6 +113,11 @@ function Editor({ id, editorTools, placeholder, inputStyle, SaveNoteFn, GetNoteF
     </React.Fragment>
   );
 }
+
+Editor.defaultProps = {
+  saveBtnName: 'Save',
+  getNote: () => {},
+};
 
 Editor.propTypes = {
   // inputStyle,

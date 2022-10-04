@@ -26,10 +26,17 @@
 
 ```jsx
 import Header from '@editorjs/header';
+import ToggleBlock from 'editorjs-toggle-block';
 
 import { Editor } from '@texttree/notepad-rcl';
 
-const addTools = { header: Header };
+const addTools = {
+  header: Header,
+  toggle: {
+    class: ToggleBlock,
+    inlineToolbar: true,
+  },
+};
 
 <Editor editorTools={addTools} />;
 ```

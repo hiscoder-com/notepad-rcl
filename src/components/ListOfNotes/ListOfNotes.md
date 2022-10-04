@@ -1,14 +1,12 @@
 ```jsx
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ListOfNotes, useData, Editor } from '@texttree/notepad-rcl';
 
 function Component() {
   const { notesArray, removeNote, addNote, dBNameRegistration, getNote, saveNote } =
     useData();
 
-  const changePlaceholder = 'changed default text';
-
-  const [idToLoadNote, setIdToLoadNote] = useState('');
+  const [idToLoadNote, setIdToLoadNote] = useState('test');
 
   const inputStyle = {
     width: '650px',
@@ -18,7 +16,7 @@ function Component() {
     outline: 'none',
   };
 
-  dBNameRegistration('NotepadRCL');
+  // dBNameRegistration('NotepadRCL');
 
   return (
     <div style={{ display: 'inline-flex' }}>
@@ -34,8 +32,8 @@ function Component() {
       <div style={{ width: '50%' }}>
         <Editor
           id={idToLoadNote}
-          placeholder={changePlaceholder}
           inputStyle={inputStyle}
+          saveBtn="true"
           getNote={getNote}
           saveNote={saveNote}
         />

@@ -1,32 +1,21 @@
-<!-- пустой Editor.js -->
-
-<!--
 ```jsx
-import React from 'react';
 import { Editor } from '@texttree/notepad-rcl';
 
 <Editor />;
 ```
 
- -->
-
-<!-- Editor.js  + id -->
-
-<!--
 ### **id**
 
- #### If you want to use an Editor twice or more, give each Editor a unique **`id`**
+#### If you want to use an Editor twice or more, give each Editor a unique **`id`**
 
 ```jsx
 import React from 'react';
 import { Editor } from '@texttree/notepad-rcl';
 
 <Editor id="second_note" />;
-``` -->
+```
 
-<!-- Editor.js  + Placeholder -->
-
-<!-- ### **Placeholder**
+### **Placeholder**
 
 #### Pass the **`placeholder`** option if you want to set a custom placeholder
 
@@ -37,47 +26,31 @@ import { Editor } from '@texttree/notepad-rcl';
 const changePlaceholder = 'changed default text';
 
 <Editor id="placeholder_sample" placeholder={changePlaceholder} />;
-``` -->
+```
 
-<!-- Editor.js  + saveNote добавить кнопку сохранения!!! -->
+### **Save note**
 
 ### If you want to use your own method for saving notes, pass it in props
 
 ```jsx
 import { Editor, useData } from '@texttree/notepad-rcl';
 
-function Component() {
-  const { saveNote, getNote } = useData();
-  return (
-    <div>
-      <Editor saveBtn="true" id="saveNote_sample" saveNote={saveNote} getNote={getNote} />
-    </div>
-  );
-}
-<Component />;
+const { saveNote, getNote } = useData();
+
+<Editor id="saveNote_sample" saveBtn="true" saveNote={saveNote} getNote={getNote} />;
 ```
 
-<!-- Editor.js  + getNote -->
+### **Rename the database**
 
-<!-- <Editor
-  getNote={getNote}
-  id="getNote_sample"
-/>;
- -->
+### You can also rename the database from "localforage"
 
-<!-- Editor.js  + dBNameRegistration -->
 <!--
-
 ```jsx
-import React from 'react';
-import { Editor } from '@texttree/notepad-rcl';
+import { Editor, useData } from '@texttree/notepad-rcl';
+
+const { dBNameRegistration, saveNote, getNote } = useData();
 
 dBNameRegistration('NotepadRCL');
 
-<Editor />;
-```
- -->
-
-```
-
-```
+<Editor id="dBNameRegistration_sample" />;
+``` -->

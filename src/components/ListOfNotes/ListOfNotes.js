@@ -37,7 +37,7 @@ function ListOfNotes({
   return (
     <div style={{ display: 'flex', flexDirection: 'column', width: 'full' }}>
       <div style={style?.headerBlock || DEFAULT_STYLE.headerBlock}>
-        <div style={style?.header || DEFAULT_STYLE.header}>{listName}</div>
+        {/* <div style={style?.header || DEFAULT_STYLE.header}>{listName}</div> */}
         <button onClick={addNote} style={style?.addBtn || DEFAULT_STYLE.addBtn}>
           {addBtnName || 'Add'}
         </button>
@@ -46,7 +46,9 @@ function ListOfNotes({
         {notesArray.map(({ key, value }) => (
           <div key={key} style={style?.note || DEFAULT_STYLE.note}>
             <div
-              onClick={() => passIdToOpen(key)}
+              onClick={() => (
+                passIdToOpen(key), console.log('key of notes from LON.js:', key)
+              )}
               style={style?.title || DEFAULT_STYLE.title}
             >
               {value.title || 'New note'}
