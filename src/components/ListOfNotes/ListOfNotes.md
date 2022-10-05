@@ -5,6 +5,8 @@ import { ListOfNotes, useData, Editor } from '@texttree/notepad-rcl';
 function Component() {
   const { notesArray, dBNameRegistration, getNote, saveNote } = useData();
   const [newNoteId, setNewNoteId] = useState('test');
+  const [idNote, setIdNote] = useState('test');
+
   const removeNote = (id) => {
     const newArray = notesDb.filter((el) => el.holder !== id);
     setNotesDb(newArray);
@@ -53,8 +55,6 @@ function Component() {
   // useEffect={
   // const notesDB = supabase.get(notes)
   // setNotes(notesDB[idcurrent])}
-
-  const [idNote, setIdNote] = useState('test');
 
   const inputStyle = {
     width: '650px',

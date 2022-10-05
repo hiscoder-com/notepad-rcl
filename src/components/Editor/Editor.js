@@ -41,7 +41,7 @@ function Editor({
       if (ejInstance?.current) {
         ejInstance.current.destroy();
         ejInstance.current = null;
-        // setNewNoteId(null);
+        // setNewNoteId('test');
       }
     };
   }, [newNoteId]);
@@ -51,13 +51,12 @@ function Editor({
 
     setCurrentEditor(array); //TODO - это устанавливает не текущий едитор, а загруженный с базы
   }, [id]);
-  //
 
   useEffect(() => {
     if (ejInstance?.current) {
       ejInstance?.current.render(currentEditor.editorData);
     }
-  }, [currentEditor]);
+  }, [currentEditor?.holder]); //TODO ломается Сейчас при изменении поля эдитора один раз мигает
 
   // Запуск Editor.js
   const initEditor = async () => {
@@ -74,7 +73,6 @@ function Editor({
         setCurrentEditor({ editorData: data, holder });
       },
       onChange: async (api, event) => {
-        console.log(event);
         let content = await api.saver.save();
         if (content.blocks.length === 0) {
           setCurrentEditor((prev) => ({
@@ -98,13 +96,11 @@ function Editor({
 
         // Put your logic here to save this data to your DB
       },
-      autofocus: true,
+      autofocus: false,
       tools: editorTools,
     });
   };
-  // console.log({ e: ejInstance.current });
 
-  console.log({ currentEditor });
   return (
     <React.Fragment>
       <div
