@@ -18,7 +18,7 @@ function Editor({
   saveNote,
   setCurrentEditor,
   currentEditor,
-  notesDb,
+  notesDb = [],
 }) {
   // const holder = useMemo(() => id || EDITTOR_HOLDER_ID, [id]);
   const ejInstance = useRef();

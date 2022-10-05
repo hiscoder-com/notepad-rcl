@@ -9,10 +9,15 @@ import { Editor } from '@texttree/notepad-rcl';
 #### If you want to use an Editor twice or more, give each Editor a unique **`id`**
 
 ```jsx
-import React from 'react';
+import { useState } from 'react';
 import { Editor } from '@texttree/notepad-rcl';
-
-<Editor id="second_note" />;
+const [currentEditor, setCurrentEditor] = useState(null);
+<Editor
+  currentEditor={currentEditor}
+  setCurrentEditor={setCurrentEditor}
+  id="second_note"
+  newNoteId={'newNoteId'}
+/>;
 ```
 
 ### **Placeholder**
