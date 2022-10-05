@@ -1,6 +1,8 @@
 import { default as React, useState, useEffect, useRef, useMemo } from 'react';
 
+import localforage from 'localforage';
 import PropTypes from 'prop-types';
+
 import EditorJS from '@editorjs/editorjs';
 
 const EDITTOR_HOLDER_ID = 'note_id';
@@ -10,15 +12,15 @@ function Editor({
   editorTools,
   placeholder,
   inputStyle,
-  saveNote,
   getNote,
-  saveBtn,
-  saveBtnName,
+  saveNote,
+  setCurrentEditor,
+  currentEditor,
+  notesDb,
 }) {
-  const holder = useMemo(() => id || EDITTOR_HOLDER_ID, [id]);
-  const editorInstance = useRef();
-  const [editor, setEditor] = useState({});
-  const [title, setTitle] = useState('');
+  // const holder = useMemo(() => id || EDITTOR_HOLDER_ID, [id]);
+  const ejInstance = useRef();
+
   const defaultTitleStyle = {
     width: '650px',
     height: '38px',
@@ -26,74 +28,53 @@ function Editor({
     border: 'none',
     outline: 'none',
   };
-
   // This will run only once
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!editorInstance?.current) {
-        console.log('!editorInstance');
-        initEditor();
-      }
-      return () => {
-        if (editorInstance?.current) {
-          console.log('editorInstance.current');
-
-          editorInstance.current.destroy();
-          editorInstance.current = null;
-        }
-      };
-    }, 100);
+    if (!ejInstance?.current) {
+      initEditor();
+    }
     return () => {
-      clearTimeout(timer);
+      if (ejInstance?.current) {
+        ejInstance.current.destroy();
+        ejInstance.current = null;
+      }
     };
-  }, [holder]);
+  }, []);
 
-  // To get all entry's data from Editor.js, call the save() method on the class instance. It will return a Promise that resolves with clean data
-  const onSave = () => {
-    editor
-      .save()
-      .then((outputData) => {
-        saveNote(holder, title, outputData);
-      })
-      .catch((error) => {
-        console.log('Saving failed: ', error);
-      });
-  };
+  useEffect(() => {
+    setCurrentEditor(notesDb.find((el) => el.holder === id));
+    console.log('!');
+  }, [id]);
+  //
+  useEffect(() => {
+    if (ejInstance?.current) {
+      ejInstance?.current.render(currentEditor.editorData);
+    }
+  }, [currentEditor]);
 
-  const showBtn = () => {
-    let result;
-    saveBtn === 'true' ? (result = { color: '#e67e22' }) : (result = { display: 'none' });
-    return result;
-  };
-
+  // Запуск Editor.js
   const initEditor = async () => {
-    const defData = await getNote(holder);
-    setTitle(defData?.title);
-    setEditor(defData?.data);
-
     const editor = new EditorJS({
-      holder,
+      holder: EDITTOR_HOLDER_ID,
       placeholder: placeholder || 'Let`s write an awesome note!',
-
       logLevel: 'ERROR',
-
-      data: defData?.data,
-
       onReady: () => {
-        editorInstance.current = editor;
+        ejInstance.current = editor;
       },
-
+      onChange: async (api, event) => {
+        let content = await api.saver.save();
+        // Put your logic here to save this data to your DB
+        setCurrentEditor((prev) => ({ ...prev, editorData: content }));
+      },
       autofocus: false,
       tools: editorTools,
     });
-    setEditor(editor);
   };
-
+  // if (editorData) {
+  //   console.log(editorData);
+  // }
   return (
     <React.Fragment>
-      <button onClick={onSave} style={showBtn()}>
-        {saveBtnName}
-      </button>
       <div
         style={{
           display: 'inline-flex',
@@ -104,20 +85,17 @@ function Editor({
         <input
           type="text"
           placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={currentEditor?.title}
+          onChange={(e) =>
+            setCurrentEditor((prev) => ({ ...prev, title: e.target.value }))
+          }
           style={inputStyle || defaultTitleStyle}
         ></input>
       </div>
-      <div id={holder}></div>
+      <div id={EDITTOR_HOLDER_ID}></div>
     </React.Fragment>
   );
 }
-
-Editor.defaultProps = {
-  saveBtnName: 'Save',
-  getNote: () => {},
-};
 
 Editor.propTypes = {
   // inputStyle,
@@ -129,7 +107,6 @@ Editor.propTypes = {
   placeholder: PropTypes.string,
   /** note save method (by default note is stored in localforage).
 Receives the key title and note at the entrance */
-  SaveNoteFn: PropTypes.func,
 };
 
 export default Editor;

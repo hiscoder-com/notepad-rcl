@@ -5,13 +5,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function ListOfNotes({
-  notesArray,
+  notesDb,
   listName,
   passIdToDel,
   addBtnName,
   delBtnName,
   addNote,
-  passIdToOpen,
+  setIdNote,
   style,
 }) {
   const DEFAULT_STYLE = {
@@ -33,7 +33,7 @@ function ListOfNotes({
     },
     delBtn: { borderRadius: '5px' },
   };
-
+  console.log(notesDb);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', width: 'full' }}>
       <div style={style?.headerBlock || DEFAULT_STYLE.headerBlock}>
@@ -43,20 +43,21 @@ function ListOfNotes({
         </button>
       </div>
       <div style={style?.listOfNotes || DEFAULT_STYLE.listOfNotes}>
-        {notesArray.map(({ key, value }) => (
-          <div key={key} style={style?.note || DEFAULT_STYLE.note}>
+        {notesDb.map((el) => (
+          <div key={el.holder} style={style?.note || DEFAULT_STYLE.note}>
             <div
               onClick={() => (
-                passIdToOpen(key), console.log('key of notes from LON.js:', key)
+                setIdNote(el.holder),
+                console.log('el.holder of notes from LON.js:', el.holder)
               )}
               style={style?.title || DEFAULT_STYLE.title}
             >
-              {value.title || 'New note'}
+              {el.title || 'New note'}
             </div>
             <div className="note-btn">
               <button
                 style={style?.delBtn || DEFAULT_STYLE.delBtn}
-                onClick={() => passIdToDel(key)}
+                onClick={() => passIdToDel(el.holder)}
               >
                 {delBtnName || 'Delete'}
               </button>
@@ -69,7 +70,7 @@ function ListOfNotes({
 }
 
 ListOfNotes.defaultProps = {
-  notesArray: [],
+  notesDb: [],
   listName: 'List of Notes',
 };
 
@@ -81,13 +82,13 @@ ListOfNotes.propTypes = {
   /** delete button name */
   delBtnName: PropTypes.string,
   /** array of existing notes */
-  notesArray: PropTypes.array,
+  notesDb: PropTypes.array,
   /** note list title */
   listName: PropTypes.string,
   /** Receives the key at the entrance */
   passIdToDel: PropTypes.func,
   /** Receives the key at the entrance */
-  passIdToOpen: PropTypes.func,
+  setIdNote: PropTypes.func,
   style: PropTypes.shape({
     /** style for add button */
     addBtn: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
