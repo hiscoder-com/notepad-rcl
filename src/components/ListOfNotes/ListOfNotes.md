@@ -3,9 +3,15 @@ import { useState, useEffect } from 'react';
 import { ListOfNotes, useData, Editor } from '@texttree/notepad-rcl';
 
 function Component() {
-  const { notesArray, removeNote, addNote, dBNameRegistration, getNote, saveNote } =
-    useData();
-
+  const { notesArray, dBNameRegistration, getNote, saveNote } = useData();
+  const [newNoteId, setNewNoteId] = useState('test');
+  const removeNote = (id) => {
+    const newArray = notesDb.filter((el) => el.holder !== id);
+    setNotesDb(newArray);
+  };
+  const addNote = () => {
+    setNewNoteId(('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9));
+  };
   const [notesDb, setNotesDb] = useState([
     {
       holder: '1',
@@ -58,12 +64,7 @@ function Component() {
     outline: 'none',
   };
 
-  const [currentEditor, setCurrentEditor] = useState();
-
-  // console.log(
-  //   currentEditor && notesDb.filter((el) => el.holder !== currentEditor.holder),
-  //   'try'
-  // );
+  const [currentEditor, setCurrentEditor] = useState(null);
 
   // dBNameRegistration('NotepadRCL');
 
@@ -95,6 +96,8 @@ function Component() {
         </button>
         <Editor
           id={idNote}
+          newNoteId={newNoteId}
+          setNewNoteId={setNewNoteId}
           notesDb={notesDb}
           inputStyle={inputStyle}
           saveBtn="true"

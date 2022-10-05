@@ -33,7 +33,6 @@ function ListOfNotes({
     },
     delBtn: { borderRadius: '5px' },
   };
-  console.log(notesDb);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', width: 'full' }}>
       <div style={style?.headerBlock || DEFAULT_STYLE.headerBlock}>

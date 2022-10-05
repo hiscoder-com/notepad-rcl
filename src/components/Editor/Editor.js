@@ -9,6 +9,8 @@ const EDITTOR_HOLDER_ID = 'note_id';
 
 function Editor({
   id,
+  newNoteId,
+  setNewNoteId,
   editorTools,
   placeholder,
   inputStyle,
@@ -20,7 +22,7 @@ function Editor({
 }) {
   // const holder = useMemo(() => id || EDITTOR_HOLDER_ID, [id]);
   const ejInstance = useRef();
-
+  const [title, setTitle] = useState('');
   const defaultTitleStyle = {
     width: '650px',
     height: '38px',
@@ -29,23 +31,28 @@ function Editor({
     outline: 'none',
   };
   // This will run only once
+
   useEffect(() => {
-    if (!ejInstance?.current) {
+    if (!ejInstance?.current && newNoteId) {
+      setCurrentEditor(null);
       initEditor();
     }
     return () => {
       if (ejInstance?.current) {
         ejInstance.current.destroy();
         ejInstance.current = null;
+        // setNewNoteId(null);
       }
     };
-  }, []);
+  }, [newNoteId]);
 
   useEffect(() => {
-    setCurrentEditor(notesDb.find((el) => el.holder === id));
-    console.log('!');
+    const array = notesDb.find((el) => el.holder === id);
+
+    setCurrentEditor(array); //TODO - это устанавливает не текущий едитор, а загруженный с базы
   }, [id]);
   //
+
   useEffect(() => {
     if (ejInstance?.current) {
       ejInstance?.current.render(currentEditor.editorData);
@@ -60,19 +67,44 @@ function Editor({
       logLevel: 'ERROR',
       onReady: () => {
         ejInstance.current = editor;
+        console.log(editor);
+        const {
+          configuration: { holder, data },
+        } = editor;
+        setCurrentEditor({ editorData: data, holder });
       },
       onChange: async (api, event) => {
+        console.log(event);
         let content = await api.saver.save();
+        if (content.blocks.length === 0) {
+          setCurrentEditor((prev) => ({
+            ...prev,
+            editorData: {
+              blocks: [
+                {
+                  type: 'paragraph',
+                  data: {},
+                },
+              ],
+            },
+          }));
+        } else {
+          setCurrentEditor((prev) => ({
+            ...prev,
+            editorData: content,
+            holder: newNoteId,
+          }));
+        }
+
         // Put your logic here to save this data to your DB
-        setCurrentEditor((prev) => ({ ...prev, editorData: content }));
       },
-      autofocus: false,
+      autofocus: true,
       tools: editorTools,
     });
   };
-  // if (editorData) {
-  //   console.log(editorData);
-  // }
+  // console.log({ e: ejInstance.current });
+
+  console.log({ currentEditor });
   return (
     <React.Fragment>
       <div
@@ -85,10 +117,10 @@ function Editor({
         <input
           type="text"
           placeholder="Title"
-          value={currentEditor?.title}
-          onChange={(e) =>
-            setCurrentEditor((prev) => ({ ...prev, title: e.target.value }))
-          }
+          value={currentEditor?.title ?? ''}
+          onChange={(e) => {
+            setCurrentEditor((prev) => ({ ...prev, title: e.target.value }));
+          }}
           style={inputStyle || defaultTitleStyle}
         ></input>
       </div>
