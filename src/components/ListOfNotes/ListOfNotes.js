@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 
 function ListOfNotes({
   notesDb,
-  listName,
   passIdToDel,
   addBtnName,
   delBtnName,
@@ -70,7 +69,6 @@ function ListOfNotes({
 
 ListOfNotes.defaultProps = {
   notesDb: [],
-  listName: 'List of Notes',
 };
 
 ListOfNotes.propTypes = {
@@ -82,8 +80,6 @@ ListOfNotes.propTypes = {
   delBtnName: PropTypes.string,
   /** array of existing notes */
   notesDb: PropTypes.array,
-  /** note list title */
-  listName: PropTypes.string,
   /** Receives the key at the entrance */
   passIdToDel: PropTypes.func,
   /** Receives the key at the entrance */

@@ -1,25 +1,30 @@
+#### You can save notes in a database or in localfarage
+
+### **Save in Database**
+
 ```jsx
 import { useState, useEffect } from 'react';
-import { ListOfNotes, useData, Editor } from '@texttree/notepad-rcl';
+import { ListOfNotes, useData, Redactor } from '@texttree/notepad-rcl';
 
 function Component() {
+  const inputStyle = {
+    width: '650px',
+    height: '38px',
+    fontSize: 'large',
+    border: 'none',
+    outline: 'none',
+  };
+
   const { notesArray, dBNameRegistration, getNote, saveNote } = useData();
   // noteDBId - запускаем addNote, получаем сюда id из addNote
   // этот id нужен для сохранения заметки в БД
   const [noteDBId, setNoteDBId] = useState('test_noteDBId');
   const [addedNoteId, setAddedNoteId] = useState('test_addedNoteId');
-
-  const removeNote = (id) => {
-    const newArray = notesDb.filter((el) => el.holder !== id);
-    setNotesDb(newArray);
-  };
-  const addNote = () => {
-    setNoteDBId(('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9));
-  };
+  const [currentEditor, setCurrentEditor] = useState(null);
   const [notesDb, setNotesDb] = useState([
     {
-      holder: '1',
-      title: 'text1',
+      holder: 'first_note_key_from_DB',
+      title: 'note1',
       editorData: {
         time: 1550476186479,
         blocks: [
@@ -35,8 +40,8 @@ function Component() {
       },
     },
     {
-      holder: '2',
-      title: 'text2',
+      holder: 'second_note_key_from_DB',
+      title: 'note2',
       editorData: {
         time: 1550476186479,
         blocks: [
@@ -53,22 +58,25 @@ function Component() {
     },
   ]);
 
-  //  const notes,setNotes=useState([])
+  useEffect(() => {
+    const array = notesDb.find((el) => el.holder === addedNoteId);
+
+    setCurrentEditor(array); //TODO - это устанавливает не текущий едитор, а загруженный с базы
+  }, [addedNoteId]);
+
+  // const notes,setNotes=useState([])
   // useEffect={
   // const notesDB = supabase.get(notes)
   // setNotes(notesDB[idcurrent])}
 
-  const inputStyle = {
-    width: '650px',
-    height: '38px',
-    fontSize: 'large',
-    border: 'none',
-    outline: 'none',
+  const addNote = () => {
+    setNoteDBId(('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9));
   };
 
-  const [currentEditor, setCurrentEditor] = useState(null);
-
-  // dBNameRegistration('NotepadRCL');
+  const removeNote = (id) => {
+    const newArray = notesDb.filter((el) => el.holder !== id);
+    setNotesDb(newArray);
+  };
 
   return (
     <div style={{ display: 'inline-flex' }}>
@@ -88,14 +96,13 @@ function Component() {
             setNotesDb((prev) => {
               const array = prev.filter((el) => el.holder !== currentEditor.holder);
               array.unshift(currentEditor);
-
               return array;
             })
           }
         >
           save
         </button>
-        <Editor
+        <Redactor
           initId={addedNoteId}
           notesDb={notesDb}
           noteDBId={noteDBId}
@@ -103,8 +110,50 @@ function Component() {
           currentEditor={currentEditor}
           setCurrentEditor={setCurrentEditor}
           inputStyle={inputStyle}
-          // getNote={getNote}
-          // saveNote={saveNote}
+        />
+      </div>
+    </div>
+  );
+}
+
+<Component />;
+```
+
+### **Save in localfarage**
+
+```jsx
+import { useState, useEffect } from 'react';
+import { ListOfNotes, useData, Redactor } from '@texttree/notepad-rcl';
+
+function Component() {
+  const inputStyle = {
+    width: '650px',
+    height: '38px',
+    fontSize: 'large',
+    border: 'none',
+    outline: 'none',
+  };
+
+  const { notesArray, removeNote, addNote, getNote, saveNote } = useData();
+  const [idToLoadNote, setIdToLoadNote] = useState('test');
+
+  return (
+    <div style={{ display: 'inline-flex' }}>
+      <div style={{ width: '50%' }}>
+        <ListOfNotes
+          notesArray={notesArray}
+          passIdToDel={removeNote}
+          addNote={addNote}
+          passIdToOpen={setIdToLoadNote}
+        />
+      </div>
+      <div style={{ width: '50%' }}>
+        <button onClick={() => console.log('save')}>save</button>
+        <Redactor
+          initId={idToLoadNote}
+          inputStyle={inputStyle}
+          getNote={getNote}
+          saveNote={saveNote}
         />
       </div>
     </div>

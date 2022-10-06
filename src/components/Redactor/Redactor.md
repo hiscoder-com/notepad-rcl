@@ -1,7 +1,7 @@
 ```jsx
-import { Editor } from '@texttree/notepad-rcl';
+import { Redactor } from '@texttree/notepad-rcl';
 
-<Editor initId="first_note" />;
+<Redactor initId="first_note" />;
 ```
 
 ### **id**
@@ -10,9 +10,9 @@ import { Editor } from '@texttree/notepad-rcl';
 
 ```jsx
 import { useState } from 'react';
-import { Editor } from '@texttree/notepad-rcl';
+import { Redactor } from '@texttree/notepad-rcl';
 const [currentEditor, setCurrentEditor] = useState(null);
-<Editor
+<Redactor
   currentEditor={currentEditor}
   setCurrentEditor={setCurrentEditor}
   // initId="second_note"

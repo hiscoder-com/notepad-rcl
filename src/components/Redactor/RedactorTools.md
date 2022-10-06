@@ -28,7 +28,7 @@
 import Header from '@editorjs/header';
 import ToggleBlock from 'editorjs-toggle-block';
 
-import { Editor } from '@texttree/notepad-rcl';
+import { Redactor } from '@texttree/notepad-rcl';
 
 const addTools = {
   header: Header,
@@ -38,5 +38,5 @@ const addTools = {
   },
 };
 
-<Editor editorTools={addTools} />;
+<Redactor editorTools={addTools} />;
 ```

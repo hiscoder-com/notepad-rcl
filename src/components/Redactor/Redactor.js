@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import EditorJS from '@editorjs/editorjs';
 
-function Editor({
+function Redactor({
   initId,
   noteDBId,
   setNoteDBId,
@@ -30,7 +30,7 @@ function Editor({
 
   //
   useEffect(() => {
-    if (!ejInstance?.current && noteDBId) {
+    if (!ejInstance?.current) {
       setCurrentEditor(null);
       initEditor();
     }
@@ -42,12 +42,6 @@ function Editor({
       }
     };
   }, [noteDBId]);
-
-  useEffect(() => {
-    const array = notesDb.find((el) => el.holder === initId);
-
-    setCurrentEditor(array); //TODO - это устанавливает не текущий едитор, а загруженный с базы
-  }, [initId]);
 
   useEffect(() => {
     if (ejInstance?.current) {
@@ -128,7 +122,7 @@ function Editor({
   );
 }
 
-Editor.defaultProps = {
+Redactor.defaultProps = {
   initId: 'default_id',
   notesDb: [],
   noteDBId: '',
@@ -137,7 +131,7 @@ Editor.defaultProps = {
   setCurrentEditor: () => {},
 };
 
-Editor.propTypes = {
+Redactor.propTypes = {
   // inputStyle,
   /** Write a new property for the Tools object and pass it to the Editor via the addTools variable */
   editorTools: PropTypes.object,
@@ -149,4 +143,4 @@ Editor.propTypes = {
 Receives the key title and note at the entrance */
 };
 
-export default Editor;
+export default Redactor;
