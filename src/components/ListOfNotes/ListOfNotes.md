@@ -4,15 +4,17 @@ import { ListOfNotes, useData, Editor } from '@texttree/notepad-rcl';
 
 function Component() {
   const { notesArray, dBNameRegistration, getNote, saveNote } = useData();
-  const [newNoteId, setNewNoteId] = useState('test');
-  const [idNote, setIdNote] = useState('test');
+  // noteDBId - запускаем addNote, получаем сюда id из addNote
+  // этот id нужен для сохранения заметки в БД
+  const [noteDBId, setNoteDBId] = useState('test_noteDBId');
+  const [addedNoteId, setAddedNoteId] = useState('test_addedNoteId');
 
   const removeNote = (id) => {
     const newArray = notesDb.filter((el) => el.holder !== id);
     setNotesDb(newArray);
   };
   const addNote = () => {
-    setNewNoteId(('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9));
+    setNoteDBId(('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9));
   };
   const [notesDb, setNotesDb] = useState([
     {
@@ -76,7 +78,7 @@ function Component() {
           listName="List of Notes"
           passIdToDel={removeNote}
           addNote={addNote}
-          setIdNote={setIdNote}
+          setAddedNoteId={setAddedNoteId}
         />
       </div>
 
@@ -85,8 +87,7 @@ function Component() {
           onClick={() =>
             setNotesDb((prev) => {
               const array = prev.filter((el) => el.holder !== currentEditor.holder);
-
-              array.push(currentEditor);
+              array.unshift(currentEditor);
 
               return array;
             })
@@ -95,16 +96,15 @@ function Component() {
           save
         </button>
         <Editor
-          id={idNote}
-          newNoteId={newNoteId}
-          setNewNoteId={setNewNoteId}
+          initId={addedNoteId}
           notesDb={notesDb}
-          inputStyle={inputStyle}
-          saveBtn="true"
-          getNote={getNote}
-          saveNote={saveNote}
+          noteDBId={noteDBId}
+          setNoteDBId={setNoteDBId}
           currentEditor={currentEditor}
           setCurrentEditor={setCurrentEditor}
+          inputStyle={inputStyle}
+          // getNote={getNote}
+          // saveNote={saveNote}
         />
       </div>
     </div>

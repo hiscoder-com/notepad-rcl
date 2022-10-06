@@ -11,7 +11,7 @@ function ListOfNotes({
   addBtnName,
   delBtnName,
   addNote,
-  setIdNote,
+  setAddedNoteId,
   style,
 }) {
   const DEFAULT_STYLE = {
@@ -46,7 +46,7 @@ function ListOfNotes({
           <div key={el.holder} style={style?.note || DEFAULT_STYLE.note}>
             <div
               onClick={() => (
-                setIdNote(el.holder),
+                setAddedNoteId(el.holder),
                 console.log('el.holder of notes from LON.js:', el.holder)
               )}
               style={style?.title || DEFAULT_STYLE.title}
@@ -87,7 +87,7 @@ ListOfNotes.propTypes = {
   /** Receives the key at the entrance */
   passIdToDel: PropTypes.func,
   /** Receives the key at the entrance */
-  setIdNote: PropTypes.func,
+  setAddedNoteId: PropTypes.func,
   style: PropTypes.shape({
     /** style for add button */
     addBtn: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),

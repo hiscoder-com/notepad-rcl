@@ -1,16 +1,13 @@
 import { default as React, useState, useEffect, useRef, useMemo } from 'react';
 
-import localforage from 'localforage';
 import PropTypes from 'prop-types';
 
 import EditorJS from '@editorjs/editorjs';
 
-const EDITTOR_HOLDER_ID = 'note_id';
-
 function Editor({
-  id,
-  newNoteId,
-  setNewNoteId,
+  initId,
+  noteDBId,
+  setNoteDBId,
   editorTools,
   placeholder,
   inputStyle,
@@ -18,11 +15,8 @@ function Editor({
   saveNote,
   setCurrentEditor,
   currentEditor,
-  notesDb = [],
+  notesDb,
 }) {
-  // const holder = useMemo(() => id || EDITTOR_HOLDER_ID, [id]);
-  const ejInstance = useRef();
-  const [title, setTitle] = useState('');
   const defaultTitleStyle = {
     width: '650px',
     height: '38px',
@@ -30,10 +24,13 @@ function Editor({
     border: 'none',
     outline: 'none',
   };
-  // This will run only once
+  // const holder = useMemo(() => id || EDITTOR_HOLDER_ID, [id]);
+  const ejInstance = useRef();
+  const [title, setTitle] = useState('');
 
+  //
   useEffect(() => {
-    if (!ejInstance?.current && newNoteId) {
+    if (!ejInstance?.current && noteDBId) {
       setCurrentEditor(null);
       initEditor();
     }
@@ -41,16 +38,16 @@ function Editor({
       if (ejInstance?.current) {
         ejInstance.current.destroy();
         ejInstance.current = null;
-        // setNewNoteId('test');
+        // setNoteDBId('test');
       }
     };
-  }, [newNoteId]);
+  }, [noteDBId]);
 
   useEffect(() => {
-    const array = notesDb.find((el) => el.holder === id);
+    const array = notesDb.find((el) => el.holder === initId);
 
     setCurrentEditor(array); //TODO - это устанавливает не текущий едитор, а загруженный с базы
-  }, [id]);
+  }, [initId]);
 
   useEffect(() => {
     if (ejInstance?.current) {
@@ -58,19 +55,19 @@ function Editor({
     }
   }, [currentEditor?.holder]); //TODO ломается Сейчас при изменении поля эдитора один раз мигает
 
+  useEffect(() => {
+    setCurrentEditor(title);
+  }, [title]);
+
   // Запуск Editor.js
   const initEditor = async () => {
     const editor = new EditorJS({
-      holder: EDITTOR_HOLDER_ID,
+      holder: initId,
       placeholder: placeholder || 'Let`s write an awesome note!',
       logLevel: 'ERROR',
       onReady: () => {
         ejInstance.current = editor;
-        console.log(editor);
-        const {
-          configuration: { holder, data },
-        } = editor;
-        setCurrentEditor({ editorData: data, holder });
+        // setCurrentEditor({ editorData: data, holder });
       },
       onChange: async (api, event) => {
         let content = await api.saver.save();
@@ -90,15 +87,23 @@ function Editor({
           setCurrentEditor((prev) => ({
             ...prev,
             editorData: content,
-            holder: newNoteId,
           }));
         }
-
-        // Put your logic here to save this data to your DB
       },
       autofocus: false,
       tools: editorTools,
     });
+    console.log({ editor });
+  };
+
+  // Выбираем, какое событие произойдёт при изменении значения title
+
+  const titleSetterChoice = (e) => {
+    if (currentEditor?.title) {
+      setCurrentEditor((prev) => ({ ...prev, title: e.target.value }));
+    } else {
+      setTitle(e.target.value);
+    }
   };
 
   return (
@@ -113,17 +118,24 @@ function Editor({
         <input
           type="text"
           placeholder="Title"
-          value={currentEditor?.title ?? ''}
-          onChange={(e) => {
-            setCurrentEditor((prev) => ({ ...prev, title: e.target.value }));
-          }}
+          value={currentEditor?.title ?? title}
+          onChange={(e) => titleSetterChoice(e)}
           style={inputStyle || defaultTitleStyle}
         ></input>
       </div>
-      <div id={EDITTOR_HOLDER_ID}></div>
+      <div id={initId}></div>
     </React.Fragment>
   );
 }
+
+Editor.defaultProps = {
+  initId: 'default_id',
+  notesDb: [],
+  noteDBId: '',
+  setNoteDBId: '',
+  currentEditor: {},
+  setCurrentEditor: () => {},
+};
 
 Editor.propTypes = {
   // inputStyle,

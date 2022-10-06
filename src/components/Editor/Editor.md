@@ -1,7 +1,7 @@
 ```jsx
 import { Editor } from '@texttree/notepad-rcl';
 
-<Editor />;
+<Editor initId="first_note" />;
 ```
 
 ### **id**
@@ -15,11 +15,12 @@ const [currentEditor, setCurrentEditor] = useState(null);
 <Editor
   currentEditor={currentEditor}
   setCurrentEditor={setCurrentEditor}
-  id="second_note"
-  newNoteId={'newNoteId'}
+  // initId="second_note"
+  noteDBId={'noteDBId'}
 />;
 ```
 
+<!--
 ### **Placeholder**
 
 #### Pass the **`placeholder`** option if you want to set a custom placeholder
@@ -30,10 +31,10 @@ import { Editor } from '@texttree/notepad-rcl';
 
 const changePlaceholder = 'changed default text';
 
-<Editor id="placeholder_sample" placeholder={changePlaceholder} />;
-```
+<Editor initId="placeholder_sample" placeholder={changePlaceholder} />;
+``` -->
 
-### **Save note**
+<!-- ### **Save note**
 
 ### If you want to use your own method for saving notes, pass it in props
 
@@ -42,12 +43,12 @@ import { Editor, useData } from '@texttree/notepad-rcl';
 
 const { saveNote, getNote } = useData();
 
-<Editor id="saveNote_sample" saveBtn="true" saveNote={saveNote} getNote={getNote} />;
+<Editor initId="saveNote_sample" saveBtn="true" saveNote={saveNote} getNote={getNote} />;
 ```
 
 ### **Rename the database**
 
-### You can also rename the database from "localforage"
+### You can also rename the database from "localforage" -->
 
 <!--
 ```jsx
