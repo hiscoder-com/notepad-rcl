@@ -4,7 +4,7 @@
 
 ```jsx
 import { useState, useEffect } from 'react';
-import { ListOfNotes, useData, Redactor } from '@texttree/notepad-rcl';
+import { ListOfNotes, Redactor } from '@texttree/notepad-rcl';
 
 function Component() {
   const inputStyle = {
@@ -15,7 +15,6 @@ function Component() {
     outline: 'none',
   };
 
-  const { notesArray, dBNameRegistration, getNote, saveNote } = useData();
   // noteDBId - запускаем addNote, получаем сюда id из addNote
   // этот id нужен для сохранения заметки в БД
   const [noteDBId, setNoteDBId] = useState('test_noteDBId');
@@ -70,7 +69,18 @@ function Component() {
   // setNotes(notesDB[idcurrent])}
 
   const addNote = () => {
-    setNoteDBId(('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9));
+    setCurrentEditor({
+      holder: ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9),
+      title: 'new note',
+      editorData: {
+        blocks: [
+          {
+            type: 'paragraph',
+            data: {},
+          },
+        ],
+      },
+    });
   };
 
   const removeNote = (id) => {
@@ -79,7 +89,7 @@ function Component() {
   };
 
   return (
-    <div style={{ display: 'inline-flex' }}>
+    <div style={{ display: 'flex' }}>
       <div style={{ width: '50%' }}>
         <ListOfNotes
           notesDb={notesDb}
@@ -104,8 +114,6 @@ function Component() {
         </button>
         <Redactor
           initId={addedNoteId}
-          notesDb={notesDb}
-          noteDBId={noteDBId}
           setNoteDBId={setNoteDBId}
           currentEditor={currentEditor}
           setCurrentEditor={setCurrentEditor}
@@ -136,9 +144,10 @@ function Component() {
 
   const { notesArray, removeNote, addNote, getNote, saveNote } = useData();
   const [idToLoadNote, setIdToLoadNote] = useState('test');
+  const [noteLFId, setNoteLFId] = useState('test_noteLFId');
 
   return (
-    <div style={{ display: 'inline-flex' }}>
+    <div style={{ display: 'flex' }}>
       <div style={{ width: '50%' }}>
         <ListOfNotes
           notesArray={notesArray}

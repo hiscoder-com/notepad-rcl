@@ -6,8 +6,6 @@ import EditorJS from '@editorjs/editorjs';
 
 function Redactor({
   initId,
-  noteDBId,
-  setNoteDBId,
   editorTools,
   placeholder,
   inputStyle,
@@ -15,7 +13,6 @@ function Redactor({
   saveNote,
   setCurrentEditor,
   currentEditor,
-  notesDb,
 }) {
   const defaultTitleStyle = {
     width: '650px',
@@ -41,7 +38,7 @@ function Redactor({
         // setNoteDBId('test');
       }
     };
-  }, [noteDBId]);
+  }, []);
 
   useEffect(() => {
     if (ejInstance?.current) {
@@ -112,6 +109,7 @@ function Redactor({
         <input
           type="text"
           placeholder="Title"
+          maxLength="14"
           value={currentEditor?.title ?? title}
           onChange={(e) => titleSetterChoice(e)}
           style={inputStyle || defaultTitleStyle}
@@ -124,8 +122,6 @@ function Redactor({
 
 Redactor.defaultProps = {
   initId: 'default_id',
-  notesDb: [],
-  noteDBId: '',
   setNoteDBId: '',
   currentEditor: {},
   setCurrentEditor: () => {},

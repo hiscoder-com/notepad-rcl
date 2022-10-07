@@ -32,6 +32,7 @@ function ListOfNotes({
     },
     delBtn: { borderRadius: '5px' },
   };
+  console.log({ notesDb });
   return (
     <div style={{ display: 'flex', flexDirection: 'column', width: 'full' }}>
       <div style={style?.headerBlock || DEFAULT_STYLE.headerBlock}>
@@ -46,7 +47,7 @@ function ListOfNotes({
             <div
               onClick={() => (
                 setAddedNoteId(el.holder),
-                console.log('el.holder of notes from LON.js:', el.holder)
+                console.log('el.holder of notes from LON.js:', el)
               )}
               style={style?.title || DEFAULT_STYLE.title}
             >
