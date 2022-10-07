@@ -33,7 +33,7 @@ function useData() {
     });
   };
 
-  // Getting a note from localforage
+  // Getting a note from localforage сделать асинхронной
   const getNote = (id) => {
     const result = localforage.getItem(id);
     return result;
@@ -76,7 +76,7 @@ function useData() {
     const holder = ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9);
     localforage
       .setItem(holder, {
-        title: 'New note',
+        title: 'New lf-note',
         data: {},
         created: new Date(),
         parent: null,

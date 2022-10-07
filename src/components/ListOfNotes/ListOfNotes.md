@@ -59,6 +59,7 @@ function Component() {
 
   useEffect(() => {
     const array = notesDb.find((el) => el.holder === addedNoteId);
+    console.log('arrayIs:', array); // {holder: 'first_note_key_from_DB', title: 'note1', editorData: {…}}
 
     setCurrentEditor(array); //TODO - это устанавливает не текущий едитор, а загруженный с базы
   }, [addedNoteId]);
@@ -122,7 +123,7 @@ function Component() {
 <Component />;
 ```
 
-### **Save in localfarage**
+### **Save in localforage**
 
 ```jsx
 import { useState, useEffect } from 'react';
@@ -138,17 +139,28 @@ function Component() {
   };
 
   // const { notesArray, removeNote, addNote, getNote, saveNote } = useData();
-  const { addNote } = useData();
+  const { addNote, notesArray, removeNote, getNote } = useData();
   const [idToLoadNote, setIdToLoadNote] = useState('test');
-  const [noteLFId, setNoteLFId] = useState('test_noteLFId');
+  const [addedNoteId, setAddedNoteId] = useState('test_addedNoteId');
+
+  useEffect(() => {
+    const test = async (key) => {
+      const result = await getNote(key);
+      console.log('testIs:', result); // {title: 'New lf-note', data: {…}, created: '...', parent: null, isFolder: false}
+
+      return result;
+    };
+    test(addedNoteId);
+  }, [addedNoteId]);
 
   return (
     <div style={{ display: 'flex' }}>
       <div style={{ width: '50%' }}>
         <ListOfNotes
-          // notesArray={notesArray}
-          // passIdToDel={removeNote}
+          notesDb={notesArray}
+          passIdToDel={removeNote}
           addNote={addNote}
+          setAddedNoteId={setAddedNoteId}
           // passIdToOpen={setIdToLoadNote}
         />
       </div>
@@ -157,7 +169,7 @@ function Component() {
         <Redactor
           initId={idToLoadNote}
           inputStyle={inputStyle}
-          // getNote={getNote}
+          getNote={getNote}
           // saveNote={saveNote}
         />
       </div>

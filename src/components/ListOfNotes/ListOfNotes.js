@@ -36,27 +36,23 @@ function ListOfNotes({
   return (
     <div style={{ display: 'flex', flexDirection: 'column', width: 'full' }}>
       <div style={style?.headerBlock || DEFAULT_STYLE.headerBlock}>
-        {/* <div style={style?.header || DEFAULT_STYLE.header}>{listName}</div> */}
         <button onClick={addNote} style={style?.addBtn || DEFAULT_STYLE.addBtn}>
           {addBtnName || 'Add'}
         </button>
       </div>
       <div style={style?.listOfNotes || DEFAULT_STYLE.listOfNotes}>
         {notesDb.map((el) => (
-          <div key={el.holder} style={style?.note || DEFAULT_STYLE.note}>
+          <div key={el.holder || el.key} style={style?.note || DEFAULT_STYLE.note}>
             <div
-              onClick={() => (
-                setAddedNoteId(el.holder),
-                console.log('el.holder of notes from LON.js:', el)
-              )}
+              onClick={() => setAddedNoteId(el.holder || el.key)}
               style={style?.title || DEFAULT_STYLE.title}
             >
-              {el.title || 'New note'}
+              {el.title || el.value.title || 'New note'}
             </div>
             <div className="note-btn">
               <button
                 style={style?.delBtn || DEFAULT_STYLE.delBtn}
-                onClick={() => passIdToDel(el.holder)}
+                onClick={() => passIdToDel(el.holder || el.key)}
               >
                 {delBtnName || 'Delete'}
               </button>

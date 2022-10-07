@@ -9,8 +9,6 @@ function Redactor({
   editorTools,
   placeholder,
   inputStyle,
-  getNote,
-  saveNote,
   setCurrentEditor,
   currentEditor,
 }) {
@@ -46,10 +44,11 @@ function Redactor({
   }, []);
 
   useEffect(() => {
+    console.log('currentEditor', currentEditor);
     if (ejInstance?.current) {
       ejInstance?.current.render(currentEditor.editorData);
     }
-  }, [currentEditor?.holder]);
+  }, [currentEditor?.holder || currentEditor?.key]);
 
   useEffect(() => {
     setCurrentEditor(title);
