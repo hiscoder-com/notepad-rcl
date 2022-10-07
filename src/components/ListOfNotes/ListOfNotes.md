@@ -63,11 +63,6 @@ function Component() {
     setCurrentEditor(array); //TODO - это устанавливает не текущий едитор, а загруженный с базы
   }, [addedNoteId]);
 
-  // const notes,setNotes=useState([])
-  // useEffect={
-  // const notesDB = supabase.get(notes)
-  // setNotes(notesDB[idcurrent])}
-
   const addNote = () => {
     setCurrentEditor({
       holder: ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9),
@@ -93,7 +88,6 @@ function Component() {
       <div style={{ width: '50%' }}>
         <ListOfNotes
           notesDb={notesDb}
-          listName="List of Notes"
           passIdToDel={removeNote}
           addNote={addNote}
           setAddedNoteId={setAddedNoteId}
@@ -104,6 +98,7 @@ function Component() {
         <button
           onClick={() =>
             setNotesDb((prev) => {
+              // вместо этого сохранять в supabase
               const array = prev.filter((el) => el.holder !== currentEditor.holder);
               array.unshift(currentEditor);
               return array;
@@ -142,7 +137,8 @@ function Component() {
     outline: 'none',
   };
 
-  const { notesArray, removeNote, addNote, getNote, saveNote } = useData();
+  // const { notesArray, removeNote, addNote, getNote, saveNote } = useData();
+  const { addNote } = useData();
   const [idToLoadNote, setIdToLoadNote] = useState('test');
   const [noteLFId, setNoteLFId] = useState('test_noteLFId');
 
@@ -150,10 +146,10 @@ function Component() {
     <div style={{ display: 'flex' }}>
       <div style={{ width: '50%' }}>
         <ListOfNotes
-          notesArray={notesArray}
-          passIdToDel={removeNote}
+          // notesArray={notesArray}
+          // passIdToDel={removeNote}
           addNote={addNote}
-          passIdToOpen={setIdToLoadNote}
+          // passIdToOpen={setIdToLoadNote}
         />
       </div>
       <div style={{ width: '50%' }}>
@@ -161,8 +157,8 @@ function Component() {
         <Redactor
           initId={idToLoadNote}
           inputStyle={inputStyle}
-          getNote={getNote}
-          saveNote={saveNote}
+          // getNote={getNote}
+          // saveNote={saveNote}
         />
       </div>
     </div>

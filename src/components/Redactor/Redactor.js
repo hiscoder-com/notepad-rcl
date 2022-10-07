@@ -27,16 +27,21 @@ function Redactor({
 
   //
   useEffect(() => {
-    if (!ejInstance?.current) {
-      setCurrentEditor(null);
-      initEditor();
-    }
-    return () => {
-      if (ejInstance?.current) {
-        ejInstance.current.destroy();
-        ejInstance.current = null;
-        // setNoteDBId('test');
+    const timer = setTimeout(() => {
+      if (!ejInstance?.current) {
+        setCurrentEditor(null);
+        console.log('hello');
+        initEditor();
       }
+      return () => {
+        if (ejInstance?.current) {
+          ejInstance.current.destroy();
+          ejInstance.current = null;
+        }
+      };
+    }, 100);
+    return () => {
+      clearTimeout(timer);
     };
   }, []);
 
@@ -44,7 +49,7 @@ function Redactor({
     if (ejInstance?.current) {
       ejInstance?.current.render(currentEditor.editorData);
     }
-  }, [currentEditor?.holder]); //TODO ломается Сейчас при изменении поля эдитора один раз мигает
+  }, [currentEditor?.holder]);
 
   useEffect(() => {
     setCurrentEditor(title);
@@ -84,7 +89,7 @@ function Redactor({
       autofocus: false,
       tools: editorTools,
     });
-    console.log({ editor });
+    // console.log({ editor });
   };
 
   // Выбираем, какое событие произойдёт при изменении значения title

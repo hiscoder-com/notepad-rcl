@@ -4,7 +4,7 @@ import { Redactor } from '@texttree/notepad-rcl';
 <Redactor initId="first_note" />;
 ```
 
-### **id**
+<!-- ### **id**
 
 #### If you want to use an Editor twice or more, give each Editor a unique **`id`**
 
@@ -18,7 +18,7 @@ const [currentEditor, setCurrentEditor] = useState(null);
   // initId="second_note"
   noteDBId={'noteDBId'}
 />;
-```
+``` -->
 
 <!--
 ### **Placeholder**
