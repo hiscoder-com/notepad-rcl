@@ -14,8 +14,8 @@ function useData() {
   useEffect(() => {
     const arr = [];
     localforage
-      .iterate(function (value, key) {
-        const obj = { key, value };
+      .iterate(function (value, id) {
+        const obj = { id, value };
         arr.push(obj);
       })
       .then(function () {
@@ -39,15 +39,15 @@ function useData() {
     return result;
   };
 
-  const saveNote = (key, title, note) => {
-    localforage.getItem(key).then(function (value) {
+  const saveNote = (id, title, note) => {
+    localforage.getItem(id).then(function (value) {
       value
-        ? localforage.setItem(key, {
+        ? localforage.setItem(id, {
             ...value,
             title: title || 'New note',
             data: note,
           })
-        : localforage.setItem(key, {
+        : localforage.setItem(id, {
             title: title,
             data: note,
             created: new Date(),
@@ -62,8 +62,8 @@ function useData() {
     localforage
       .removeItem(id)
       .then(function () {
-        // Run this code once the key has been removed.
-        setNotes((prev) => prev.filter((obj) => obj.key !== id));
+        // Run this code once the id has been removed.
+        setNotes((prev) => prev.filter((obj) => obj.id !== id));
       })
       .catch(function (err) {
         // This code runs if there were any errors
@@ -82,7 +82,7 @@ function useData() {
         parent: null,
         isFolder: false,
       })
-      .then((note) => setNotes((prev) => [...prev, { key: id, value: note }]));
+      .then((note) => setNotes((prev) => [...prev, { id: id, value: note }]));
   };
 
   return { notes, removeNote, addNote, dBNameRegistration, getNote, saveNote };

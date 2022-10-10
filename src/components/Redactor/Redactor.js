@@ -21,7 +21,6 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
     const timer = setTimeout(() => {
       if (!ejInstance?.current) {
         setNote(null);
-        console.log('hello');
         initEditor();
       }
       return () => {
@@ -35,13 +34,11 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
       clearTimeout(timer);
     };
   }, []);
-
   useEffect(() => {
-    console.log('note', note);
     if (ejInstance?.current) {
-      ejInstance?.current.render(note.editorData);
+      ejInstance?.current.render(note.value?.editorData);
     }
-  }, [note?.id || note?.key]);
+  }, [note?.id]);
 
   useEffect(() => {
     setNote(title);
@@ -55,40 +52,41 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
       logLevel: 'ERROR',
       onReady: () => {
         ejInstance.current = editor;
-        // setNote({ editorData: data, id });
       },
       onChange: async (api, event) => {
         let content = await api.saver.save();
         if (content.blocks.length === 0) {
           setNote((prev) => ({
             ...prev,
-            editorData: {
-              blocks: [
-                {
-                  type: 'paragraph',
-                  data: {},
-                },
-              ],
+            value: {
+              ...prev.value,
+              editorData: {
+                blocks: [
+                  {
+                    type: 'paragraph',
+                    data: {},
+                  },
+                ],
+              },
             },
           }));
         } else {
           setNote((prev) => ({
             ...prev,
-            editorData: content,
+            value: { ...prev.value, editorData: content },
           }));
         }
       },
       autofocus: false,
       tools: editorTools,
     });
-    // console.log({ editor });
   };
 
   // Выбираем, какое событие произойдёт при изменении значения title
 
   const titleSetterChoice = (e) => {
-    if (note?.title) {
-      setNote((prev) => ({ ...prev, title: e.target.value }));
+    if (note?.value?.title) {
+      setNote((prev) => ({ ...prev, value: { ...prev.value, title: e.target.value } }));
     } else {
       setTitle(e.target.value);
     }
@@ -107,7 +105,7 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
           type="text"
           placeholder="Title"
           maxLength="14"
-          value={note?.title ?? title}
+          value={note?.value?.title ?? title}
           onChange={(e) => titleSetterChoice(e)}
           style={inputStyle || defaultTitleStyle}
         ></input>
@@ -133,7 +131,7 @@ Redactor.propTypes = {
   /** note Placeholder */
   placeholder: PropTypes.string,
   /** note save method (by default note is stored in localforage).
-Receives the key title and note at the entrance */
+Receives the id title and note at the entrance */
 };
 
 export default Redactor;

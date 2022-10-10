@@ -32,7 +32,7 @@ function ListOfNotes({
     },
     delBtn: { borderRadius: '5px' },
   };
-  console.log({ notesDb });
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', width: 'full' }}>
       <div style={style?.headerBlock || DEFAULT_STYLE.headerBlock}>
@@ -42,17 +42,17 @@ function ListOfNotes({
       </div>
       <div style={style?.listOfNotes || DEFAULT_STYLE.listOfNotes}>
         {notesDb.map((el) => (
-          <div key={el.id || el.key} style={style?.note || DEFAULT_STYLE.note}>
+          <div key={el.id} style={style?.note || DEFAULT_STYLE.note}>
             <div
-              onClick={() => setAddedNoteId(el.id || el.key)}
+              onClick={() => setAddedNoteId(el.id)}
               style={style?.title || DEFAULT_STYLE.title}
             >
-              {el.title || el.value.title || 'New note'}
+              {el.value.title || 'New note'}
             </div>
             <div className="note-btn">
               <button
                 style={style?.delBtn || DEFAULT_STYLE.delBtn}
-                onClick={() => passIdToDel(el.id || el.key)}
+                onClick={() => passIdToDel(el.id)}
               >
                 {delBtnName || 'Delete'}
               </button>
@@ -71,15 +71,15 @@ ListOfNotes.defaultProps = {
 ListOfNotes.propTypes = {
   /** add button name */
   addBtnName: PropTypes.string,
-  /** Receives the key at the entrance  */
+  /** Receives the id at the entrance  */
   addNote: PropTypes.func,
   /** delete button name */
   delBtnName: PropTypes.string,
   /** array of existing notes */
   notesDb: PropTypes.array,
-  /** Receives the key at the entrance */
+  /** Receives the id at the entrance */
   passIdToDel: PropTypes.func,
-  /** Receives the key at the entrance */
+  /** Receives the id at the entrance */
   setAddedNoteId: PropTypes.func,
   style: PropTypes.shape({
     /** style for add button */

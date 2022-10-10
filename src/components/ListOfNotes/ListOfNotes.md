@@ -23,58 +23,63 @@ function Component() {
   const [notesDb, setNotesDb] = useState([
     {
       id: 'first_note_key_from_DB',
-      title: 'note1',
-      editorData: {
-        time: 1550476186479,
-        blocks: [
-          {
-            id: 'zbGZFPM-iI',
-            type: 'paragraph',
-            data: {
-              text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
+      value: {
+        title: 'note1',
+        editorData: {
+          time: 1550476186479,
+          blocks: [
+            {
+              id: 'zbGZFPM-iI',
+              type: 'paragraph',
+              data: {
+                text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
+              },
             },
-          },
-        ],
-        version: '2.8.1',
+          ],
+          version: '2.8.1',
+        },
       },
     },
     {
       id: 'second_note_key_from_DB',
-      title: 'note2',
-      editorData: {
-        time: 1550476186479,
-        blocks: [
-          {
-            id: 'zbGZFPM-iI',
-            type: 'paragraph',
-            data: {
-              text: 'Designed to be extendable and pluggable with a simple API',
+      value: {
+        title: 'note2',
+        editorData: {
+          time: 1550476186479,
+          blocks: [
+            {
+              id: 'zbGZFPM-iI',
+              type: 'paragraph',
+              data: {
+                text: 'Designed to be extendable and pluggable with a simple API',
+              },
             },
-          },
-        ],
-        version: '2.8.1',
+          ],
+          version: '2.8.1',
+        },
       },
     },
   ]);
 
   useEffect(() => {
     const array = notesDb.find((el) => el.id === addedNoteId);
-    console.log('arrayIs:', array); // {id: 'first_note_key_from_DB', title: 'note1', editorData: {…}}
-
+    console.log('notesDb', notesDb);
     setNote(array); //TODO - это устанавливает не текущий едитор, а загруженный с базы
   }, [addedNoteId]);
 
   const addNote = () => {
     setNote({
       id: ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9),
-      title: 'new note',
-      editorData: {
-        blocks: [
-          {
-            type: 'paragraph',
-            data: {},
-          },
-        ],
+      value: {
+        title: 'new note',
+        editorData: {
+          blocks: [
+            {
+              type: 'paragraph',
+              data: {},
+            },
+          ],
+        },
       },
     });
   };
@@ -100,7 +105,6 @@ function Component() {
           onClick={() =>
             setNotesDb((prev) => {
               // вместо этого сохранять в supabase
-              console.log('note', note);
               const array = prev.filter((el) => el.id !== note.id);
               array.unshift(note);
               return array;
@@ -145,8 +149,8 @@ function Component() {
   const [addedNoteId, setAddedNoteId] = useState('test_addedNoteId');
 
   useEffect(() => {
-    const test = async (key) => {
-      const result = await getNote(key);
+    const test = async (id) => {
+      const result = await getNote(id);
       console.log('testIs:', result); // {title: 'New lf-note', data: {…}, created: '...', parent: null, isFolder: false}
 
       return result;
