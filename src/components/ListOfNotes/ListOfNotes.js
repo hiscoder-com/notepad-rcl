@@ -42,9 +42,9 @@ function ListOfNotes({
       </div>
       <div style={style?.listOfNotes || DEFAULT_STYLE.listOfNotes}>
         {notesDb.map((el) => (
-          <div key={el.holder || el.key} style={style?.note || DEFAULT_STYLE.note}>
+          <div key={el.id || el.key} style={style?.note || DEFAULT_STYLE.note}>
             <div
-              onClick={() => setAddedNoteId(el.holder || el.key)}
+              onClick={() => setAddedNoteId(el.id || el.key)}
               style={style?.title || DEFAULT_STYLE.title}
             >
               {el.title || el.value.title || 'New note'}
@@ -52,7 +52,7 @@ function ListOfNotes({
             <div className="note-btn">
               <button
                 style={style?.delBtn || DEFAULT_STYLE.delBtn}
-                onClick={() => passIdToDel(el.holder || el.key)}
+                onClick={() => passIdToDel(el.id || el.key)}
               >
                 {delBtnName || 'Delete'}
               </button>

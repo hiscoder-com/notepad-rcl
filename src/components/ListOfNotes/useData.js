@@ -73,16 +73,16 @@ function useData() {
 
   // Adding a note to the list
   const addNote = () => {
-    const holder = ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9);
+    const id = ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9);
     localforage
-      .setItem(holder, {
+      .setItem(id, {
         title: 'New lf-note', // Переместить в note?
         note: {},
         created: new Date(),
         parent: null,
         isFolder: false,
       })
-      .then((note) => setNotes((prev) => [...prev, { key: holder, value: note }]));
+      .then((note) => setNotes((prev) => [...prev, { key: id, value: note }]));
   };
 
   return { notes, removeNote, addNote, dBNameRegistration, getNote, saveNote };

@@ -12,7 +12,7 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
     border: 'none',
     outline: 'none',
   };
-  // const holder = useMemo(() => id || EDITTOR_HOLDER_ID, [id]);
+  // const id = useMemo(() => id || EDITTOR_HOLDER_ID, [id]);
   const ejInstance = useRef();
   const [title, setTitle] = useState('');
 
@@ -41,7 +41,7 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
     if (ejInstance?.current) {
       ejInstance?.current.render(note.editorData);
     }
-  }, [note?.holder || note?.key]);
+  }, [note?.id || note?.key]);
 
   useEffect(() => {
     setNote(title);
@@ -55,7 +55,7 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
       logLevel: 'ERROR',
       onReady: () => {
         ejInstance.current = editor;
-        // setNote({ editorData: data, holder });
+        // setNote({ editorData: data, id });
       },
       onChange: async (api, event) => {
         let content = await api.saver.save();

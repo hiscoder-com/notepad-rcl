@@ -22,7 +22,7 @@ function Component() {
   const [note, setNote] = useState(null);
   const [notesDb, setNotesDb] = useState([
     {
-      holder: 'first_note_key_from_DB',
+      id: 'first_note_key_from_DB',
       title: 'note1',
       editorData: {
         time: 1550476186479,
@@ -39,7 +39,7 @@ function Component() {
       },
     },
     {
-      holder: 'second_note_key_from_DB',
+      id: 'second_note_key_from_DB',
       title: 'note2',
       editorData: {
         time: 1550476186479,
@@ -58,15 +58,15 @@ function Component() {
   ]);
 
   useEffect(() => {
-    const array = notesDb.find((el) => el.holder === addedNoteId);
-    console.log('arrayIs:', array); // {holder: 'first_note_key_from_DB', title: 'note1', editorData: {…}}
+    const array = notesDb.find((el) => el.id === addedNoteId);
+    console.log('arrayIs:', array); // {id: 'first_note_key_from_DB', title: 'note1', editorData: {…}}
 
     setNote(array); //TODO - это устанавливает не текущий едитор, а загруженный с базы
   }, [addedNoteId]);
 
   const addNote = () => {
     setNote({
-      holder: ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9),
+      id: ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9),
       title: 'new note',
       editorData: {
         blocks: [
@@ -80,7 +80,7 @@ function Component() {
   };
 
   const removeNote = (id) => {
-    const newArray = notesDb.filter((el) => el.holder !== id);
+    const newArray = notesDb.filter((el) => el.id !== id);
     setNotesDb(newArray);
   };
 
@@ -101,7 +101,7 @@ function Component() {
             setNotesDb((prev) => {
               // вместо этого сохранять в supabase
               console.log('note', note);
-              const array = prev.filter((el) => el.holder !== note.holder);
+              const array = prev.filter((el) => el.id !== note.id);
               array.unshift(note);
               return array;
             })
