@@ -9,7 +9,7 @@ import localforage from 'localforage';
  */
 
 function useData() {
-  const [notesArray, setNotesArray] = useState([]);
+  const [notes, setNotes] = useState([]); // Array with notes
 
   useEffect(() => {
     const arr = [];
@@ -19,7 +19,7 @@ function useData() {
         arr.push(obj);
       })
       .then(function () {
-        setNotesArray(arr);
+        setNotes(arr);
       })
       .catch(function (err) {
         console.log(err);
@@ -63,7 +63,7 @@ function useData() {
       .removeItem(id)
       .then(function () {
         // Run this code once the key has been removed.
-        setNotesArray((prev) => prev.filter((obj) => obj.key !== id));
+        setNotes((prev) => prev.filter((obj) => obj.key !== id));
       })
       .catch(function (err) {
         // This code runs if there were any errors
@@ -76,16 +76,16 @@ function useData() {
     const holder = ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9);
     localforage
       .setItem(holder, {
-        title: 'New lf-note',
-        data: {},
+        title: 'New lf-note', // Переместить в note?
+        note: {},
         created: new Date(),
         parent: null,
         isFolder: false,
       })
-      .then((value) => setNotesArray((prev) => [...prev, { key: holder, value }]));
+      .then((note) => setNotes((prev) => [...prev, { key: holder, value: note }]));
   };
 
-  return { notesArray, removeNote, addNote, dBNameRegistration, getNote, saveNote };
+  return { notes, removeNote, addNote, dBNameRegistration, getNote, saveNote };
 }
 
 export default useData;

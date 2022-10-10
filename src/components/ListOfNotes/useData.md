@@ -49,7 +49,7 @@ function Component() {
     <div style={{ display: 'inline-flex' }}>
       <div style={{ width: '50%' }}>
         <ListOfNotes
-          notesArray={notes}
+          notes={notes}
           listName="List of Notes"
           passIdToDel={removeNote}
           addNote={addNote}

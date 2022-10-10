@@ -4,14 +4,7 @@ import PropTypes from 'prop-types';
 
 import EditorJS from '@editorjs/editorjs';
 
-function Redactor({
-  initId,
-  editorTools,
-  placeholder,
-  inputStyle,
-  setCurrentEditor,
-  currentEditor,
-}) {
+function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note }) {
   const defaultTitleStyle = {
     width: '650px',
     height: '38px',
@@ -27,7 +20,7 @@ function Redactor({
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!ejInstance?.current) {
-        setCurrentEditor(null);
+        setNote(null);
         console.log('hello');
         initEditor();
       }
@@ -44,14 +37,14 @@ function Redactor({
   }, []);
 
   useEffect(() => {
-    console.log('currentEditor', currentEditor);
+    console.log('note', note);
     if (ejInstance?.current) {
-      ejInstance?.current.render(currentEditor.editorData);
+      ejInstance?.current.render(note.editorData);
     }
-  }, [currentEditor?.holder || currentEditor?.key]);
+  }, [note?.holder || note?.key]);
 
   useEffect(() => {
-    setCurrentEditor(title);
+    setNote(title);
   }, [title]);
 
   // Запуск Editor.js
@@ -62,12 +55,12 @@ function Redactor({
       logLevel: 'ERROR',
       onReady: () => {
         ejInstance.current = editor;
-        // setCurrentEditor({ editorData: data, holder });
+        // setNote({ editorData: data, holder });
       },
       onChange: async (api, event) => {
         let content = await api.saver.save();
         if (content.blocks.length === 0) {
-          setCurrentEditor((prev) => ({
+          setNote((prev) => ({
             ...prev,
             editorData: {
               blocks: [
@@ -79,7 +72,7 @@ function Redactor({
             },
           }));
         } else {
-          setCurrentEditor((prev) => ({
+          setNote((prev) => ({
             ...prev,
             editorData: content,
           }));
@@ -94,8 +87,8 @@ function Redactor({
   // Выбираем, какое событие произойдёт при изменении значения title
 
   const titleSetterChoice = (e) => {
-    if (currentEditor?.title) {
-      setCurrentEditor((prev) => ({ ...prev, title: e.target.value }));
+    if (note?.title) {
+      setNote((prev) => ({ ...prev, title: e.target.value }));
     } else {
       setTitle(e.target.value);
     }
@@ -114,7 +107,7 @@ function Redactor({
           type="text"
           placeholder="Title"
           maxLength="14"
-          value={currentEditor?.title ?? title}
+          value={note?.title ?? title}
           onChange={(e) => titleSetterChoice(e)}
           style={inputStyle || defaultTitleStyle}
         ></input>
@@ -127,8 +120,8 @@ function Redactor({
 Redactor.defaultProps = {
   initId: 'default_id',
   setNoteDBId: '',
-  currentEditor: {},
-  setCurrentEditor: () => {},
+  note: {},
+  setNote: () => {},
 };
 
 Redactor.propTypes = {

@@ -11,10 +11,10 @@ import { Redactor } from '@texttree/notepad-rcl';
 ```jsx
 import { useState } from 'react';
 import { Redactor } from '@texttree/notepad-rcl';
-const [currentEditor, setCurrentEditor] = useState(null);
+const [note, setNote] = useState(null);
 <Redactor
-  currentEditor={currentEditor}
-  setCurrentEditor={setCurrentEditor}
+  note={note}
+  setNote={setNote}
   // initId="second_note"
   noteDBId={'noteDBId'}
 />;

@@ -19,7 +19,7 @@ function Component() {
   // этот id нужен для сохранения заметки в БД
   const [noteDBId, setNoteDBId] = useState('test_noteDBId');
   const [addedNoteId, setAddedNoteId] = useState('test_addedNoteId');
-  const [currentEditor, setCurrentEditor] = useState(null);
+  const [note, setNote] = useState(null);
   const [notesDb, setNotesDb] = useState([
     {
       holder: 'first_note_key_from_DB',
@@ -61,11 +61,11 @@ function Component() {
     const array = notesDb.find((el) => el.holder === addedNoteId);
     console.log('arrayIs:', array); // {holder: 'first_note_key_from_DB', title: 'note1', editorData: {…}}
 
-    setCurrentEditor(array); //TODO - это устанавливает не текущий едитор, а загруженный с базы
+    setNote(array); //TODO - это устанавливает не текущий едитор, а загруженный с базы
   }, [addedNoteId]);
 
   const addNote = () => {
-    setCurrentEditor({
+    setNote({
       holder: ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9),
       title: 'new note',
       editorData: {
@@ -100,8 +100,9 @@ function Component() {
           onClick={() =>
             setNotesDb((prev) => {
               // вместо этого сохранять в supabase
-              const array = prev.filter((el) => el.holder !== currentEditor.holder);
-              array.unshift(currentEditor);
+              console.log('note', note);
+              const array = prev.filter((el) => el.holder !== note.holder);
+              array.unshift(note);
               return array;
             })
           }
@@ -111,8 +112,8 @@ function Component() {
         <Redactor
           initId={addedNoteId}
           setNoteDBId={setNoteDBId}
-          currentEditor={currentEditor}
-          setCurrentEditor={setCurrentEditor}
+          note={note}
+          setNote={setNote}
           inputStyle={inputStyle}
         />
       </div>
@@ -138,8 +139,8 @@ function Component() {
     outline: 'none',
   };
 
-  // const { notesArray, removeNote, addNote, getNote, saveNote } = useData();
-  const { addNote, notesArray, removeNote, getNote } = useData();
+  // const { notes, removeNote, addNote, getNote, saveNote } = useData();
+  const { addNote, notes, removeNote, getNote } = useData();
   const [idToLoadNote, setIdToLoadNote] = useState('test');
   const [addedNoteId, setAddedNoteId] = useState('test_addedNoteId');
 
@@ -157,7 +158,7 @@ function Component() {
     <div style={{ display: 'flex' }}>
       <div style={{ width: '50%' }}>
         <ListOfNotes
-          notesDb={notesArray}
+          notesDb={notes}
           passIdToDel={removeNote}
           addNote={addNote}
           setAddedNoteId={setAddedNoteId}
