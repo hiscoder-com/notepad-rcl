@@ -12,7 +12,6 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
     border: 'none',
     outline: 'none',
   };
-  // const id = useMemo(() => id || EDITTOR_HOLDER_ID, [id]);
   const ejInstance = useRef();
   const [title, setTitle] = useState('');
   //
@@ -35,11 +34,10 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
   }, []);
   useEffect(() => {
     if (ejInstance?.current) {
-      ejInstance?.current.render(note?.note);
+      ejInstance?.current.render(note?.data);
     }
   }, [note?.id]);
 
-  // Запуск Editor.js
   const initEditor = async () => {
     const editor = new EditorJS({
       holder: initId,
@@ -48,12 +46,12 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
       onReady: () => {
         ejInstance.current = editor;
       },
-      onChange: async (api, event) => {
+      onChange: async (api) => {
         let content = await api.saver.save();
         if (content.blocks.length === 0) {
           setNote((prev) => ({
             ...prev,
-            note: {
+            data: {
               blocks: [
                 {
                   type: 'paragraph',
@@ -65,7 +63,7 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
         } else {
           setNote((prev) => ({
             ...prev,
-            note: content,
+            data: content,
           }));
         }
       },
@@ -73,8 +71,6 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
       tools: editorTools,
     });
   };
-
-  // Выбираем, какое событие произойдёт при изменении значения title
 
   useEffect(() => {
     setNote((prev) => ({ ...prev, title }));
@@ -93,7 +89,7 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
           type="text"
           placeholder="Title"
           maxLength="14"
-          value={note?.title || title}
+          value={note?.title || title} // TODO если в середине input набирать, курсор смещается в конец - надо исправить
           onChange={(e) => setTitle(e.target.value)}
           style={inputStyle || defaultTitleStyle}
         ></input>

@@ -49,7 +49,7 @@ function useData(id = 'current') {
         : localforage.setItem(id, {
             id,
             title,
-            note,
+            data,
             created: new Date(),
             parent: null,
             isFolder: false,
@@ -79,7 +79,7 @@ function useData(id = 'current') {
       .setItem(id, {
         id,
         title: 'New lf-note', // Переместить в note?
-        note: {
+        data: {
           blocks: [
             {
               type: 'paragraph',

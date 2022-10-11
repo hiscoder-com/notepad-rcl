@@ -24,7 +24,7 @@ function Component() {
     {
       id: 'first_note_key_from_DB',
       title: 'note1',
-      note: {
+      data: {
         time: 1550476186479,
         blocks: [
           {
@@ -44,7 +44,7 @@ function Component() {
     {
       id: 'second_note_key_from_DB',
       title: 'note2',
-      note: {
+      data: {
         time: 1550476186479,
         blocks: [
           {
@@ -72,7 +72,7 @@ function Component() {
     setNote({
       id: ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9),
       title: 'new note',
-      note: {
+      data: {
         blocks: [
           {
             type: 'paragraph',
