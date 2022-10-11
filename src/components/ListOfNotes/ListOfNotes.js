@@ -5,7 +5,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function ListOfNotes({
-  notesDb,
+  notes,
   passIdToDel,
   addBtnName,
   delBtnName,
@@ -41,13 +41,13 @@ function ListOfNotes({
         </button>
       </div>
       <div style={style?.listOfNotes || DEFAULT_STYLE.listOfNotes}>
-        {notesDb.map((el) => (
+        {notes.map((el) => (
           <div key={el.id} style={style?.note || DEFAULT_STYLE.note}>
             <div
               onClick={() => setAddedNoteId(el.id)}
               style={style?.title || DEFAULT_STYLE.title}
             >
-              {el.value.title || 'New note'}
+              {el.title || 'New note'}
             </div>
             <div className="note-btn">
               <button
@@ -65,7 +65,7 @@ function ListOfNotes({
 }
 
 ListOfNotes.defaultProps = {
-  notesDb: [],
+  notes: [],
 };
 
 ListOfNotes.propTypes = {
@@ -76,7 +76,7 @@ ListOfNotes.propTypes = {
   /** delete button name */
   delBtnName: PropTypes.string,
   /** array of existing notes */
-  notesDb: PropTypes.array,
+  notes: PropTypes.array,
   /** Receives the id at the entrance */
   passIdToDel: PropTypes.func,
   /** Receives the id at the entrance */

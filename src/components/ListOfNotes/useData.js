@@ -15,8 +15,7 @@ function useData() {
     const arr = [];
     localforage
       .iterate(function (value, id) {
-        const obj = { id, value };
-        arr.push(obj);
+        arr.push(value);
       })
       .then(function () {
         setNotes(arr);
@@ -45,11 +44,12 @@ function useData() {
         ? localforage.setItem(id, {
             ...value,
             title: title || 'New note',
-            data: note,
+            note,
           })
         : localforage.setItem(id, {
-            title: title,
-            data: note,
+            id,
+            title,
+            note,
             created: new Date(),
             parent: null,
             isFolder: false,
@@ -73,16 +73,25 @@ function useData() {
 
   // Adding a note to the list
   const addNote = () => {
+    console.log('notessss', notes);
     const id = ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9);
     localforage
       .setItem(id, {
+        id,
         title: 'New lf-note', // Переместить в note?
-        note: {},
+        note: {
+          blocks: [
+            {
+              type: 'paragraph',
+              data: {},
+            },
+          ],
+        },
         created: new Date(),
         parent: null,
         isFolder: false,
       })
-      .then((note) => setNotes((prev) => [...prev, { id: id, value: note }]));
+      .then((note) => setNotes((prev) => [...prev, note]));
   };
 
   return { notes, removeNote, addNote, dBNameRegistration, noteRequest, saveNote };

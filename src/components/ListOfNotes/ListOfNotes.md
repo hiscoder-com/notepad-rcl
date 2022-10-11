@@ -23,47 +23,43 @@ function Component() {
   const [notesDb, setNotesDb] = useState([
     {
       id: 'first_note_key_from_DB',
-      value: {
-        title: 'note1',
-        note: {
-          time: 1550476186479,
-          blocks: [
-            {
-              id: 'zbGZFPM-iI',
-              type: 'paragraph',
-              data: {
-                text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
-              },
+      title: 'note1',
+      note: {
+        time: 1550476186479,
+        blocks: [
+          {
+            id: 'zbGZFPM-iI',
+            type: 'paragraph',
+            data: {
+              text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
             },
-          ],
-          version: '2.8.1',
-        },
-        created: '2022-10-10T12:51:46.540Z',
-        isFolder: false,
-        parent: null,
+          },
+        ],
+        version: '2.8.1',
       },
+      created: '2022-10-10T12:51:46.540Z',
+      isFolder: false,
+      parent: null,
     },
     {
       id: 'second_note_key_from_DB',
-      value: {
-        title: 'note2',
-        note: {
-          time: 1550476186479,
-          blocks: [
-            {
-              id: 'zbGZFPM-iI',
-              type: 'paragraph',
-              data: {
-                text: 'Designed to be extendable and pluggable with a simple API',
-              },
+      title: 'note2',
+      note: {
+        time: 1550476186479,
+        blocks: [
+          {
+            id: 'zbGZFPM-iI',
+            type: 'paragraph',
+            data: {
+              text: 'Designed to be extendable and pluggable with a simple API',
             },
-          ],
-          version: '2.8.1',
-        },
-        created: '2022-10-10T12:41:46.540Z',
-        isFolder: false,
-        parent: null,
+          },
+        ],
+        version: '2.8.1',
       },
+      created: '2022-10-10T12:41:46.540Z',
+      isFolder: false,
+      parent: null,
     },
   ]);
 
@@ -76,16 +72,14 @@ function Component() {
   const addNote = () => {
     setNote({
       id: ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9),
-      value: {
-        title: 'new note',
-        note: {
-          blocks: [
-            {
-              type: 'paragraph',
-              data: {},
-            },
-          ],
-        },
+      title: 'new note',
+      note: {
+        blocks: [
+          {
+            type: 'paragraph',
+            data: {},
+          },
+        ],
       },
     });
   };
@@ -99,7 +93,7 @@ function Component() {
     <div style={{ display: 'flex' }}>
       <div style={{ width: '50%' }}>
         <ListOfNotes
-          notesDb={notesDb}
+          notes={notesDb}
           passIdToDel={removeNote}
           addNote={addNote}
           setAddedNoteId={setAddedNoteId}
@@ -154,7 +148,7 @@ function Component() {
   const [idToLoadNote, setIdToLoadNote] = useState('test');
   const [addedNoteId, setAddedNoteId] = useState('test_addedNoteId');
   const [note, setNote] = useState(null);
-  console.log('note', note);
+  console.log('notes', notes);
 
   useEffect(() => {
     const getNote = async (id) => {
@@ -170,7 +164,7 @@ function Component() {
     <div style={{ display: 'flex' }}>
       <div style={{ width: '50%' }}>
         <ListOfNotes
-          notesDb={notes}
+          notes={notes}
           passIdToDel={removeNote}
           addNote={addNote}
           setAddedNoteId={setAddedNoteId}
@@ -180,6 +174,7 @@ function Component() {
       <div style={{ width: '50%' }}>
         <button onClick={() => console.log('save')}>save</button>
         <Redactor
+          note={note}
           initId={idToLoadNote}
           inputStyle={inputStyle}
           // getNote={getNote}
