@@ -36,7 +36,7 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
   }, []);
   useEffect(() => {
     if (ejInstance?.current) {
-      ejInstance?.current.render(note.value?.editorData);
+      ejInstance?.current.render(note.value?.note);
     }
   }, [note?.id]);
 
@@ -60,7 +60,7 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
             ...prev,
             value: {
               ...prev.value,
-              editorData: {
+              note: {
                 blocks: [
                   {
                     type: 'paragraph',
@@ -73,7 +73,7 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
         } else {
           setNote((prev) => ({
             ...prev,
-            value: { ...prev.value, editorData: content },
+            value: { ...prev.value, note: content },
           }));
         }
       },

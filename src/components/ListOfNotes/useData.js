@@ -34,7 +34,7 @@ function useData() {
   };
 
   // Getting a note from localforage сделать асинхронной
-  const getNote = (id) => {
+  const noteRequest = (id) => {
     const result = localforage.getItem(id);
     return result;
   };
@@ -85,7 +85,7 @@ function useData() {
       .then((note) => setNotes((prev) => [...prev, { id: id, value: note }]));
   };
 
-  return { notes, removeNote, addNote, dBNameRegistration, getNote, saveNote };
+  return { notes, removeNote, addNote, dBNameRegistration, noteRequest, saveNote };
 }
 
 export default useData;
