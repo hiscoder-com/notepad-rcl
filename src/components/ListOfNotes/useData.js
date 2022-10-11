@@ -8,14 +8,16 @@ import localforage from 'localforage';
  * @returns
  */
 
-function useData() {
+function useData(id = 'current') {
   const [notes, setNotes] = useState([]); // Array with notes
 
   useEffect(() => {
     const arr = [];
     localforage
       .iterate(function (value, id) {
-        arr.push(value);
+        if (id.includes('note')) {
+          arr.push(value);
+        }
       })
       .then(function () {
         setNotes(arr);
@@ -23,7 +25,7 @@ function useData() {
       .catch(function (err) {
         console.log(err);
       });
-  }, []);
+  }, [id]);
 
   // Assign a name to the database
   const dBNameRegistration = (name) => {
@@ -38,13 +40,11 @@ function useData() {
     return result;
   };
 
-  const saveNote = (id, title, note) => {
+  const saveNote = (id, note) => {
     localforage.getItem(id).then(function (value) {
       value
         ? localforage.setItem(id, {
-            ...value,
-            title: title || 'New note',
-            note,
+            ...note,
           })
         : localforage.setItem(id, {
             id,
@@ -73,8 +73,8 @@ function useData() {
 
   // Adding a note to the list
   const addNote = () => {
-    console.log('notessss', notes);
-    const id = ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9);
+    const id =
+      'note' + ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9);
     localforage
       .setItem(id, {
         id,

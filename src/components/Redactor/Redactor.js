@@ -15,7 +15,6 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
   // const id = useMemo(() => id || EDITTOR_HOLDER_ID, [id]);
   const ejInstance = useRef();
   const [title, setTitle] = useState('');
-  console.log('noteee', note);
   //
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -77,14 +76,9 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
 
   // Выбираем, какое событие произойдёт при изменении значения title
 
-  const titleSetterChoice = (e) => {
-    if (note?.title) {
-      console.log('работает note?.title', e.target.value);
-      setNote((prev) => ({ ...prev, title: e.target.value }));
-    } else {
-      setTitle(e.target.value);
-    }
-  };
+  useEffect(() => {
+    setNote((prev) => ({ ...prev, title }));
+  }, [title]);
 
   return (
     <React.Fragment>
@@ -99,8 +93,8 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
           type="text"
           placeholder="Title"
           maxLength="14"
-          value={note?.title ?? title}
-          onChange={(e) => titleSetterChoice(e)}
+          value={note?.title || title}
+          onChange={(e) => setTitle(e.target.value)}
           style={inputStyle || defaultTitleStyle}
         ></input>
       </div>

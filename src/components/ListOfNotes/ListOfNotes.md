@@ -65,7 +65,6 @@ function Component() {
 
   useEffect(() => {
     const array = notesDb.find((el) => el.id === addedNoteId);
-    console.log('notesDb', notesDb);
     setNote(array); //TODO - это устанавливает не текущий едитор, а загруженный с базы
   }, [addedNoteId]);
 
@@ -144,16 +143,17 @@ function Component() {
   };
 
   // const { notes, removeNote, addNote, getNote, saveNote } = useData();
-  const { notes, addNote, removeNote, noteRequest } = useData();
+
   const [idToLoadNote, setIdToLoadNote] = useState('test');
   const [addedNoteId, setAddedNoteId] = useState('test_addedNoteId');
+  const { notes, addNote, removeNote, noteRequest, saveNote } = useData(addedNoteId);
+
   const [note, setNote] = useState(null);
-  console.log('notes', notes);
 
   useEffect(() => {
     const getNote = async (id) => {
       const result = await noteRequest(id);
-      console.log('result', result);
+
       setNote(result);
       return result;
     };
@@ -172,9 +172,10 @@ function Component() {
         />
       </div>
       <div style={{ width: '50%' }}>
-        <button onClick={() => console.log('save')}>save</button>
+        <button onClick={() => saveNote(addedNoteId, note)}>save</button>
         <Redactor
           note={note}
+          setNote={setNote}
           initId={idToLoadNote}
           inputStyle={inputStyle}
           // getNote={getNote}
