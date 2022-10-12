@@ -63,6 +63,25 @@ function Component() {
   ]);
 
   useEffect(() => {
+    //TODO -пример очищения эдитора
+    if (notesDb.length === 0) {
+      console.log('здесь');
+      setNote({
+        title: '',
+        id: ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9),
+        data: {
+          blocks: [
+            {
+              type: 'paragraph',
+              data: {},
+            },
+          ],
+        },
+      });
+    }
+  }, [notesDb]);
+
+  useEffect(() => {
     const array = notesDb.find((el) => el.id === addedNoteId);
     setNote(array);
   }, [addedNoteId]);

@@ -49,7 +49,7 @@ function ListOfNotes({
                 onClick={() => setAddedNoteId(el.id)}
                 style={style?.title || DEFAULT_STYLE.title}
               >
-                {el.title || 'New note'}
+                {el.title || 'untitled'}
               </div>
               <div className="note-btn">
                 <button

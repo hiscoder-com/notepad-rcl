@@ -73,7 +73,7 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
   };
 
   useEffect(() => {
-    if (note?.title) {
+    if (note && Object.keys(note).includes('title')) {
       setTitle(note.title);
     }
   }, [note]);
