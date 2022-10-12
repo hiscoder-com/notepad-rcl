@@ -42,7 +42,7 @@ function ListOfNotes({
       </div>
       <div style={style?.listOfNotes || DEFAULT_STYLE.listOfNotes}>
         {notes
-          .sort((a, b) => a.created - b.created)
+          .sort((a, b) => b.created - a.created)
           .map((el) => (
             <div key={el.id} style={style?.note || DEFAULT_STYLE.note}>
               <div

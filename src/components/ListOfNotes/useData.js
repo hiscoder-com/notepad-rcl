@@ -37,7 +37,6 @@ function useData() {
     });
   };
 
-  // Getting a note from localforage сделать асинхронной
   const noteRequest = async (id) => {
     const result = await localforage.getItem(id);
     return result;
@@ -62,21 +61,17 @@ function useData() {
     });
   };
 
-  // Removing a note from the list
   const removeNote = (id) => {
     localforage
       .removeItem(id)
       .then(function () {
-        // Run this code once the id has been removed.
         setNotes((prev) => prev.filter((obj) => obj.id !== id));
       })
       .catch(function (err) {
-        // This code runs if there were any errors
         console.log(err);
       });
   };
 
-  // Adding a note to the list
   const addNote = () => {
     const id =
       'note' + ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9);

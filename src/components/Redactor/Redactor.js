@@ -73,9 +73,10 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
   };
 
   useEffect(() => {
-    setNote((prev) => ({ ...prev, title }));
-  }, [title]);
-
+    if (note) {
+      setTitle(note.title);
+    }
+  }, [note]);
   return (
     <React.Fragment>
       <div
@@ -89,8 +90,11 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
           type="text"
           placeholder="Title"
           maxLength="14"
-          value={note?.title || title} // TODO если в середине input набирать, курсор смещается в конец - надо исправить
-          onChange={(e) => setTitle(e.target.value)}
+          value={title} // TODO если в середине input набирать, курсор смещается в конец - надо исправить
+          onChange={(e) => {
+            setNote((prev) => ({ ...prev, title: e.target.value }));
+            setTitle(e.target.value);
+          }}
           style={inputStyle || defaultTitleStyle}
         ></input>
       </div>
