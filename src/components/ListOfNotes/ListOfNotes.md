@@ -15,7 +15,6 @@ function Component() {
     outline: 'none',
   };
 
-  // noteDBId - запускаем addNote, получаем сюда id из addNote
   // этот id нужен для сохранения заметки в БД
   const [noteDBId, setNoteDBId] = useState('test_noteDBId');
   const [addedNoteId, setAddedNoteId] = useState('test_addedNoteId');
@@ -65,7 +64,7 @@ function Component() {
 
   useEffect(() => {
     const array = notesDb.find((el) => el.id === addedNoteId);
-    setNote(array); //TODO - это устанавливает не текущий едитор, а загруженный с базы
+    setNote(array);
   }, [addedNoteId]);
 
   const addNote = () => {
@@ -142,18 +141,15 @@ function Component() {
     outline: 'none',
   };
 
-  // const { notes, removeNote, addNote, getNote, saveNote } = useData();
-
   const [idToLoadNote, setIdToLoadNote] = useState('test');
   const [addedNoteId, setAddedNoteId] = useState('test_addedNoteId');
-  const { notes, addNote, removeNote, noteRequest, saveNote } = useData(addedNoteId);
+  const { notes, addNote, removeNote, noteRequest, saveNote } = useData();
 
   const [note, setNote] = useState(null);
 
   useEffect(() => {
     const getNote = async (id) => {
       const result = await noteRequest(id);
-
       setNote(result);
       return result;
     };
@@ -168,7 +164,6 @@ function Component() {
           passIdToDel={removeNote}
           addNote={addNote}
           setAddedNoteId={setAddedNoteId}
-          // passIdToOpen={setIdToLoadNote}
         />
       </div>
       <div style={{ width: '50%' }}>
@@ -178,8 +173,6 @@ function Component() {
           setNote={setNote}
           initId={idToLoadNote}
           inputStyle={inputStyle}
-          // getNote={getNote}
-          // saveNote={saveNote}
         />
       </div>
     </div>

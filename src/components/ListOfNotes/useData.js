@@ -1,4 +1,4 @@
-import { default as React, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import localforage from 'localforage';
 
@@ -8,24 +8,27 @@ import localforage from 'localforage';
  * @returns
  */
 
-function useData(id = 'current') {
+function useData() {
   const [notes, setNotes] = useState([]); // Array with notes
-
+  const [isSaving, setIsSaving] = useState(false);
   useEffect(() => {
-    const arr = [];
-    localforage
-      .iterate(function (value, id) {
-        if (id.includes('note')) {
-          arr.push(value);
-        }
-      })
-      .then(function () {
-        setNotes(arr);
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-  }, [id]);
+    const iterateNotes = async () => {
+      const arr = [];
+      await localforage
+        .iterate(function (value, id) {
+          if (id.includes('note')) {
+            arr.push(value);
+          }
+        })
+        .then(function () {
+          setNotes(arr);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    };
+    iterateNotes();
+  }, [isSaving]);
 
   // Assign a name to the database
   const dBNameRegistration = (name) => {
@@ -35,13 +38,14 @@ function useData(id = 'current') {
   };
 
   // Getting a note from localforage сделать асинхронной
-  const noteRequest = (id) => {
-    const result = localforage.getItem(id);
+  const noteRequest = async (id) => {
+    const result = await localforage.getItem(id);
     return result;
   };
 
-  const saveNote = (id, note) => {
-    localforage.getItem(id).then(function (value) {
+  const saveNote = async (id, note) => {
+    setIsSaving(true);
+    await localforage.getItem(id).then(function (value) {
       value
         ? localforage.setItem(id, {
             ...note,
@@ -54,6 +58,7 @@ function useData(id = 'current') {
             parent: null,
             isFolder: false,
           });
+      setIsSaving(false);
     });
   };
 
@@ -78,7 +83,7 @@ function useData(id = 'current') {
     localforage
       .setItem(id, {
         id,
-        title: 'New lf-note', // Переместить в note?
+        title: 'New lf-note',
         data: {
           blocks: [
             {

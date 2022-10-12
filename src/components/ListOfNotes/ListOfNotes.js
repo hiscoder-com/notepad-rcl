@@ -41,24 +41,26 @@ function ListOfNotes({
         </button>
       </div>
       <div style={style?.listOfNotes || DEFAULT_STYLE.listOfNotes}>
-        {notes.map((el) => (
-          <div key={el.id} style={style?.note || DEFAULT_STYLE.note}>
-            <div
-              onClick={() => setAddedNoteId(el.id)}
-              style={style?.title || DEFAULT_STYLE.title}
-            >
-              {el.title || 'New note'}
-            </div>
-            <div className="note-btn">
-              <button
-                style={style?.delBtn || DEFAULT_STYLE.delBtn}
-                onClick={() => passIdToDel(el.id)}
+        {notes
+          .sort((a, b) => a.created - b.created)
+          .map((el) => (
+            <div key={el.id} style={style?.note || DEFAULT_STYLE.note}>
+              <div
+                onClick={() => setAddedNoteId(el.id)}
+                style={style?.title || DEFAULT_STYLE.title}
               >
-                {delBtnName || 'Delete'}
-              </button>
+                {el.title || 'New note'}
+              </div>
+              <div className="note-btn">
+                <button
+                  style={style?.delBtn || DEFAULT_STYLE.delBtn}
+                  onClick={() => passIdToDel(el.id)}
+                >
+                  {delBtnName || 'Delete'}
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
     </div>
   );
