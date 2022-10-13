@@ -18,7 +18,6 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!ejInstance?.current) {
-        setNote(null);
         initEditor();
       }
       return () => {
@@ -45,6 +44,9 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
       logLevel: 'ERROR',
       onReady: () => {
         ejInstance.current = editor;
+        if (note) {
+          ejInstance?.current.render(note?.data);
+        }
       },
       onChange: async (api) => {
         let content = await api.saver.save();

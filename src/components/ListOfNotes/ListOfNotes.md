@@ -174,25 +174,28 @@ function Component() {
     };
     getNote(addedNoteId);
   }, [addedNoteId]);
-
   return (
     <div style={{ display: 'flex' }}>
-      <div style={{ width: '50%' }}>
-        <ListOfNotes
-          notes={notes}
-          passIdToDel={removeNote}
-          addNote={addNote}
-          setAddedNoteId={setAddedNoteId}
-        />
-      </div>
-      <div style={{ width: '50%' }}>
-        <button onClick={() => saveNote(addedNoteId, note)}>save</button>
-        <Redactor
-          note={note}
-          setNote={setNote}
-          initId={idToLoadNote}
-          inputStyle={inputStyle}
-        />
+      <div>
+        {!note ? (
+          <ListOfNotes
+            notes={notes}
+            passIdToDel={removeNote}
+            addNote={addNote}
+            setAddedNoteId={setAddedNoteId}
+          />
+        ) : (
+          <div style={{ width: '50%' }}>
+            <button onClick={() => saveNote(addedNoteId, note)}>save</button>
+            <Redactor
+              note={note}
+              setNote={setNote}
+              initId={idToLoadNote}
+              inputStyle={inputStyle}
+            />
+            <button onClick={() => setNote(null)}>close</button>
+          </div>
+        )}
       </div>
     </div>
   );
