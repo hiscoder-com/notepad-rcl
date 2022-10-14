@@ -4,7 +4,15 @@ import PropTypes from 'prop-types';
 
 import EditorJS from '@editorjs/editorjs';
 
-function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note }) {
+function Redactor({
+  classes = {},
+  initId,
+  editorTools,
+  placeholder,
+  inputStyle,
+  setNote,
+  note,
+}) {
   const defaultTitleStyle = {
     width: '650px',
     height: '38px',
@@ -36,7 +44,6 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
       ejInstance?.current.render(note?.data);
     }
   }, [note?.id]);
-  console.log(note);
   const initEditor = async () => {
     const editor = new EditorJS({
       holder: initId,
@@ -60,6 +67,7 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
                   data: {},
                 },
               ],
+              version: '2.8.1',
             },
           }));
         } else {
@@ -89,6 +97,7 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
         }}
       >
         <input
+          className={classes.title}
           type="text"
           placeholder="Title"
           maxLength="14"

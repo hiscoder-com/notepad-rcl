@@ -86,6 +86,7 @@ function useData() {
               data: {},
             },
           ],
+          version: '2.8.1',
         },
         created_at: new Date(),
         parent_id: null,

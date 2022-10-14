@@ -46,6 +46,11 @@ module.exports = {
           href: 'https://fonts.googleapis.com/css?family=Fira+Sans:400,600',
         },
       ],
+      scripts: [
+        {
+          src: 'https://cdn.tailwindcss.com',
+        },
+      ],
     },
   },
   moduleAliases: { [name]: path.resolve(__dirname, 'src') },

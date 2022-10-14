@@ -4,52 +4,35 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 
-function ListOfNotes({ notes, passIdToDel, delBtnName, setNoteId, style, classes }) {
-  const DEFAULT_STYLE = {
-    headerBlock: {
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      width: '80%',
-      marginBottom: '20px',
-    },
-    header: { fontSize: '20px' },
-    addBtn: { width: '54.5px', borderRadius: '12px' },
-    listOfNotes: { width: '80%' },
-    note: {
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      marginBottom: '10px',
-    },
-    delBtn: { borderRadius: '5px' },
-  };
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', width: 'full' }}>
-      <div
-      //  className={classes.ListOfNotes}
-      >
-        {notes
-          .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at))
-          .map((el) => (
-            <div key={el.id} style={style?.note || DEFAULT_STYLE.note}>
-              <div
-                onClick={() => setNoteId(el.id)}
-                style={style?.title || DEFAULT_STYLE.title}
-              >
-                {el.title || 'untitled'}
-              </div>
+import Blocks from 'editorjs-blocks-react-renderer';
 
-              <button
-                // className={classes.delBtn}
-                style={style?.delBtn || DEFAULT_STYLE.delBtn}
-                onClick={() => passIdToDel(el.id)}
-              >
-                {delBtnName || 'Delete'}
-              </button>
+function ListOfNotes({
+  notes,
+  removeNote,
+  delBtnName,
+  setNoteId,
+  classes = {},
+  delBtnIcon = '',
+}) {
+  return (
+    <div className={classes.wrapper}>
+      {notes
+        .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at))
+        .map((el) => (
+          <div key={el.id} className={classes.item} onClick={() => setNoteId(el.id)}>
+            <div className={classes.title}>{el.title || 'untitled'}</div>
+            <div className={classes.text}>
+              <Blocks data={el.data} />
             </div>
-          ))}
-      </div>
+
+            <button className={classes.delBtn} onClick={() => removeNote(el.id)}>
+              {delBtnName && (
+                <div className={classes.delBtnText}>{delBtnName || 'Delete'}</div>
+              )}
+              {delBtnIcon && <div className={classes.delBtnIcon}>{delBtnIcon}</div>}
+            </button>
+          </div>
+        ))}
     </div>
   );
 }
@@ -68,7 +51,7 @@ ListOfNotes.propTypes = {
   /** array of existing notes */
   notes: PropTypes.array,
   /** Receives the id at the entrance */
-  passIdToDel: PropTypes.func,
+  removeNote: PropTypes.func,
   /** Receives the id at the entrance */
   setAddedNoteId: PropTypes.func,
   style: PropTypes.shape({
