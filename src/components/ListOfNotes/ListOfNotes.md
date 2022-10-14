@@ -17,9 +17,9 @@ function Component() {
 
   // этот id нужен для сохранения заметки в БД
   const [noteDBId, setNoteDBId] = useState('test_noteDBId');
-  const [addedNoteId, setAddedNoteId] = useState('test_addedNoteId');
+  const [noteId, setNoteId] = useState('test_noteId');
   const [note, setNote] = useState(null);
-  const [notesDb, setNotesDb] = useState([
+  const [notes, setNotes] = useState([
     {
       id: 'first_note_key_from_DB',
       title: 'note1',
@@ -38,7 +38,7 @@ function Component() {
       },
       created_at: '2022-10-10T12:51:46.540Z',
       isFolder: false,
-      parent: null,
+      parent_id: null,
     },
     {
       id: 'second_note_key_from_DB',
@@ -58,13 +58,13 @@ function Component() {
       },
       created_at: '2022-10-10T12:41:46.540Z',
       isFolder: false,
-      parent: null,
+      parent_id: null,
     },
   ]);
 
   useEffect(() => {
     //TODO -пример очищения эдитора
-    if (notesDb.length === 0) {
+    if (notes.length === 0) {
       console.log('здесь');
       setNote({
         title: '',
@@ -79,15 +79,15 @@ function Component() {
         },
       });
     }
-  }, [notesDb]);
+  }, [notes]);
 
   useEffect(() => {
-    const array = notesDb.find((el) => el.id === addedNoteId);
+    const array = notes.find((el) => el.id === noteId);
     setNote(array);
-  }, [addedNoteId]);
+  }, [noteId]);
 
   const addNote = () => {
-    setNote({
+    const newNote = {
       id: ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9),
       title: 'new note',
       data: {
@@ -98,46 +98,52 @@ function Component() {
           },
         ],
       },
-    });
+    };
+    setNote(newNote);
+    setNotes((prev) => [...prev, newNote]);
   };
 
   const removeNote = (id) => {
-    const newArray = notesDb.filter((el) => el.id !== id);
-    setNotesDb(newArray);
+    const newArray = notes.filter((el) => el.id !== id);
+    setNotes(newArray);
   };
-
+  console.log({ note, notes });
   return (
     <div style={{ display: 'flex' }}>
       <div style={{ width: '50%' }}>
+        <button onClick={() => addNote()}>Add note</button>
+
         <ListOfNotes
-          notes={notesDb}
+          notes={notes}
           passIdToDel={removeNote}
           addNote={addNote}
-          setAddedNoteId={setAddedNoteId}
+          setNoteId={setNoteId}
+          // classes={classes}
         />
       </div>
 
-      <div style={{ width: '50%' }}>
-        <button
-          onClick={() =>
-            setNotesDb((prev) => {
-              // вместо этого сохранять в supabase
-              const array = prev.filter((el) => el.id !== note.id);
-              array.unshift(note);
-              return array;
-            })
-          }
-        >
-          save
-        </button>
-        <Redactor
-          initId={addedNoteId}
-          setNoteDBId={setNoteDBId}
-          note={note}
-          setNote={setNote}
-          inputStyle={inputStyle}
-        />
-      </div>
+      {note && notes.length > 0 && (
+        <div style={{ width: '50%' }}>
+          <button
+            onClick={() =>
+              setNotes((prev) => {
+                // вместо этого сохранять в supabase
+                const array = prev.filter((el) => el.id !== note.id);
+                array.unshift(note);
+                return array;
+              })
+            }
+          >
+            save
+          </button>
+          <Redactor
+            initId={'first'}
+            note={note}
+            setNote={setNote}
+            inputStyle={inputStyle}
+          />
+        </div>
+      )}
     </div>
   );
 }
@@ -145,7 +151,7 @@ function Component() {
 <Component />;
 ```
 
-### **Save in localforage**
+### **Save using localforage**
 
 ```jsx
 import { useState, useEffect } from 'react';
@@ -161,7 +167,7 @@ function Component() {
   };
 
   const [idToLoadNote, setIdToLoadNote] = useState('test');
-  const [addedNoteId, setAddedNoteId] = useState('test_addedNoteId');
+  const [noteId, setNoteId] = useState('test_noteId');
   const { notes, addNote, removeNote, noteRequest, saveNote } = useData();
 
   const [note, setNote] = useState(null);
@@ -172,28 +178,41 @@ function Component() {
       setNote(result);
       return result;
     };
-    getNote(addedNoteId);
-  }, [addedNoteId]);
+    getNote(noteId);
+  }, [noteId]);
+  console.log({ noteId });
+
   return (
     <div style={{ display: 'flex' }}>
       <div>
         {!note ? (
-          <ListOfNotes
-            notes={notes}
-            passIdToDel={removeNote}
-            addNote={addNote}
-            setAddedNoteId={setAddedNoteId}
-          />
+          <>
+            <button onClick={() => addNote()}>Add note</button>
+
+            <ListOfNotes
+              notes={notes}
+              passIdToDel={removeNote}
+              addNote={addNote}
+              setNoteId={setNoteId}
+            />
+          </>
         ) : (
           <div style={{ width: '50%' }}>
-            <button onClick={() => saveNote(addedNoteId, note)}>save</button>
+            <button onClick={() => saveNote(noteId, note)}>save</button>
             <Redactor
               note={note}
               setNote={setNote}
-              initId={idToLoadNote}
+              initId={'second'}
               inputStyle={inputStyle}
             />
-            <button onClick={() => setNote(null)}>close</button>
+            <button
+              onClick={() => {
+                setNote(null);
+                setNoteId(null);
+              }}
+            >
+              close
+            </button>
           </div>
         )}
       </div>

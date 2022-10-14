@@ -54,7 +54,7 @@ function useData() {
             title,
             data,
             created_at: new Date(),
-            parent: null,
+            parent_id: null,
             isFolder: false,
           });
       setIsSaving(false);
@@ -88,7 +88,7 @@ function useData() {
           ],
         },
         created_at: new Date(),
-        parent: null,
+        parent_id: null,
         isFolder: false,
       })
       .then((note) => setNotes((prev) => [...prev, note]));

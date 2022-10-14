@@ -36,7 +36,7 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
       ejInstance?.current.render(note?.data);
     }
   }, [note?.id]);
-
+  console.log(note);
   const initEditor = async () => {
     const editor = new EditorJS({
       holder: initId,
@@ -44,7 +44,7 @@ function Redactor({ initId, editorTools, placeholder, inputStyle, setNote, note 
       logLevel: 'ERROR',
       onReady: () => {
         ejInstance.current = editor;
-        if (note) {
+        if (note && Object.keys(note).length > 0) {
           ejInstance?.current.render(note?.data);
         }
       },

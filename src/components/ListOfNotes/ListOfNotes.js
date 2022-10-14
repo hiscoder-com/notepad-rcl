@@ -4,15 +4,7 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 
-function ListOfNotes({
-  notes,
-  passIdToDel,
-  addBtnName,
-  delBtnName,
-  addNote,
-  setAddedNoteId,
-  style,
-}) {
+function ListOfNotes({ notes, passIdToDel, delBtnName, setNoteId, style, classes }) {
   const DEFAULT_STYLE = {
     headerBlock: {
       display: 'flex',
@@ -32,33 +24,29 @@ function ListOfNotes({
     },
     delBtn: { borderRadius: '5px' },
   };
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column', width: 'full' }}>
-      <div style={style?.headerBlock || DEFAULT_STYLE.headerBlock}>
-        <button onClick={addNote} style={style?.addBtn || DEFAULT_STYLE.addBtn}>
-          {addBtnName || 'Add'}
-        </button>
-      </div>
-      <div style={style?.listOfNotes || DEFAULT_STYLE.listOfNotes}>
+      <div
+      //  className={classes.ListOfNotes}
+      >
         {notes
           .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at))
           .map((el) => (
             <div key={el.id} style={style?.note || DEFAULT_STYLE.note}>
               <div
-                onClick={() => setAddedNoteId(el.id)}
+                onClick={() => setNoteId(el.id)}
                 style={style?.title || DEFAULT_STYLE.title}
               >
                 {el.title || 'untitled'}
               </div>
-              <div className="note-btn">
-                <button
-                  style={style?.delBtn || DEFAULT_STYLE.delBtn}
-                  onClick={() => passIdToDel(el.id)}
-                >
-                  {delBtnName || 'Delete'}
-                </button>
-              </div>
+
+              <button
+                // className={classes.delBtn}
+                style={style?.delBtn || DEFAULT_STYLE.delBtn}
+                onClick={() => passIdToDel(el.id)}
+              >
+                {delBtnName || 'Delete'}
+              </button>
             </div>
           ))}
       </div>
