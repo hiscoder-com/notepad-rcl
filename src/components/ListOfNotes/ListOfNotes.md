@@ -1,5 +1,3 @@
-#### You can save notes in a database or in localfarage
-
 ### **Save in Database**
 
 ```jsx
@@ -126,7 +124,8 @@ function Component() {
                 delBtn: 'bg-cyan-300 p-2 rounded-md',
               }}
               delBtnName={'Delete'}
-              isShowDate={true}
+              isShowDate
+              isShowText
             />
             <div className="flex justify-end">
               <button

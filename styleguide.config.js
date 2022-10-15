@@ -21,7 +21,10 @@ let sections = [
   },
   {
     name: 'Getting a list of notes Block',
-    components: ['src/components/ListOfNotes/ListOfNotes.js'],
+    components: [
+      'src/components/ListOfNotes/ListOfNotes.js',
+      'src/components/ListOfNotes/useListOfNotes.js',
+    ],
   },
 ];
 

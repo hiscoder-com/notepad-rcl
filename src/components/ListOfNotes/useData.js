@@ -9,7 +9,7 @@ import localforage from 'localforage';
  */
 
 function useData() {
-  const [notes, setNotes] = useState([]); // Array with notes
+  const [notes, setNotes] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
   useEffect(() => {
     const iterateNotes = async () => {
