@@ -32,7 +32,7 @@ function ListOfNotes({
             <button
               className={classes.delBtn}
               onClick={(e) => {
-                e.preventDefault();
+                e.stopPropagation();
                 removeNote(el.id);
               }}
             >

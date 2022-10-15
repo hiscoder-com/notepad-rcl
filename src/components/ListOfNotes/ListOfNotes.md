@@ -62,7 +62,6 @@ function Component() {
   ]);
 
   useEffect(() => {
-    //TODO -пример очищения эдитора
     if (notes.length === 0) {
       setNote({
         title: '',
@@ -151,7 +150,6 @@ function Component() {
               className={'bg-cyan-300 px-4 py-2  rounded-lg '}
               onClick={() =>
                 setNotes((prev) => {
-                  // вместо этого сохранять в supabase
                   const array = prev.filter((el) => el.id !== note.id);
                   array.unshift(note);
                   return array;
