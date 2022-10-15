@@ -117,7 +117,7 @@ function Component() {
               setNoteId={setNoteId}
               classes={{
                 wrapper: '',
-                item: ' m-5 p-5 bg-cyan-200 h-31 hover:bg-cyan-100 cursor-pointer rounded-lg',
+                item: ' m-5 p-5 bg-cyan-200 h-31 hover:bg-cyan-100 cursor-pointer rounded-lg shadow-md',
                 title: 'mr-10 font-bold',
                 text: 'overflow-hidden h-20',
                 delBtn: 'bg-cyan-300 p-2 rounded-md',
@@ -221,7 +221,7 @@ function Component() {
               setNoteId={setNoteId}
               classes={{
                 wrapper: '',
-                item: ' m-5 p-5 bg-yellow-200 h-31 hover:bg-yellow-100 cursor-pointer rounded-lg',
+                item: ' m-5 p-5 bg-yellow-200 h-31 hover:bg-yellow-100 cursor-pointer rounded-lg shadow-md',
                 title: 'mr-10 font-bold',
                 text: 'overflow-hidden',
                 delBtn: 'bg-orange-300 p-2 mt-4 rounded-lg',
@@ -239,7 +239,7 @@ function Component() {
             </div>
           </>
         ) : (
-          <div className={'bg-yellow-200 p-6 relative'}>
+          <div className={'bg-yellow-200 p-6 relative shadow-md'}>
             <Redactor
               note={note}
               setNote={setNote}
