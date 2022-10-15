@@ -13,6 +13,7 @@ function ListOfNotes({
   setNoteId,
   classes = {},
   delBtnIcon = '',
+  isShowDate = false,
 }) {
   return (
     <div className={classes.wrapper}>
@@ -25,12 +26,27 @@ function ListOfNotes({
               <Blocks data={el.data} />
             </div>
 
-            <button className={classes.delBtn} onClick={() => removeNote(el.id)}>
+            <button
+              className={classes.delBtn}
+              onClick={(e) => {
+                e.preventDefault();
+                removeNote(el.id);
+              }}
+            >
               {delBtnName && (
                 <div className={classes.delBtnText}>{delBtnName || 'Delete'}</div>
               )}
               {delBtnIcon && <div className={classes.delBtnIcon}>{delBtnIcon}</div>}
             </button>
+            {isShowDate && el.created_at && (
+              <div className={classes.date}>
+                {el.created_at.getDay() +
+                  '.' +
+                  el.created_at.getMonth() +
+                  '.' +
+                  el.created_at.getFullYear()}
+              </div>
+            )}
           </div>
         ))}
     </div>

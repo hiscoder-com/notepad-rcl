@@ -37,7 +37,7 @@ function Component() {
         ],
         version: '2.8.1',
       },
-      created_at: '2022-10-10T12:51:46.540Z',
+      created_at: new Date('2022-10-15 07:59:58.3642'),
       isFolder: false,
       parent_id: null,
     },
@@ -57,7 +57,7 @@ function Component() {
         ],
         version: '2.8.1',
       },
-      created_at: '2022-10-10T12:41:46.540Z',
+      created_at: new Date('2022-10-15 07:59:58.3642'),
       isFolder: false,
       parent_id: null,
     },
@@ -126,6 +126,7 @@ function Component() {
                 delBtn: 'bg-cyan-300 p-2 rounded-md',
               }}
               delBtnName={'Delete'}
+              isShowDate={true}
             />
             <div className="flex justify-end">
               <button
@@ -226,6 +227,7 @@ function Component() {
                 delBtn: 'bg-orange-300 p-2 mt-4 rounded-lg',
               }}
               delBtnName={'Delete'}
+              isShowDate
             />
             <div className="flex justify-end">
               <button
