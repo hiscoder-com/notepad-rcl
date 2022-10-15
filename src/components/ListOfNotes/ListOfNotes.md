@@ -142,8 +142,11 @@ function Component() {
             <Redactor
               note={note}
               setNote={setNote}
-              initId={'second'}
-              classes={{ title: 'bg-inherit font-bold' }}
+              initId={'first'}
+              classes={{
+                title: 'bg-inherit font-bold',
+                redactor: 'px-4 pt-4 pb-20 break-words bg-green-100 m-4',
+              }}
             />
             <button
               className={'bg-cyan-300 px-4 py-2  rounded-lg '}

@@ -2,36 +2,36 @@
 
 ```jsx
 import React from 'react';
-import { useData, Editor } from '@texttree/notepad-rcl';
+import { useData, Redactor } from '@texttree/notepad-rcl';
 
 const { getNote, saveNote } = useData();
 
-<Editor getNote={getNote} saveNote={saveNote} id="save_data_to_DB" />;
+<Redactor getNote={getNote} saveNote={saveNote} initId="first" />;
 ```
 
 ### If you need to set the database name, you can use the dBNameRegistration method
 
 ```jsx
 import React from 'react';
-import { useData, Editor } from '@texttree/notepad-rcl';
+import { useData, Redactor } from '@texttree/notepad-rcl';
 
 const { dBNameRegistration, getNote, saveNote } = useData();
 
 dBNameRegistration('NotepadRCL');
 
-<Editor getNote={getNote} saveNote={saveNote} id="custom_name_DB" />;
+<Redactor getNote={getNote} saveNote={saveNote} initId={'second'} />;
 ```
 
 ### You can also get and edit data from the database using the useState hook.
 
 ```jsx
 import { useState, useEffect } from 'react';
-import { ListOfNotes, useData, Editor } from '@texttree/notepad-rcl';
+import { ListOfNotes, useData, Redactor } from '@texttree/notepad-rcl';
 
 function Component() {
   const { notes, removeNote, addNote, dBNameRegistration, getNote, saveNote } = useData();
 
-  const [idToLoadNote, setIdToLoadNote] = useState('');
+  const [noteId, setNoteId] = useState('');
 
   const changePlaceholder = 'changed default text';
 
@@ -51,16 +51,15 @@ function Component() {
         <ListOfNotes
           notes={notes}
           listName="List of Notes"
-          passIdToDel={removeNote}
+          removeNote={removeNote}
           addNote={addNote}
-          passIdToOpen={setIdToLoadNote}
+          noteId={setNoteId}
         />
       </div>
       <div style={{ width: '50%' }}>
-        <Editor
-          id={idToLoadNote}
+        <Redactor
+          initId={'third'}
           placeholder={changePlaceholder}
-          inputStyle={inputStyle}
           getNote={getNote}
           saveNote={saveNote}
         />

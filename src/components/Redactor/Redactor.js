@@ -4,25 +4,9 @@ import PropTypes from 'prop-types';
 
 import EditorJS from '@editorjs/editorjs';
 
-function Redactor({
-  classes = {},
-  initId,
-  editorTools,
-  placeholder,
-  inputStyle,
-  setNote,
-  note,
-}) {
-  const defaultTitleStyle = {
-    width: '650px',
-    height: '38px',
-    fontSize: 'large',
-    border: 'none',
-    outline: 'none',
-  };
+function Redactor({ classes = {}, initId, editorTools, placeholder, setNote, note }) {
   const ejInstance = useRef();
   const [title, setTitle] = useState('');
-  //
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!ejInstance?.current) {
@@ -49,6 +33,7 @@ function Redactor({
       holder: initId,
       placeholder: placeholder || 'Let`s write an awesome note!',
       logLevel: 'ERROR',
+      minHeight: 0,
       onReady: () => {
         ejInstance.current = editor;
         if (note && Object.keys(note).length > 0) {
@@ -88,41 +73,30 @@ function Redactor({
     }
   }, [note]);
   return (
-    <React.Fragment>
-      <div
-        style={{
-          display: 'inline-flex',
-          justifyContent: 'center',
-          width: '100%',
+    <div className={classes.wrapper}>
+      <input
+        className={classes.title}
+        type="text"
+        placeholder="Title"
+        maxLength="14"
+        value={title} // TODO если в середине input набирать, курсор смещается в конец - надо исправить
+        onChange={(e) => {
+          setNote((prev) => ({ ...prev, title: e.target.value }));
+          setTitle(e.target.value);
         }}
-      >
-        <input
-          className={classes.title}
-          type="text"
-          placeholder="Title"
-          maxLength="14"
-          value={title} // TODO если в середине input набирать, курсор смещается в конец - надо исправить
-          onChange={(e) => {
-            setNote((prev) => ({ ...prev, title: e.target.value }));
-            setTitle(e.target.value);
-          }}
-          style={inputStyle || defaultTitleStyle}
-        ></input>
-      </div>
-      <div id={initId}></div>
-    </React.Fragment>
+      ></input>
+      <div className={classes.redactor} id={initId}></div>
+    </div>
   );
 }
 
 Redactor.defaultProps = {
   initId: 'default_id',
-  setNoteDBId: '',
   note: {},
   setNote: () => {},
 };
 
 Redactor.propTypes = {
-  // inputStyle,
   /** Write a new property for the Tools object and pass it to the Editor via the addTools variable */
   editorTools: PropTypes.object,
   /** note ID */

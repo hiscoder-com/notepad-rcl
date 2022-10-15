@@ -14,6 +14,7 @@ function ListOfNotes({
   classes = {},
   delBtnIcon = '',
   isShowDate = false,
+  isShowText = false,
 }) {
   return (
     <div className={classes.wrapper}>
@@ -22,9 +23,11 @@ function ListOfNotes({
         .map((el) => (
           <div key={el.id} className={classes.item} onClick={() => setNoteId(el.id)}>
             <div className={classes.title}>{el.title || 'untitled'}</div>
-            <div className={classes.text}>
-              <Blocks data={el.data} />
-            </div>
+            {isShowText && (
+              <div className={classes.text}>
+                <Blocks data={el.data} />
+              </div>
+            )}
 
             <button
               className={classes.delBtn}
