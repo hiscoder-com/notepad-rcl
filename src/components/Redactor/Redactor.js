@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import EditorJS from '@editorjs/editorjs';
 
-function Redactor({ classes = {}, initId, editorTools, placeholder, setNote, note }) {
+function Redactor({ classes, initId, editorTools, placeholder, setNote, note }) {
   const ejInstance = useRef();
   const [title, setTitle] = useState('');
   useEffect(() => {
@@ -79,7 +79,7 @@ function Redactor({ classes = {}, initId, editorTools, placeholder, setNote, not
         type="text"
         placeholder="Title"
         maxLength="14"
-        value={title} // TODO если в середине input набирать, курсор смещается в конец - надо исправить
+        value={title}
         onChange={(e) => {
           setNote((prev) => ({ ...prev, title: e.target.value }));
           setTitle(e.target.value);
@@ -94,9 +94,11 @@ Redactor.defaultProps = {
   initId: 'default_id',
   note: {},
   setNote: () => {},
+  classes: {},
 };
 
 Redactor.propTypes = {
+  classes: PropTypes.shape, //TODO переписать проптайпсы  - здесь используется 3 класса: wrapper, redactor, title
   /** Write a new property for the Tools object and pass it to the Editor via the addTools variable */
   editorTools: PropTypes.object,
   /** note ID */

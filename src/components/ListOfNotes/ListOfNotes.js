@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 
-import PropTypes from 'prop-types';
+import PropTypes, { object } from 'prop-types';
 
 import Blocks from 'editorjs-blocks-react-renderer';
 
@@ -11,56 +11,55 @@ function ListOfNotes({
   removeNote,
   delBtnName,
   setNoteId,
-  classes = {},
+  classes,
   delBtnIcon = '',
   isShowDate = false,
   isShowText = false,
+  dateOptions,
 }) {
   return (
     <div className={classes.wrapper}>
-      {notes
-        .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at))
-        .map((el) => (
-          <div key={el.id} className={classes.item} onClick={() => setNoteId(el.id)}>
-            <div className={classes.title}>{el.title || 'untitled'}</div>
-            {isShowText && (
-              <div className={classes.text}>
-                <Blocks data={el.data} />
-              </div>
-            )}
+      {notes.map((el) => (
+        <div key={el.id} className={classes.item} onClick={() => setNoteId(el.id)}>
+          <div className={classes.title}>{el.title || 'untitled'}</div>
+          {isShowText && (
+            <div className={classes.text}>
+              <Blocks data={el.data} />
+            </div>
+          )}
 
-            <button
-              className={classes.delBtn}
-              onClick={(e) => {
-                e.stopPropagation();
-                removeNote(el.id);
-              }}
-            >
-              {delBtnName && (
-                <div className={classes.delBtnText}>{delBtnName || 'Delete'}</div>
-              )}
-              {delBtnIcon && <div className={classes.delBtnIcon}>{delBtnIcon}</div>}
-            </button>
-            {isShowDate && el.created_at && (
-              <div className={classes.date}>
-                {el.created_at.getDay() +
-                  '.' +
-                  el.created_at.getMonth() +
-                  '.' +
-                  el.created_at.getFullYear()}
-              </div>
+          <button
+            className={classes.delBtn}
+            onClick={(e) => {
+              e.stopPropagation();
+              removeNote(el.id);
+            }}
+          >
+            {delBtnName && (
+              <div className={classes.delBtnText}>{delBtnName || 'Delete'}</div>
             )}
-          </div>
-        ))}
+            {delBtnIcon && <div className={classes.delBtnIcon}>{delBtnIcon}</div>}
+          </button>
+          {isShowDate && el.created_at && (
+            <div className={classes.date}>
+              {new Date(el.created_at).toLocaleString('ru', dateOptions)}
+            </div>
+          )}
+        </div>
+      ))}
     </div>
   );
 }
 
 ListOfNotes.defaultProps = {
   notes: [],
+  classes: {},
+  dateOptions: {},
 };
 
 ListOfNotes.propTypes = {
+  dateOptions: PropTypes.object, //TODO сделать ссылку на документацию в MDN,
+  //TODO добавить описание классов classes: wrapper,title,item,delBtn,delBtnIcon,date,text
   /** add button name */
   addBtnName: PropTypes.string,
   /** Receives the id at the entrance  */

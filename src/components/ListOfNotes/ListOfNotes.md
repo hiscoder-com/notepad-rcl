@@ -228,6 +228,15 @@ function Component() {
               }}
               delBtnName={'Delete'}
               isShowDate
+              dateOptions={{
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+              }}
             />
             <div className="flex justify-end">
               <button
