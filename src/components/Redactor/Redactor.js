@@ -23,11 +23,7 @@ function Redactor({ classes, initId, editorTools, placeholder, setNote, note }) 
       clearTimeout(timer);
     };
   }, []);
-  useEffect(() => {
-    if (ejInstance?.current) {
-      ejInstance?.current.render(note?.data);
-    }
-  }, [note?.id]);
+
   const initEditor = async () => {
     const editor = new EditorJS({
       holder: initId,
@@ -42,19 +38,21 @@ function Redactor({ classes, initId, editorTools, placeholder, setNote, note }) 
       },
       onChange: async (api) => {
         let content = await api.saver.save();
+        const clearData = {
+          blocks: [
+            {
+              type: 'paragraph',
+              data: {},
+            },
+          ],
+          version: '2.8.1',
+        };
         if (content.blocks.length === 0) {
           setNote((prev) => ({
             ...prev,
-            data: {
-              blocks: [
-                {
-                  type: 'paragraph',
-                  data: {},
-                },
-              ],
-              version: '2.8.1',
-            },
+            data: clearData,
           }));
+          await ejInstance?.current.render(clearData);
         } else {
           setNote((prev) => ({
             ...prev,
@@ -98,7 +96,7 @@ Redactor.defaultProps = {
 };
 
 Redactor.propTypes = {
-  classes: PropTypes.shape, //TODO переписать проптайпсы  - здесь используется 3 класса: wrapper, redactor, title
+  // classes: PropTypes.shape, //TODO переписать проптайпсы  - здесь используется 3 класса: wrapper, redactor, title
   /** Write a new property for the Tools object and pass it to the Editor via the addTools variable */
   editorTools: PropTypes.object,
   /** note ID */
