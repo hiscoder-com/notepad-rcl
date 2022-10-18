@@ -6,18 +6,8 @@ import { ListOfNotes, Redactor } from '@texttree/notepad-rcl';
 import Blocks from 'editorjs-blocks-react-renderer';
 
 function Component() {
-  const inputStyle = {
-    width: '650px',
-    height: '38px',
-    fontSize: 'large',
-    border: 'none',
-    outline: 'none',
-  };
-
-  // этот id нужен для сохранения заметки в БД
-  const [noteDBId, setNoteDBId] = useState('test_noteDBId');
   const [noteId, setNoteId] = useState('test_noteId');
-  const [note, setNote] = useState(null);
+  const [activeNote, setActiveNote] = useState(null);
   const [notes, setNotes] = useState([
     {
       id: 'first_note_key_from_DB',
@@ -63,7 +53,7 @@ function Component() {
 
   useEffect(() => {
     if (notes.length === 0) {
-      setNote({
+      setActiveNote({
         title: '',
         id: ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9),
         data: {
@@ -80,8 +70,8 @@ function Component() {
   }, [notes]);
 
   useEffect(() => {
-    const array = notes.find((el) => el.id === noteId);
-    setNote(array);
+    const note = notes.find((el) => el.id === noteId);
+    setActiveNote(note);
   }, [noteId]);
 
   const addNote = () => {
@@ -98,7 +88,7 @@ function Component() {
         version: '2.8.1',
       },
     };
-    setNote(newNote);
+    setActiveNote(newNote);
     setNotes((prev) => [...prev, newNote]);
   };
 
@@ -109,7 +99,7 @@ function Component() {
   return (
     <div>
       <div>
-        {!note ? (
+        {!activeNote ? (
           <>
             <ListOfNotes
               notes={notes}
@@ -138,8 +128,8 @@ function Component() {
         ) : (
           <div className={'bg-cyan-200 p-6 relative'}>
             <Redactor
-              note={note}
-              setNote={setNote}
+              activeNote={activeNote}
+              setActiveNote={setActiveNote}
               initId={'first'}
               classes={{
                 title: 'bg-inherit font-bold',
@@ -163,7 +153,7 @@ function Component() {
                 'bg-blue-300 px-4 py-2 text-lg rounded-lg absolute right-3 top-3'
               }
               onClick={() => {
-                setNote(null);
+                setActiveNote(null);
                 setNoteId(null);
               }}
             >
@@ -187,24 +177,16 @@ import { ListOfNotes, useData, Redactor } from '@texttree/notepad-rcl';
 import Blocks from 'editorjs-blocks-react-renderer';
 const wasteIcon = <div>fff</div>;
 function Component() {
-  const inputStyle = {
-    width: '650px',
-    height: '38px',
-    fontSize: 'large',
-    border: 'none',
-    outline: 'none',
-  };
-
   const [idToLoadNote, setIdToLoadNote] = useState('test');
   const [noteId, setNoteId] = useState('test_noteId');
   const { notes, addNote, removeNote, noteRequest, saveNote } = useData();
 
-  const [note, setNote] = useState(null);
+  const [activeNote, setActiveNote] = useState(null);
 
   useEffect(() => {
     const getNote = async (id) => {
       const result = await noteRequest(id);
-      setNote(result);
+      setActiveNote(result);
       return result;
     };
     getNote(noteId);
@@ -213,7 +195,7 @@ function Component() {
   return (
     <div>
       <div>
-        {!note ? (
+        {!activeNote ? (
           <>
             <ListOfNotes
               notes={notes}
@@ -250,8 +232,8 @@ function Component() {
         ) : (
           <div className={'bg-yellow-200 p-6 relative shadow-md'}>
             <Redactor
-              note={note}
-              setNote={setNote}
+              activeNote={activeNote}
+              setActiveNote={setActiveNote}
               initId={'second'}
               classes={{ title: 'bg-inherit font-bold' }}
             />
@@ -266,7 +248,7 @@ function Component() {
                 'bg-orange-300 px-4 py-2 text-lg rounded-lg absolute right-3 top-3'
               }
               onClick={() => {
-                setNote(null);
+                setActiveNote(null);
                 setNoteId(null);
               }}
             >

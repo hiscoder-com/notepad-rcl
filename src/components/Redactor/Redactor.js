@@ -4,7 +4,14 @@ import PropTypes from 'prop-types';
 
 import EditorJS from '@editorjs/editorjs';
 
-function Redactor({ classes, initId, editorTools, placeholder, setNote, note }) {
+function Redactor({
+  classes,
+  initId,
+  editorTools,
+  placeholder,
+  setActiveNote,
+  activeNote,
+}) {
   const ejInstance = useRef();
   const [title, setTitle] = useState('');
   useEffect(() => {
@@ -32,8 +39,8 @@ function Redactor({ classes, initId, editorTools, placeholder, setNote, note }) 
       minHeight: 0,
       onReady: () => {
         ejInstance.current = editor;
-        if (note && Object.keys(note).length > 0) {
-          ejInstance?.current.render(note?.data);
+        if (activeNote && Object.keys(activeNote).length > 0) {
+          ejInstance?.current.render(activeNote?.data);
         }
       },
       onChange: async (api) => {
@@ -48,13 +55,13 @@ function Redactor({ classes, initId, editorTools, placeholder, setNote, note }) 
           version: '2.8.1',
         };
         if (content.blocks.length === 0) {
-          setNote((prev) => ({
+          setActiveNote((prev) => ({
             ...prev,
             data: clearData,
           }));
           await ejInstance?.current.render(clearData);
         } else {
-          setNote((prev) => ({
+          setActiveNote((prev) => ({
             ...prev,
             data: content,
           }));
@@ -66,12 +73,14 @@ function Redactor({ classes, initId, editorTools, placeholder, setNote, note }) 
   };
 
   useEffect(() => {
-    if (note && Object.keys(note).includes('title')) {
-      setTitle(note.title);
+    if (activeNote && Object.keys(activeNote).includes('title')) {
+      setTitle(activeNote.title);
     }
-  }, [note]);
+  }, [activeNote]);
+
   return (
     <div className={classes.wrapper}>
+      <div className={classes.parentBC}>{activeNote?.parentBC}</div>
       <input
         className={classes.title}
         type="text"
@@ -79,7 +88,7 @@ function Redactor({ classes, initId, editorTools, placeholder, setNote, note }) 
         maxLength="14"
         value={title}
         onChange={(e) => {
-          setNote((prev) => ({ ...prev, title: e.target.value }));
+          setActiveNote((prev) => ({ ...prev, title: e.target.value }));
           setTitle(e.target.value);
         }}
       ></input>
@@ -91,7 +100,7 @@ function Redactor({ classes, initId, editorTools, placeholder, setNote, note }) 
 Redactor.defaultProps = {
   initId: 'default_id',
   note: {},
-  setNote: () => {},
+  setActiveNote: () => {},
   classes: {},
 };
 
