@@ -113,8 +113,6 @@ function Component() {
         : activeNote.isFolder
         ? activeNote.id
         : activeNote.parent_id,
-      // toggled: true,
-      // active: true,
     };
     setActiveNote(newNote);
     setNotes((prev) => [...prev, newNote]);
@@ -140,7 +138,11 @@ function Component() {
     const newArray = notes.filter((el) => el.id !== id);
     setNotes(newArray);
   };
-
+  const styleTree = {
+    tree: {
+      base: { backgroundColor: '#fff' },
+    },
+  };
   return (
     <div>
       <div>
@@ -151,6 +153,8 @@ function Component() {
               setActiveNote={setActiveNote}
               activeNote={activeNote}
               icons={icons}
+              style={styleTree}
+              classes={{ bgActiveNote: 'bg-gray-200', wrapper: 'flex', title: 'ml-3' }}
             />
             <div className="flex justify-end">
               <button

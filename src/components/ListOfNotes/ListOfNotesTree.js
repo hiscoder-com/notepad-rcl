@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Treebeard } from 'react-treebeard';
 import PropTypes from 'prop-types';
 
-function ListOfNotesTree({ notes, icons, activeNote, setActiveNote }) {
+function ListOfNotesTree({ classes, style, notes, icons, activeNote, setActiveNote }) {
   const makeTree = (id, parentBC, notes) =>
     notes
       .filter(({ parent_id }) => parent_id == id)
@@ -47,41 +47,28 @@ function ListOfNotesTree({ notes, icons, activeNote, setActiveNote }) {
     Container: (props) => {
       return (
         <div
-          className={`flex cursor-pointer  ${
-            activeNote?.id == props.node.id ? 'bg-gray-200' : ''
-          }`}
+          className={`${
+            activeNote?.id == props.node.id ? `${classes?.bgActiveNote}` : ''
+          } ${classes.wrapper}`}
           onClick={() => {
             props.onClick();
           }}
         >
-          {props.node.isFolder
-            ? !props.node.toggled
-              ? icons.closedFolder
-              : icons.openedFolder
-            : icons.note}
-          <div className="ml-3">{props.node.title}</div>
+          <div className={classes.icon}>
+            {props.node.isFolder
+              ? !props.node.toggled
+                ? icons.closedFolder
+                : icons.openedFolder
+              : icons.note}
+          </div>
+          <div className={classes.title}>{props.node.title}</div>
         </div>
       );
     },
   };
   return (
     <Treebeard
-      style={{
-        tree: {
-          base: { backgroundColor: '#fff' },
-          node: {
-            base: {
-              position: 'relative',
-            },
-            link: {
-              cursor: 'pointer',
-              position: 'relative',
-              padding: '0px 5px',
-              display: 'block',
-            },
-          },
-        },
-      }}
+      style={style}
       data={data}
       toggled={true}
       onToggle={onToggle}
@@ -91,38 +78,31 @@ function ListOfNotesTree({ notes, icons, activeNote, setActiveNote }) {
 }
 
 ListOfNotesTree.defaultProps = {
+  activeNote: null,
+  setActiveNote: () => {},
   notes: [],
   classes: {},
-  dateOptions: {},
+  icons: {},
+  style: {},
 };
 
 ListOfNotesTree.propTypes = {
-  dateOptions: PropTypes.object, //TODO сделать ссылку на документацию в MDN,
-  //TODO добавить описание классов classes: wrapper,title,item,delBtn,delBtnIcon,date,text
-  /** add button name */
-  addBtnName: PropTypes.string,
-  /** Receives the id at the entrance  */
-  addNote: PropTypes.func,
-  /** delete button name */
-  delBtnName: PropTypes.string,
-  /** array of existing notes */
+  /** note which highlight in list */
+  activeNote: PropTypes.object,
+  /** state function which set new value of activeNote*/
+  setActiveNote: PropTypes.func,
+  /** array of notes*/
   notes: PropTypes.array,
-  /** Receives the id at the entrance */
-  removeNote: PropTypes.func,
-  /** Receives the id at the entrance */
-  setAddedNoteId: PropTypes.func,
-  style: PropTypes.shape({
-    /** style for add button */
-    addBtn: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    /** style for delete button */
-    delBtn: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    /** style for header block */
-    headerBlockStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    /** style for list of notes */
-    listOfNotes: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    /** style for note */
-    note: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  /** icons of list */
+  icons: PropTypes.shape({
+    /** icons of item at list when folder is close */
+    closedFolder: PropTypes.node,
+    /** icons of item at list when folder is open */
+    openedFolder: PropTypes.node,
+    /** icons of note  */
+    note: PropTypes.node,
   }),
+  style: PropTypes.shape({}),
 };
 
 export default ListOfNotesTree;
