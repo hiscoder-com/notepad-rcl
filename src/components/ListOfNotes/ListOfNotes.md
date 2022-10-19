@@ -23,7 +23,7 @@ function Component() {
             },
           },
         ],
-        version: '2.8.1',
+        version: '2.25.0',
       },
       created_at: new Date('2022-10-15 07:59:58.3642'),
       isFolder: false,
@@ -43,31 +43,13 @@ function Component() {
             },
           },
         ],
-        version: '2.8.1',
+        version: '2.25.0',
       },
       created_at: new Date('2022-10-15 07:59:58.3642'),
       isFolder: false,
       parent_id: null,
     },
   ]);
-
-  useEffect(() => {
-    if (notes.length === 0) {
-      setActiveNote({
-        title: '',
-        id: ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9),
-        data: {
-          blocks: [
-            {
-              type: 'paragraph',
-              data: {},
-            },
-          ],
-          version: '2.8.1',
-        },
-      });
-    }
-  }, [notes]);
 
   useEffect(() => {
     const note = notes.find((el) => el.id === noteId);
@@ -85,7 +67,7 @@ function Component() {
             data: {},
           },
         ],
-        version: '2.8.1',
+        version: '2.25.0',
       },
     };
     setActiveNote(newNote);
@@ -140,8 +122,8 @@ function Component() {
               className={'bg-cyan-300 px-4 py-2  rounded-lg '}
               onClick={() =>
                 setNotes((prev) => {
-                  const array = prev.filter((el) => el.id !== note.id);
-                  array.unshift(note);
+                  const array = prev.filter((el) => el.id !== activeNote.id);
+                  array.unshift(activeNote);
                   return array;
                 })
               }
@@ -239,7 +221,7 @@ function Component() {
             />
             <button
               className={'bg-orange-300 px-4 py-2  rounded-lg '}
-              onClick={() => saveNote(noteId, note)}
+              onClick={() => saveNote(noteId, activeNote)}
             >
               save
             </button>

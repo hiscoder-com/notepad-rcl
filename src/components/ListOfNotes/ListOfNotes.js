@@ -2,8 +2,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 
-import PropTypes, { object } from 'prop-types';
-
+import PropTypes from 'prop-types';
 import Blocks from 'editorjs-blocks-react-renderer';
 
 function ListOfNotes({
@@ -12,16 +11,16 @@ function ListOfNotes({
   delBtnName,
   setNoteId,
   classes,
-  delBtnIcon = '',
-  isShowDate = false,
-  isShowText = false,
+  delBtnIcon,
+  isShowDate,
+  isShowText,
   dateOptions,
 }) {
   return (
     <div className={classes.wrapper}>
       {notes.map((el) => (
         <div key={el.id} className={classes.item} onClick={() => setNoteId(el.id)}>
-          <div className={classes.title}>{el.title || 'untitled'}</div>
+          <div className={classes.title}>{el.title}</div>
           {isShowText && (
             <div className={classes.text}>
               <Blocks data={el.data} />
@@ -35,9 +34,7 @@ function ListOfNotes({
               removeNote(el.id);
             }}
           >
-            {delBtnName && (
-              <div className={classes.delBtnText}>{delBtnName || 'Delete'}</div>
-            )}
+            {delBtnName && <div className={classes.delBtnText}>{delBtnName}</div>}
             {delBtnIcon && <div className={classes.delBtnIcon}>{delBtnIcon}</div>}
           </button>
           {isShowDate && el.created_at && (
@@ -55,35 +52,61 @@ ListOfNotes.defaultProps = {
   notes: [],
   classes: {},
   dateOptions: {},
+  isShowDate: false,
+  isShowText: false,
+  delBtnName: 'Delete',
+  title: 'untitled',
+  removeNote: (id) => {},
+  setNoteId: () => {},
+  addNote: () => {},
+  dBNameRegistration: (name) => {},
+  noteRequest: (id) => {},
+  saveNote: (id, note) => {},
 };
 
 ListOfNotes.propTypes = {
-  dateOptions: PropTypes.object, //TODO сделать ссылку на документацию в MDN,
-  //TODO добавить описание классов classes: wrapper,title,item,delBtn,delBtnIcon,date,text
-  /** add button name */
-  addBtnName: PropTypes.string,
-  /** Receives the id at the entrance  */
-  addNote: PropTypes.func,
-  /** delete button name */
-  delBtnName: PropTypes.string,
-  /** array of existing notes */
-  notes: PropTypes.array,
-  /** Receives the id at the entrance */
-  removeNote: PropTypes.func,
-  /** Receives the id at the entrance */
-  setAddedNoteId: PropTypes.func,
-  style: PropTypes.shape({
-    /** style for add button */
-    addBtn: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    /** style for delete button */
+  classes: PropTypes.shape({
+    /** style for wrapper */
+    wrapper: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    /** style for redactor */
+    redactor: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    /** style for title */
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    /** style to preview each note */
+    item: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    /** style for delBtn */
     delBtn: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    /** style for header block */
-    headerBlockStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    /** style for list of notes */
-    listOfNotes: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    /** style for note */
-    note: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    /** style for delBtnIcon */
+    delBtnIcon: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    /** style for date */
+    date: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    /** style for text */
+    text: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   }),
+  /** you can change the date representation (https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString) */
+  dateOptions: PropTypes.object,
+  /** delete button text */
+  delBtnName: PropTypes.string,
+  /** note title in preview */
+  title: PropTypes.string,
+  /** an array of existing notes. Required to display a list of notes */
+  notes: PropTypes.array,
+  /** gets the id of the note to be deleted as input */
+  removeNote: PropTypes.func,
+  /** pass the id of the selected note to the setter */
+  setNoteId: PropTypes.func,
+  /** if true, display note creation date during note preview */
+  isShowDate: PropTypes.bool,
+  /** if true, display note text during note preview */
+  isShowText: PropTypes.bool,
+  /** pass a name for your DB localforage */
+  noteRequest: PropTypes.func,
+  /** the function saves the note in localforage. We pass id to get a note from localforage and pass the note itself to save it */
+  saveNote: PropTypes.func,
+  /** pass a name for your DB localforage */
+  dBNameRegistration: PropTypes.func,
+  /** receives the id at the entrance  */
+  addNote: PropTypes.func,
 };
 
 export default ListOfNotes;

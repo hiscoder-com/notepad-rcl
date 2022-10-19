@@ -1,14 +1,23 @@
 ### Using this hook, we save data to the localforage database
 
 ```jsx
-import React from 'react';
+import { useState, useEffect } from 'react';
+
 import { useData, Redactor } from '@texttree/notepad-rcl';
 
-const { getNote, saveNote } = useData();
-
-<Redactor getNote={getNote} saveNote={saveNote} initId="first" />;
+const { addNote } = useData();
+<>
+  <Redactor initId="first" />
+  <button
+    className="text-3xl bg-gray-400 px-4 py-1 rounded-xl hover:bg-orange-300"
+    onClick={addNote}
+  >
+    +
+  </button>
+</>;
 ```
 
+<!--
 ### If you need to set the database name, you can use the dBNameRegistration method
 
 ```jsx
@@ -20,8 +29,9 @@ const { dBNameRegistration, getNote, saveNote } = useData();
 dBNameRegistration('NotepadRCL');
 
 <Redactor getNote={getNote} saveNote={saveNote} initId={'second'} />;
-```
+``` -->
 
+<!--
 ### You can also get and edit data from the database using the useState hook.
 
 ```jsx
@@ -69,4 +79,4 @@ function Component() {
 }
 
 <Component />;
-```
+``` -->

@@ -1,4 +1,4 @@
-import { default as React, useState, useEffect, useRef, useMemo } from 'react';
+import { default as React, useState, useEffect, useRef } from 'react';
 
 import PropTypes from 'prop-types';
 
@@ -34,7 +34,7 @@ function Redactor({
   const initEditor = async () => {
     const editor = new EditorJS({
       holder: initId,
-      placeholder: placeholder || 'Let`s write an awesome note!',
+      placeholder: placeholder,
       logLevel: 'ERROR',
       minHeight: 0,
       onReady: () => {
@@ -52,7 +52,7 @@ function Redactor({
               data: {},
             },
           ],
-          version: '2.8.1',
+          version: '2.25.0',
         };
         if (content.blocks.length === 0) {
           setActiveNote((prev) => ({
@@ -98,22 +98,33 @@ function Redactor({
 }
 
 Redactor.defaultProps = {
+  editorTools: {},
   initId: 'default_id',
-  note: {},
+  placeholder: 'Let`s write an awesome note!',
+  activeNote: {},
   setActiveNote: () => {},
   classes: {},
 };
 
 Redactor.propTypes = {
-  // classes: PropTypes.shape, //TODO переписать проптайпсы  - здесь используется 3 класса: wrapper, redactor, title
+  classes: PropTypes.shape({
+    /** style for wrapper */
+    wrapper: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    /** style for redactor */
+    redactor: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    /** style for title */
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  }),
   /** Write a new property for the Tools object and pass it to the Editor via the addTools variable */
   editorTools: PropTypes.object,
-  /** note ID */
-  id: PropTypes.string,
+  /** note ID. To run Redactor, you need to assign an ID to the note */
+  initId: PropTypes.string,
   /** note Placeholder */
   placeholder: PropTypes.string,
-  /** note save method (by default note is stored in localforage).
-Receives the id title and note at the entrance */
+  /** an object that contains all the properties of the note */
+  activeNote: PropTypes.object,
+  /** pass a new note object to the setter */
+  setActiveNote: PropTypes.object,
 };
 
 export default Redactor;
