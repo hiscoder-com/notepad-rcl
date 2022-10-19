@@ -2,10 +2,10 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useEffect, useState } from 'react';
 import { Treebeard } from 'react-treebeard';
-import PropTypes, { object } from 'prop-types';
+import PropTypes from 'prop-types';
 
-function ListOfNotesTree({ notes, icons, nodeId, activeNote, setActiveNote }) {
-  const makeForest = (id, parentBC, notes) =>
+function ListOfNotesTree({ notes, icons, activeNote, setActiveNote }) {
+  const makeTree = (id, parentBC, notes) =>
     notes
       .filter(({ parent_id }) => parent_id == id)
       .map(({ id, title, ...other }) => ({
@@ -13,12 +13,12 @@ function ListOfNotesTree({ notes, icons, nodeId, activeNote, setActiveNote }) {
         ...other,
         title,
         parentBC,
-        children: makeForest(id, parentBC + '/' + title, notes),
+        children: makeTree(id, parentBC + '/' + title, notes),
       }));
 
   const [data, setData] = useState({});
   useEffect(() => {
-    const tree = makeForest(null, '', notes);
+    const tree = makeTree(null, '', notes);
 
     setData({
       name: 'root',
@@ -27,7 +27,7 @@ function ListOfNotesTree({ notes, icons, nodeId, activeNote, setActiveNote }) {
       children: tree,
     });
   }, [notes]);
-  console.log({ data });
+
   const onToggle = (node, toggled) => {
     if (activeNote) {
       activeNote.active = false;
@@ -41,12 +41,10 @@ function ListOfNotesTree({ notes, icons, nodeId, activeNote, setActiveNote }) {
   };
   const decorators = {
     Toggle: (props) => {
-      console.log({ props });
       return <div style={props.style}></div>;
     },
 
     Container: (props) => {
-      console.log(props);
       return (
         <div
           className={`flex cursor-pointer  ${
@@ -80,9 +78,6 @@ function ListOfNotesTree({ notes, icons, nodeId, activeNote, setActiveNote }) {
               position: 'relative',
               padding: '0px 5px',
               display: 'block',
-            },
-            activeLink: {
-              background: '#31363F',
             },
           },
         },
