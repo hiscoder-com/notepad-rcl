@@ -4,7 +4,17 @@ import React, { useEffect, useState } from 'react';
 import { Treebeard } from 'react-treebeard';
 import PropTypes from 'prop-types';
 
-function ListOfNotesTree({ classes, style, notes, icons, activeNote, setActiveNote }) {
+function ListOfNotesTree({
+  classes,
+  style,
+  notes,
+  icons,
+  activeNote,
+  setActiveNote,
+  removeNote,
+  delBtnIcon,
+  delBtnName,
+}) {
   const makeTree = (id, parentBC, notes) =>
     notes
       .filter(({ parent_id }) => parent_id == id)
@@ -21,7 +31,7 @@ function ListOfNotesTree({ classes, style, notes, icons, activeNote, setActiveNo
     const tree = makeTree(null, '', notes);
 
     setData({
-      name: 'root',
+      title: 'root',
       toggled: true,
       isFolder: true,
       children: tree,
@@ -62,6 +72,16 @@ function ListOfNotesTree({ classes, style, notes, icons, activeNote, setActiveNo
               : icons.note}
           </div>
           <div className={classes.title}>{props.node.title}</div>
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              removeNote(props.node.id);
+            }}
+            className={classes.delBtn}
+          >
+            {delBtnIcon}
+            {delBtnName}
+          </div>
         </div>
       );
     },
@@ -84,6 +104,8 @@ ListOfNotesTree.defaultProps = {
   classes: {},
   icons: {},
   style: {},
+  delBtnIcon: '',
+  delBtnName: '',
 };
 
 ListOfNotesTree.propTypes = {
@@ -93,6 +115,7 @@ ListOfNotesTree.propTypes = {
   setActiveNote: PropTypes.func,
   /** array of notes*/
   notes: PropTypes.array,
+  classes: PropTypes.object,
   /** icons of list */
   icons: PropTypes.shape({
     /** icons of item at list when folder is close */
@@ -102,6 +125,8 @@ ListOfNotesTree.propTypes = {
     /** icons of note  */
     note: PropTypes.node,
   }),
+  delBtnIcon: PropTypes.node,
+  delBtnName: PropTypes.string,
   style: PropTypes.shape({}),
 };
 

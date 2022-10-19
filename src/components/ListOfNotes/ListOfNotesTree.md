@@ -133,8 +133,9 @@ function Component() {
   };
 
   const removeNote = (id) => {
-    const newArray = notes.filter((el) => el.id !== id);
-    setNotes(newArray);
+    setNotes((prev) => {
+      return prev.filter((el) => el.id !== id);
+    });
   };
   const styleTree = {
     tree: {
@@ -152,9 +153,23 @@ function Component() {
               activeNote={activeNote}
               icons={icons}
               style={styleTree}
-              classes={{ bgActiveNote: 'bg-gray-200', wrapper: 'flex', title: 'ml-3' }}
+              classes={{
+                bgActiveNote: 'bg-gray-200',
+                wrapper: 'flex cursor-pointer',
+                title: 'ml-3',
+                delBtn: 'ml-10',
+              }}
+              removeNote={removeNote}
+              delBtnName={'delete'}
+              delBtnIcon=""
             />
             <div className="flex justify-end">
+              <button
+                className="text-3xl bg-cyan-400 px-4 py-1 rounded-xl hover:bg-cyan-300"
+                onClick={() => removeNote(activeNote.id)}
+              >
+                Delete
+              </button>
               <button
                 className="text-3xl bg-cyan-400 px-4 py-1 rounded-xl hover:bg-cyan-300"
                 onClick={addNote}
