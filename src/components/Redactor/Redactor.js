@@ -124,7 +124,7 @@ Redactor.propTypes = {
   /** an object that contains all the properties of the note */
   activeNote: PropTypes.object,
   /** pass a new note object to the setter */
-  setActiveNote: PropTypes.object,
+  setActiveNote: PropTypes.func,
 };
 
 export default Redactor;

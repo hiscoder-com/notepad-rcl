@@ -127,8 +127,6 @@ function Component() {
         ? activeNote.id
         : activeNote.parent_id,
       isFolder: true,
-      toggled: true,
-      active: true,
     };
     setActiveNote(newFolder);
     setNotes((prev) => [...prev, newFolder]);
