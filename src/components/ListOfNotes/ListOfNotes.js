@@ -54,7 +54,7 @@ ListOfNotes.defaultProps = {
   dateOptions: {},
   isShowDate: false,
   isShowText: false,
-  delBtnName: 'Delete',
+  delBtnName: '',
   title: 'untitled',
   removeNote: (id) => {},
   setNoteId: () => {},

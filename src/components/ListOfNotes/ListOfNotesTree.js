@@ -33,7 +33,7 @@ function ListOfNotesTree({
     setData({
       title: 'root',
       toggled: true,
-      isFolder: true,
+      is_folder: true,
       children: tree,
     });
   }, [notes]);
@@ -65,7 +65,7 @@ function ListOfNotesTree({
           }}
         >
           <div className={classes.icon}>
-            {props.node.isFolder
+            {props.node.is_folder
               ? !props.node.toggled
                 ? icons.closedFolder
                 : icons.openedFolder
