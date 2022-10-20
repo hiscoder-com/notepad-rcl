@@ -27,6 +27,7 @@ function ListOfNotesTree({
       }));
 
   const [data, setData] = useState({});
+
   useEffect(() => {
     const tree = makeTree(null, '', notes);
 
@@ -115,6 +116,7 @@ ListOfNotesTree.propTypes = {
   setActiveNote: PropTypes.func,
   /** array of notes*/
   notes: PropTypes.array,
+  /**  */
   classes: PropTypes.object,
   /** icons of list */
   icons: PropTypes.shape({
@@ -125,7 +127,9 @@ ListOfNotesTree.propTypes = {
     /** icons of note  */
     note: PropTypes.node,
   }),
+  /**  */
   delBtnIcon: PropTypes.node,
+  /**  */
   delBtnName: PropTypes.string,
   style: PropTypes.shape({}),
 };

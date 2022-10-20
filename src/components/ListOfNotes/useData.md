@@ -5,14 +5,54 @@ import { useState, useEffect } from 'react';
 
 import { useData, Redactor } from '@texttree/notepad-rcl';
 
-const { addNote } = useData();
+const initId = 'test_id';
+
+const note = {
+  id: 'note00xef4p5p',
+  title: 'New lf-note',
+  data: {
+    blocks: [
+      {
+        type: 'paragraph',
+        data: { text: 'test' },
+      },
+    ],
+    version: '2.25.0',
+  },
+  created_at: '2022-10-20T11:39:04.244Z',
+  parent_id: null,
+  isFolder: false,
+};
+const [activeNote, setActiveNote] = useState({});
+const [isSaving, setIsSaving] = useState(false);
+const { saveNote, noteRequest } = useData();
+
+useEffect(() => {
+  setActiveNote(note);
+}, []);
+
+useEffect(() => {
+  const getNote = async (id) => {
+    const result = await noteRequest(id);
+    if (result === null) {
+      return;
+    }
+    setActiveNote(result);
+  };
+  getNote('id_note');
+}, [isSaving]);
+
 <>
-  <Redactor initId="first" />
+  <Redactor initId={initId} activeNote={activeNote} setActiveNote={setActiveNote} />
   <button
-    className="text-3xl bg-gray-400 px-4 py-1 rounded-xl hover:bg-orange-300"
-    onClick={addNote}
+    className={'bg-orange-300 px-4 py-2  rounded-lg '}
+    onClick={() => {
+      setIsSaving(true);
+      saveNote('note00xef4p5p', activeNote);
+      setIsSaving(false);
+    }}
   >
-    +
+    save
   </button>
 </>;
 ```

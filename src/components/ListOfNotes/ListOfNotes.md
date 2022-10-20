@@ -164,7 +164,6 @@ function Component() {
   const { notes, addNote, removeNote, noteRequest, saveNote } = useData();
 
   const [activeNote, setActiveNote] = useState(null);
-
   useEffect(() => {
     const getNote = async (id) => {
       const result = await noteRequest(id);
@@ -173,7 +172,6 @@ function Component() {
     };
     getNote(noteId);
   }, [noteId]);
-
   return (
     <div>
       <div>

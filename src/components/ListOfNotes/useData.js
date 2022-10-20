@@ -44,13 +44,17 @@ function useData() {
 
   const saveNote = async (id, note) => {
     setIsSaving(true);
+    if (!note) {
+      return;
+    }
+    const { title, data } = note;
     await localforage.getItem(id).then(function (value) {
       value
         ? localforage.setItem(id, {
             ...note,
           })
         : localforage.setItem(id, {
-            id,
+            id: note.id,
             title,
             data,
             created_at: new Date(),
