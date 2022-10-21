@@ -23,7 +23,7 @@ let sections = [
     name: 'Getting a list of notes Block',
     components: [
       'src/components/ListOfNotes/ListOfNotes.js',
-      'src/components/ListOfNotes/ListOfNotesTree.js',
+      // 'src/components/ListOfNotes/ListOfNotesTree.js',
     ],
   },
 ];
@@ -85,7 +85,7 @@ module.exports = {
   usageMode: 'expand',
   pagePerSection: true,
   getComponentPathLine(componentPath) {
-    const componentName = path.basename(componentPath, '.js');
+    const componentName = path.basename(componentPath, '.js').split('.')[0];
     return `import { ${componentName} } from '${name}';`;
   },
   webpackConfig: {

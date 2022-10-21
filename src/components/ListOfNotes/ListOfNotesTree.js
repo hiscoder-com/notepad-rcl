@@ -1,7 +1,9 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useEffect, useState } from 'react';
+
 import { Treebeard } from 'react-treebeard';
+
 import PropTypes from 'prop-types';
 
 function ListOfNotesTree({
@@ -50,6 +52,7 @@ function ListOfNotesTree({
     setActiveNote(node);
     setData(Object.assign({}, data));
   };
+
   const decorators = {
     Toggle: (props) => {
       return <div style={props.style}></div>;
@@ -87,6 +90,7 @@ function ListOfNotesTree({
       );
     },
   };
+
   return (
     <Treebeard
       style={style}

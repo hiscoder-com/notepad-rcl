@@ -13,7 +13,9 @@ function Redactor({
   activeNote,
 }) {
   const ejInstance = useRef();
+
   const [title, setTitle] = useState('');
+
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!ejInstance?.current) {

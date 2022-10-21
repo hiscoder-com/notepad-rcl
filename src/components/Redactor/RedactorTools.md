@@ -25,10 +25,10 @@
 #### Let's add **@editorjs/header** as an dependency into our app.
 
 ```jsx
+import { Redactor } from '@texttree/notepad-rcl';
+
 import Header from '@editorjs/header';
 import ToggleBlock from 'editorjs-toggle-block';
-
-import { Redactor } from '@texttree/notepad-rcl';
 
 const addTools = {
   header: Header,

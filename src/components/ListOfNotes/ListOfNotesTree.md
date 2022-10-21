@@ -2,8 +2,11 @@
 
 ```jsx
 import { useState, useEffect } from 'react';
+
 import { ListOfNotesTree, Redactor } from '@texttree/notepad-rcl';
+
 import Blocks from 'editorjs-blocks-react-renderer';
+
 const icons = {
   openedFolder: (
     <svg
@@ -42,6 +45,7 @@ const icons = {
     </svg>
   ),
 };
+
 function Component() {
   // этот id нужен для сохранения заметки в БД
 
@@ -117,6 +121,7 @@ function Component() {
     setActiveNote(newNote);
     setNotes((prev) => [...prev, newNote]);
   };
+
   const addFolder = () => {
     const newFolder = {
       id: ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9),
@@ -137,11 +142,13 @@ function Component() {
       return prev.filter((el) => el.id !== id);
     });
   };
+
   const styleTree = {
     tree: {
       base: { backgroundColor: '#fff' },
     },
   };
+
   return (
     <div>
       <div>

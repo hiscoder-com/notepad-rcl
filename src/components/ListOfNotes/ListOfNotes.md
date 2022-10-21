@@ -2,7 +2,9 @@
 
 ```jsx
 import { useState, useEffect } from 'react';
+
 import { ListOfNotes, Redactor } from '@texttree/notepad-rcl';
+
 import Blocks from 'editorjs-blocks-react-renderer';
 
 function Component() {
@@ -78,6 +80,7 @@ function Component() {
     const newArray = notes.filter((el) => el.id !== id);
     setNotes(newArray);
   };
+
   return (
     <div>
       <div>
@@ -155,15 +158,20 @@ function Component() {
 
 ```jsx
 import { useState, useEffect } from 'react';
+
 import { ListOfNotes, useData, Redactor } from '@texttree/notepad-rcl';
+
 import Blocks from 'editorjs-blocks-react-renderer';
+
 const wasteIcon = <div>fff</div>;
+
 function Component() {
   const [idToLoadNote, setIdToLoadNote] = useState('test');
   const [noteId, setNoteId] = useState('test_noteId');
   const { notes, addNote, removeNote, noteRequest, saveNote } = useData();
 
   const [activeNote, setActiveNote] = useState(null);
+
   useEffect(() => {
     const getNote = async (id) => {
       const result = await noteRequest(id);
@@ -172,6 +180,7 @@ function Component() {
     };
     getNote(noteId);
   }, [noteId]);
+
   return (
     <div>
       <div>

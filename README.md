@@ -17,20 +17,21 @@
 
   <br/>
 
-  <a href="https://notepad-rcl.netlify.app/">View Demo</a>
-  ·
-  <a href="https://github.com/texttree/notepad-rcl/issues">Report Bug</a>
-  ·
-  <a href="https://github.com/texttree/notepad-rcl/issues">Request Feature</a>
+<a href="https://notepad-rcl.netlify.app/">View Demo</a>
+·
+<a href="https://github.com/texttree/notepad-rcl/issues">Report Bug</a>
+·
+<a href="https://github.com/texttree/notepad-rcl/issues">Request Feature</a>
+
 </div>
   <br/>
 
-  **Key features:**
-  <br/>
+**Key features:**
+<br/>
 
-  - It is a block-styled editor based on [Editor.js](https://editorjs.io/)
-  - There is an autosave in browser
-  - Storing multiple notes
+- It is a block-styled editor based on [Editor.js](https://editorjs.io/)
+- There is an autosave in browser
+- Storing multiple notes
 
   <br/>
 
@@ -64,11 +65,9 @@
 
 ## About The Project
 
-
 <a href="https://github.com/texttree/notepad-rcl">
     <img src="images/editorjs-screenshot.png" >
   </a>
-
 
 **Purpose**
 
@@ -83,7 +82,6 @@
 - While reading, studying Scripture, or translating, it is often necessary to take notes. You have to use third party apps.
   <br/>
 
-
 ### Built With
 
 - [React](https://reactjs.org/)
@@ -92,7 +90,6 @@
 <br/>
 
 ## Getting Started
-
 
 ### Installation
 
@@ -108,12 +105,12 @@ or
 npm install @texttree/notepad-rcl
 ```
 
-2. Import Editor in app:
+2. Import Redactor in app:
 
 ```js
-import { Editor } from '@texttree/notepad-rcl';
+import { Redactor } from '@texttree/notepad-rcl';
 
-<Editor />;
+<Redactor />;
 ```
 
 For more examples, please refer to the [Styleguidist link](https://notepad-rcl.netlify.app/)
