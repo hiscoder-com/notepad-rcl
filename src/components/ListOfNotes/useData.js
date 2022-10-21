@@ -2,12 +2,6 @@ import { useState, useEffect } from 'react';
 
 import localforage from 'localforage';
 
-/**
- *
- * @param {*} test
- * @returns
- */
-
 function useData() {
   const [notes, setNotes] = useState([]);
   const [isSaving, setIsSaving] = useState(false);

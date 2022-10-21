@@ -19,12 +19,12 @@ useData.propTypes = {
   notes: PropTypes.array,
   /** gets the id of the note to be deleted as input */
   removeNote: PropTypes.func,
-  /** pass a name for your DB localforage */
+  /** method for getting notes from the database. We pass the id of the note, we get the object with the note */
   noteRequest: PropTypes.func,
-  /** the function saves the note in localforage. We pass id to get a note from localforage and pass the note itself to save it */
+  /** note saving method. The function saves the annotation using localforage. We pass in the id to get the note from localforage and pass the note itself to save it. */
   saveNote: PropTypes.func,
-  /** pass a name for your DB localforage */
+  /** pass a name for your DB */
   dBNameRegistration: PropTypes.func,
-  /** receives the id at the entrance  */
+  /** method for adding a new note to the database. Creates an empty note and saves to the database  */
   addNote: PropTypes.func,
 };

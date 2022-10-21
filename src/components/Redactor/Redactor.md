@@ -1,12 +1,12 @@
 ```jsx
 import { Redactor } from '@texttree/notepad-rcl';
 
-<Redactor initId="first_note" />;
+<Redactor />;
 ```
 
 ### **id**
 
-#### If you want to use an Editor twice or more, give each Editor a unique **`id`**
+#### If you want to use an Redactor twice or more, give each Redactor a unique **`id`**
 
 ```jsx
 import { useState } from 'react';
@@ -27,7 +27,7 @@ import { Redactor } from '@texttree/notepad-rcl';
 
 const changePlaceholder = 'changed default text';
 
-<Redactor itor initId="placeholder_sample" placeholder={changePlaceholder} />;
+<Redactor initId="placeholder_sample" placeholder={changePlaceholder} />;
 ```
 
 <!-- ### **Save note**

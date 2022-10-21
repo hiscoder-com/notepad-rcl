@@ -5,8 +5,6 @@ import { useState, useEffect } from 'react';
 
 import { ListOfNotes, useData, Redactor } from '@texttree/notepad-rcl';
 
-const wasteIcon = <div>fff</div>;
-
 function Component() {
   const { notes, addNote, removeNote, noteRequest, saveNote } = useData();
 
