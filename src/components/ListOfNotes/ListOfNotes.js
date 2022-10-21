@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 
 import PropTypes from 'prop-types';
@@ -19,6 +17,7 @@ function ListOfNotes({
   return (
     <div className={classes.wrapper}>
       {notes.map((el) => (
+        // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
         <div key={el.id} className={classes.item} onClick={() => setNoteId(el.id)}>
           <div className={classes.title}>{el.title}</div>
           {isShowText && (
