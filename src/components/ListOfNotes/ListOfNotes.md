@@ -5,8 +5,6 @@ import { useState, useEffect } from 'react';
 
 import { ListOfNotes, Redactor } from '@texttree/notepad-rcl';
 
-import Blocks from 'editorjs-blocks-react-renderer';
-
 function Component() {
   const [noteId, setNoteId] = useState('test_noteId');
   const [activeNote, setActiveNote] = useState(null);
@@ -160,10 +158,6 @@ function Component() {
 import { useState, useEffect } from 'react';
 
 import { ListOfNotes, useData, Redactor } from '@texttree/notepad-rcl';
-
-import Blocks from 'editorjs-blocks-react-renderer';
-
-const wasteIcon = <div>fff</div>;
 
 function Component() {
   const [idToLoadNote, setIdToLoadNote] = useState('test');

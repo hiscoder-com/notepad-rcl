@@ -65,21 +65,21 @@ ListOfNotes.defaultProps = {
 
 ListOfNotes.propTypes = {
   classes: PropTypes.shape({
-    /** classes for wrapper */
+    /** class for wrapper */
     wrapper: PropTypes.string,
-    /** classes for redactor */
+    /** class for redactor */
     redactor: PropTypes.string,
-    /** classes for title */
+    /** class for title */
     title: PropTypes.string,
-    /** classes to preview each note */
+    /** class to preview each note */
     item: PropTypes.string,
-    /** classes for delBtn */
+    /** class for delBtn */
     delBtn: PropTypes.string,
-    /** classes for delBtnIcon */
+    /** class for delBtnIcon */
     delBtnIcon: PropTypes.string,
-    /** classes for date */
+    /** class for date */
     date: PropTypes.string,
-    /** classes for text */
+    /** class for text */
     text: PropTypes.string,
   }),
   /** you can change the date representation (https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString) */

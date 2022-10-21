@@ -5,8 +5,6 @@ import { useState, useEffect } from 'react';
 
 import { ListOfNotesTree, Redactor } from '@texttree/notepad-rcl';
 
-import Blocks from 'editorjs-blocks-react-renderer';
-
 const icons = {
   openedFolder: (
     <svg

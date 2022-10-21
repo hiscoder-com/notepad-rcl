@@ -5,8 +5,6 @@ import { useState, useEffect } from 'react';
 
 import { ListOfNotes, useData, Redactor } from '@texttree/notepad-rcl';
 
-import Blocks from 'editorjs-blocks-react-renderer';
-
 const wasteIcon = <div>fff</div>;
 
 function Component() {

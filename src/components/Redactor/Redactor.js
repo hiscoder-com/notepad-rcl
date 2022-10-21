@@ -110,11 +110,11 @@ Redactor.defaultProps = {
 
 Redactor.propTypes = {
   classes: PropTypes.shape({
-    /** style for wrapper */
+    /** class for wrapper */
     wrapper: PropTypes.string,
-    /** style for redactor */
+    /** class for redactor */
     redactor: PropTypes.string,
-    /** style for title */
+    /** class for title */
     title: PropTypes.string,
   }),
   /** Write a new property for the Tools object and pass it to the Editor via the addTools variable */
