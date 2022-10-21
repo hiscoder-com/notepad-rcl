@@ -66,22 +66,22 @@ ListOfNotes.defaultProps = {
 
 ListOfNotes.propTypes = {
   classes: PropTypes.shape({
-    /** style for wrapper */
-    wrapper: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    /** style for redactor */
-    redactor: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    /** style for title */
-    title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    /** style to preview each note */
-    item: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    /** style for delBtn */
-    delBtn: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    /** style for delBtnIcon */
-    delBtnIcon: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    /** style for date */
-    date: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    /** style for text */
-    text: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    /** classes for wrapper */
+    wrapper: PropTypes.string,
+    /** classes for redactor */
+    redactor: PropTypes.string,
+    /** classes for title */
+    title: PropTypes.string,
+    /** classes to preview each note */
+    item: PropTypes.string,
+    /** classes for delBtn */
+    delBtn: PropTypes.string,
+    /** classes for delBtnIcon */
+    delBtnIcon: PropTypes.string,
+    /** classes for date */
+    date: PropTypes.string,
+    /** classes for text */
+    text: PropTypes.string,
   }),
   /** you can change the date representation (https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString) */
   dateOptions: PropTypes.object,
