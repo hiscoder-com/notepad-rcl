@@ -2,15 +2,8 @@
 
 ## v0.1.0
 
-### Added or Changed
+### Added
 
-- Added this changelog :)
-- Fixed typos in both templates
-- Back to top links
-- Added more "Built With" frameworks/libraries
-- Changed table of contents to start collapsed
-- Added checkboxes for major features on roadmap
-
-### Removed
-
-- Some packages/libraries from acknowledgements I no longer use
+- Redactor (the component is a note with a title)
+- RedactorTools (plug-in instruments)
+- hook useData

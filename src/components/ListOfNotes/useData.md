@@ -1,4 +1,4 @@
-### Using this hook, we save data to the localforage database
+### With this hook, we save the note to the database using localforage
 
 ```jsx
 import { useState, useEffect } from 'react';

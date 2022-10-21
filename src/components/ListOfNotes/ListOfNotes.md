@@ -152,7 +152,7 @@ function Component() {
 <Component />;
 ```
 
-### **Save using localforage**
+### **save note to database using localforage**
 
 ```jsx
 import { useState, useEffect } from 'react';
