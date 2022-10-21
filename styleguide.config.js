@@ -9,15 +9,22 @@ let sections = [
   },
   {
     name: 'Notepad Block',
-    components: ['src/components/Editor/Editor.js'],
+    components: ['src/components/Redactor/Redactor.js'],
   },
   {
-    name: 'EditorTools',
-    content: 'src/components/Editor/EditorTools.md',
+    name: 'RedactorTools',
+    content: 'src/components/Redactor/RedactorTools.md',
+  },
+  {
+    name: 'UseData Block',
+    components: ['src/components/ListOfNotes/useData.jsx'],
   },
   {
     name: 'Getting a list of notes Block',
-    components: ['src/components/ListOfNotes/ListOfNotes.js'],
+    components: [
+      'src/components/ListOfNotes/ListOfNotes.js',
+      // 'src/components/ListOfNotes/ListOfNotesTree.js',
+    ],
   },
 ];
 
@@ -33,13 +40,18 @@ module.exports = {
       meta: [
         {
           name: 'description',
-          content: 'React component library template',
+          content: 'React component library for note taking',
         },
       ],
       links: [
         {
           rel: 'stylesheet',
           href: 'https://fonts.googleapis.com/css?family=Fira+Sans:400,600',
+        },
+      ],
+      scripts: [
+        {
+          src: 'https://cdn.tailwindcss.com',
         },
       ],
     },
@@ -73,14 +85,14 @@ module.exports = {
   usageMode: 'expand',
   pagePerSection: true,
   getComponentPathLine(componentPath) {
-    const componentName = path.basename(componentPath, '.js');
+    const componentName = path.basename(componentPath, '.js').split('.')[0];
     return `import { ${componentName} } from '${name}';`;
   },
   webpackConfig: {
     module: {
       rules: [
         {
-          test: /\.js$/,
+          test: /\.jsx?$/,
           exclude: /node_modules/,
           loader: 'babel-loader',
         },
