@@ -86,6 +86,7 @@
 
 - [React](https://reactjs.org/)
 - [Editor.js](https://editorjs.io/)
+- [localforage](https://localforage.github.io/localForage/)
 
 <br/>
 
