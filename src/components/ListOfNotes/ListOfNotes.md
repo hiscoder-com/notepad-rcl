@@ -160,7 +160,6 @@ import { useState, useEffect } from 'react';
 import { ListOfNotes, useData, Redactor } from '@texttree/notepad-rcl';
 
 function Component() {
-  const [idToLoadNote, setIdToLoadNote] = useState('test');
   const [noteId, setNoteId] = useState('test_noteId');
   const { notes, addNote, removeNote, noteRequest, saveNote } = useData();
 

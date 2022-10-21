@@ -10,7 +10,6 @@ const wasteIcon = <div>fff</div>;
 function Component() {
   const { notes, addNote, removeNote, noteRequest, saveNote } = useData();
 
-  const [idToLoadNote, setIdToLoadNote] = useState('test');
   const [noteId, setNoteId] = useState('test_noteId');
   const [activeNote, setActiveNote] = useState(null);
 
