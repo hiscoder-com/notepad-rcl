@@ -2,87 +2,19 @@ import { default as React, useState, useEffect, useRef } from 'react';
 
 import PropTypes from 'prop-types';
 
-import EditorJS from '@editorjs/editorjs';
+import { createReactEditorJS } from 'react-editor-js';
 
 function Redactor({
   classes,
-  initId,
   editorTools,
   placeholder,
   setActiveNote,
   activeNote,
   readOnly,
 }) {
-  const ejInstance = useRef();
+  const ReactEditorJS = createReactEditorJS();
 
   const [title, setTitle] = useState('');
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!ejInstance?.current) {
-        initEditor();
-      }
-      return () => {
-        if (ejInstance?.current) {
-          ejInstance.current.destroy();
-          ejInstance.current = null;
-        }
-      };
-    }, 100);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
-
-  const initEditor = async () => {
-    const editor = new EditorJS({
-      holder: initId,
-      placeholder: placeholder,
-      logLevel: 'ERROR',
-      minHeight: 0,
-      onReady: () => {
-        console.log(editor);
-        ejInstance.current = editor;
-        if (activeNote && Object.keys(activeNote).length > 0) {
-          ejInstance?.current.render(activeNote?.data);
-        }
-      },
-      onChange: async (api) => {
-        let content = await api.saver.save();
-        const clearData = {
-          blocks: [
-            {
-              type: 'paragraph',
-              data: {},
-            },
-          ],
-          version: '2.25.0',
-        };
-        if (content.blocks.length === 0) {
-          setActiveNote((prev) => ({
-            ...prev,
-            data: clearData,
-          }));
-          ejInstance?.current
-            .render(clearData)
-            .then((result) => {
-              ejInstance?.current.focus();
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        } else {
-          setActiveNote((prev) => ({
-            ...prev,
-            data: content,
-          }));
-        }
-      },
-      autofocus: false,
-      tools: editorTools,
-      readOnly,
-    });
-  };
 
   useEffect(() => {
     if (activeNote && Object.keys(activeNote).includes('title')) {
@@ -105,7 +37,20 @@ function Redactor({
       >
         {title}
       </div>
-      <div className={classes.redactor} id={initId}></div>
+      <ReactEditorJS
+        className={classes.redactor}
+        onChange={async (e) => {
+          const content = await e.saver.save();
+          setActiveNote((prev) => ({ ...prev, data: content }));
+        }}
+        autofocus={false}
+        defaultValue={activeNote?.data}
+        placeholder={placeholder}
+        readOnly={readOnly}
+        tools={editorTools}
+        minHeight={0}
+        logLevel="ERROR"
+      />
     </div>
   );
 }
@@ -117,6 +62,7 @@ Redactor.defaultProps = {
   activeNote: {},
   setActiveNote: () => {},
   classes: {},
+  readOnly: false,
 };
 
 Redactor.propTypes = {

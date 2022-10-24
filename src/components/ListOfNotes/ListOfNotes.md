@@ -120,7 +120,7 @@ function Component() {
               }}
             />
             <button
-              className={'bg-cyan-300 px-4 py-2  rounded-lg '}
+              className={'bg-cyan-300 px-4 py-2 rounded-lg'}
               onClick={() =>
                 setNotes((prev) => {
                   const array = prev.filter((el) => el.id !== activeNote.id);
