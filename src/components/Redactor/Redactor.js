@@ -11,6 +11,7 @@ function Redactor({
   placeholder,
   setActiveNote,
   activeNote,
+  readOnly,
 }) {
   const ejInstance = useRef();
 
@@ -40,6 +41,7 @@ function Redactor({
       logLevel: 'ERROR',
       minHeight: 0,
       onReady: () => {
+        console.log(editor);
         ejInstance.current = editor;
         if (activeNote && Object.keys(activeNote).length > 0) {
           ejInstance?.current.render(activeNote?.data);
@@ -61,7 +63,14 @@ function Redactor({
             ...prev,
             data: clearData,
           }));
-          await ejInstance?.current.render(clearData);
+          ejInstance?.current
+            .render(clearData)
+            .then((result) => {
+              ejInstance?.current.focus();
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         } else {
           setActiveNote((prev) => ({
             ...prev,
@@ -71,6 +80,7 @@ function Redactor({
       },
       autofocus: false,
       tools: editorTools,
+      readOnly,
     });
   };
 
@@ -79,21 +89,22 @@ function Redactor({
       setTitle(activeNote.title);
     }
   }, [activeNote]);
-
   return (
     <div className={classes.wrapper}>
       <div className={classes.parentBC}>{activeNote?.parentBC}</div>
-      <input
+      <div
         className={classes.title}
-        type="text"
         placeholder="Title"
-        maxLength="14"
-        value={title}
-        onChange={(e) => {
-          setActiveNote((prev) => ({ ...prev, title: e.target.value }));
-          setTitle(e.target.value);
+        maxLength="256"
+        contentEditable={!readOnly}
+        suppressContentEditableWarning={true}
+        onBlur={(e) => {
+          setActiveNote((prev) => ({ ...prev, title: e.target.innerText }));
+          setTitle(e.target.innerText);
         }}
-      ></input>
+      >
+        {title}
+      </div>
       <div className={classes.redactor} id={initId}></div>
     </div>
   );
