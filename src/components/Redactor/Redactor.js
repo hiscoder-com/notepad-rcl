@@ -11,6 +11,7 @@ function Redactor({
   setActiveNote,
   activeNote,
   readOnly,
+  initId,
 }) {
   const ReactEditorJS = createReactEditorJS();
 
@@ -37,20 +38,22 @@ function Redactor({
       >
         {title}
       </div>
-      <ReactEditorJS
-        className={classes.redactor}
-        onChange={async (e) => {
-          const content = await e.saver.save();
-          setActiveNote((prev) => ({ ...prev, data: content }));
-        }}
-        autofocus={false}
-        defaultValue={activeNote?.data}
-        placeholder={placeholder}
-        readOnly={readOnly}
-        tools={editorTools}
-        minHeight={0}
-        logLevel="ERROR"
-      />
+      <div className={classes.redactor}>
+        <ReactEditorJS
+          onChange={async (e) => {
+            const content = await e.saver.save();
+            setActiveNote((prev) => ({ ...prev, data: content }));
+          }}
+          autofocus={false}
+          defaultValue={activeNote?.data}
+          placeholder={placeholder}
+          readOnly={readOnly}
+          tools={editorTools}
+          minHeight={0}
+          logLevel="ERROR"
+          holder={initId}
+        />
+      </div>
     </div>
   );
 }
