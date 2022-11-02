@@ -6,10 +6,9 @@ import Blocks from 'editorjs-blocks-react-renderer';
 function ListOfNotes({
   notes,
   removeNote,
-  delBtnName,
   setNoteId,
   classes,
-  delBtnIcon,
+  delBtnChildren,
   isShowDate,
   isShowText,
   isShowDelBtn,
@@ -35,8 +34,7 @@ function ListOfNotes({
                 removeNote(el.id);
               }}
             >
-              {delBtnName && <div className={classes.delBtnText}>{delBtnName}</div>}
-              {delBtnIcon && <div className={classes.delBtnIcon}>{delBtnIcon}</div>}
+              {delBtnChildren}
             </button>
           )}
           {isShowDate && el.created_at && (
