@@ -47,12 +47,8 @@ const icons = {
 function Component() {
   // этот id нужен для сохранения заметки в БД
 
-  const [activeNote, setActiveNote] = useState({
-    id: null,
-
-    isFolder: true,
-  });
-
+  const [activeNote, setActiveNote] = useState(null);
+  const [noteId, setNodeId] = useState(null);
   const [notes, setNotes] = useState([
     {
       id: '1',
@@ -116,9 +112,15 @@ function Component() {
         ? activeNote.id
         : activeNote.parent_id,
     };
-    setActiveNote(newNote);
     setNotes((prev) => [...prev, newNote]);
   };
+
+  useEffect(() => {
+    if (noteId) {
+      const note = notes.find((el) => el.id === noteId[0]);
+      setActiveNote(note);
+    }
+  }, [noteId]);
 
   const addFolder = () => {
     const newFolder = {
@@ -146,28 +148,13 @@ function Component() {
       base: { backgroundColor: '#fff' },
     },
   };
-
+  console.log(activeNote);
   return (
     <div>
       <div>
         {!activeNote || activeNote.isFolder ? (
           <>
-            <ListOfNotesTree
-              notes={notes}
-              setActiveNote={setActiveNote}
-              activeNote={activeNote}
-              icons={icons}
-              style={styleTree}
-              classes={{
-                bgActiveNote: 'bg-gray-200',
-                wrapper: 'flex cursor-pointer',
-                title: 'ml-3',
-                delBtn: 'ml-10',
-              }}
-              removeNote={removeNote}
-              delBtnName={'delete'}
-              delBtnIcon=""
-            />
+            <ListOfNotesTree notes={notes} setNodeId={setNodeId} />
             <div className="flex justify-end">
               <button
                 className="text-3xl bg-cyan-400 px-4 py-1 rounded-xl hover:bg-cyan-300"

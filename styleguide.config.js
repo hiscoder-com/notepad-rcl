@@ -23,7 +23,7 @@ let sections = [
     name: 'Getting a list of notes Block',
     components: [
       'src/components/ListOfNotes/ListOfNotes.js',
-      // 'src/components/ListOfNotes/ListOfNotesTree.js',
+      'src/components/ListOfNotes/ListOfNotesTree.js',
     ],
   },
 ];
@@ -95,6 +95,10 @@ module.exports = {
           test: /\.jsx?$/,
           exclude: /node_modules/,
           loader: 'babel-loader',
+        },
+        {
+          test: /\.css$/,
+          use: ['style-loader', 'css-loader'],
         },
       ],
     },

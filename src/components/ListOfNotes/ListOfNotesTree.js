@@ -1,141 +1,101 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable no-alert, no-console, react/no-find-dom-node */
 import React, { useEffect, useState } from 'react';
+import 'rc-tree/assets/index.css';
 
-import { Treebeard } from 'react-treebeard';
+import Tree from 'rc-tree';
 
-import PropTypes from 'prop-types';
+function ListOfNotesTree({ notes, setNodeId }) {
+  const [data, setData] = useState([]);
 
-function ListOfNotesTree({
-  classes,
-  style,
-  notes,
-  icons,
-  activeNote,
-  setActiveNote,
-  removeNote,
-  delBtnIcon,
-  delBtnName,
-}) {
   const makeTree = (id, parentBC, notes) =>
     notes
       .filter(({ parent_id }) => parent_id == id)
       .map(({ id, title, ...other }) => ({
         id,
+        key: id,
         ...other,
         title,
         parentBC,
         children: makeTree(id, parentBC + '/' + title, notes),
       }));
 
-  const [data, setData] = useState({});
-
+  console.log(data);
   useEffect(() => {
     const tree = makeTree(null, '', notes);
 
-    setData({
-      title: 'root',
-      toggled: true,
-      is_folder: true,
-      children: tree,
-    });
+    setData(tree);
   }, [notes]);
 
-  const onToggle = (node, toggled) => {
-    if (activeNote) {
-      activeNote.active = false;
+  const onDrop = (info) => {
+    console.log('drop', info);
+    const dropKey = info.node.key;
+    const dragKey = info.dragNode.key;
+    const dropPos = info.node.pos.split('-');
+    const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]);
+
+    const loop = (data, key, callback) => {
+      data.forEach((item, index, arr) => {
+        if (item?.key === key) {
+          callback(item, index, arr);
+          return;
+        }
+        if (item?.children) {
+          loop(item?.children, key, callback);
+        }
+      });
+    };
+    const _data = [...data];
+
+    // Find dragObject
+    let dragObj;
+    loop(_data, dragKey, (item, index, arr) => {
+      arr.splice(index, 1);
+      dragObj = item;
+    });
+
+    if (dropPosition === 0) {
+      // Drop on the content
+      loop(_data, dropKey, (item) => {
+        // eslint-disable-next-line no-param-reassign
+        item.children = item.children;
+        // where to insert 示例添加到尾部，可以是随意位置
+        item?.children.unshift(dragObj);
+      });
+    } else {
+      // Drop on the gap (insert before or insert after)
+      let ar;
+      let i;
+      loop(_data, dropKey, (item, index, arr) => {
+        ar = arr;
+        i = index;
+      });
+      if (dropPosition === -1) {
+        ar?.splice(i, 0, dragObj);
+      } else {
+        ar?.splice(i + 1, 0, dragObj);
+      }
     }
-    node.active = true;
-    if (node.children) {
-      node.toggled = toggled;
-    }
-    setActiveNote(node);
-    setData(Object.assign({}, data));
+
+    setData(_data);
   };
-
-  const decorators = {
-    Toggle: (props) => {
-      return <div style={props.style}></div>;
-    },
-
-    Container: (props) => {
-      return (
-        <div
-          className={`${
-            activeNote?.id == props.node.id ? `${classes?.bgActiveNote}` : ''
-          } ${classes.wrapper}`}
-          onClick={() => {
-            props.onClick();
-          }}
-        >
-          <div className={classes.icon}>
-            {props.node.is_folder
-              ? !props.node.toggled
-                ? icons.closedFolder
-                : icons.openedFolder
-              : icons.note}
-          </div>
-          <div className={classes.title}>{props.node.title}</div>
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-              removeNote(props.node.id);
-            }}
-            className={classes.delBtn}
-          >
-            {delBtnIcon}
-            {delBtnName}
-          </div>
-        </div>
-      );
-    },
-  };
-
   return (
-    <Treebeard
-      style={style}
-      data={data}
-      toggled={true}
-      onToggle={onToggle}
-      decorators={decorators}
-    />
+    <div style={{ margin: '0 20px' }}>
+      <h2>simple</h2>
+      <input aria-label="good" />
+
+      {data?.length && (
+        <Tree
+          onSelect={(e) => setNodeId(e)}
+          className="myCls"
+          showLine
+          draggable
+          onDrop={onDrop}
+          selectable={true}
+          treeData={data}
+        />
+      )}
+    </div>
   );
 }
-
-ListOfNotesTree.defaultProps = {
-  activeNote: null,
-  setActiveNote: () => {},
-  notes: [],
-  classes: {},
-  icons: {},
-  style: {},
-  delBtnIcon: '',
-  delBtnName: '',
-};
-
-ListOfNotesTree.propTypes = {
-  /** note which highlight in list */
-  activeNote: PropTypes.object,
-  /** state function which set new value of activeNote*/
-  setActiveNote: PropTypes.func,
-  /** array of notes*/
-  notes: PropTypes.array,
-  /**  */
-  classes: PropTypes.object,
-  /** icons of list */
-  icons: PropTypes.shape({
-    /** icons of item at list when folder is close */
-    closedFolder: PropTypes.node,
-    /** icons of item at list when folder is open */
-    openedFolder: PropTypes.node,
-    /** icons of note  */
-    note: PropTypes.node,
-  }),
-  /**  */
-  delBtnIcon: PropTypes.node,
-  /**  */
-  delBtnName: PropTypes.string,
-  style: PropTypes.shape({}),
-};
 
 export default ListOfNotesTree;
