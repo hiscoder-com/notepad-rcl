@@ -6,12 +6,12 @@ import Blocks from 'editorjs-blocks-react-renderer';
 function ListOfNotes({
   notes,
   removeNote,
-  delBtnName,
   setNoteId,
   classes,
-  delBtnIcon,
+  delBtnChildren,
   isShowDate,
   isShowText,
+  isShowDelBtn,
   dateOptions,
 }) {
   return (
@@ -26,16 +26,17 @@ function ListOfNotes({
             </div>
           )}
 
-          <button
-            className={classes.delBtn}
-            onClick={(e) => {
-              e.stopPropagation();
-              removeNote(el.id);
-            }}
-          >
-            {delBtnName && <div className={classes.delBtnText}>{delBtnName}</div>}
-            {delBtnIcon && <div className={classes.delBtnIcon}>{delBtnIcon}</div>}
-          </button>
+          {isShowDelBtn && (
+            <button
+              className={classes.delBtn}
+              onClick={(e) => {
+                e.stopPropagation();
+                removeNote(el.id);
+              }}
+            >
+              {delBtnChildren}
+            </button>
+          )}
           {isShowDate && el.created_at && (
             <div className={classes.date}>
               {new Date(el.created_at).toLocaleString('ru', dateOptions)}
@@ -53,6 +54,7 @@ ListOfNotes.defaultProps = {
   dateOptions: {},
   isShowDate: false,
   isShowText: false,
+  isShowDelBtn: false,
   delBtnName: '',
   title: 'untitled',
   setNoteId: () => {},
