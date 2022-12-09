@@ -99,13 +99,16 @@ function Component() {
         {!activeNote ? (
           <>
             <ListOfNotes
+              readOnly={false}
+              activeNote={activeNote}
               notes={notes}
+              setNotes={setNotes}
               removeNote={removeNote}
               setNoteId={setNoteId}
               classes={{
                 wrapper: '',
                 item: ' m-5 p-5 bg-cyan-200 h-31 hover:bg-cyan-100 cursor-pointer rounded-lg shadow-md',
-                title: 'mr-10 font-bold',
+                title: 'mr-10 font-bold cursor-auto',
                 text: 'overflow-hidden h-20',
                 delBtn: 'bg-cyan-300 p-2 rounded-md',
               }}

@@ -1,10 +1,13 @@
-import React from 'react';
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import React, { useState } from 'react';
 
 import PropTypes from 'prop-types';
 import Blocks from 'editorjs-blocks-react-renderer';
 
 function ListOfNotes({
   notes,
+  setNotes,
   removeNote,
   setNoteId,
   classes,
@@ -13,13 +16,43 @@ function ListOfNotes({
   isShowText,
   isShowDelBtn,
   dateOptions,
+  readOnly,
 }) {
+  const [currentNote, setCurrentNote] = useState('');
   return (
     <div className={classes.wrapper}>
       {notes.map((el) => (
         // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
         <div key={el.id} className={classes.item} onClick={() => setNoteId(el.id)}>
-          <div className={classes.title}>{el.title}</div>
+          {!readOnly && (
+            <button
+              className={'bg-cyan-300 px-4 py-2 mb-2 rounded-lg'}
+              onClick={(e) => {
+                e.stopPropagation();
+                setNotes((prev) => {
+                  const array = prev.filter((el) => el.id !== currentNote.id);
+                  array.unshift(currentNote);
+                  return array;
+                });
+              }}
+            >
+              Save Title
+            </button>
+          )}
+          <div
+            contentEditable={!readOnly}
+            onBlur={(e) => {
+              setCurrentNote((prev) => ({ ...prev, title: e.target.innerText }));
+            }}
+            className={classes.title}
+            onClick={(e) => {
+              e.stopPropagation();
+              const note = notes.find((element) => element.id === el.id);
+              setCurrentNote(note);
+            }}
+          >
+            {el.title}
+          </div>
           {isShowText && (
             <div className={classes.text}>
               <Blocks data={el.data} />
@@ -58,6 +91,7 @@ ListOfNotes.defaultProps = {
   delBtnName: '',
   title: 'untitled',
   setNoteId: () => {},
+  readOnly: true,
 };
 
 ListOfNotes.propTypes = {
