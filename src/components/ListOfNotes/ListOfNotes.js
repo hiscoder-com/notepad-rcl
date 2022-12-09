@@ -12,6 +12,7 @@ function ListOfNotes({
   setNoteId,
   classes,
   delBtnChildren,
+  editBtnChildren,
   isShowDate,
   isShowText,
   isShowDelBtn,
@@ -19,39 +20,46 @@ function ListOfNotes({
   readOnly,
 }) {
   const [currentNote, setCurrentNote] = useState('');
+  const [showIcon, setShowIcon] = useState(false);
   return (
     <div className={classes.wrapper}>
       {notes.map((el) => (
         // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
         <div key={el.id} className={classes.item} onClick={() => setNoteId(el.id)}>
-          {!readOnly && (
-            <button
-              className={'bg-cyan-300 px-4 py-2 mb-2 rounded-lg'}
+          <div className="flex flex-row">
+            <div
+              contentEditable={!readOnly}
+              onBlur={(e) => {
+                setCurrentNote((prev) => ({ ...prev, title: e.target.innerText }));
+                setTimeout(() => {
+                  setShowIcon(false);
+                }, 500);
+              }}
+              className={classes.title}
               onClick={(e) => {
                 e.stopPropagation();
-                setNotes((prev) => {
-                  const array = prev.filter((el) => el.id !== currentNote.id);
-                  array.unshift(currentNote);
-                  return array;
-                });
+                setShowIcon(true);
+                const note = notes.find((element) => element.id === el.id);
+                setCurrentNote(note);
               }}
             >
-              Save Title
-            </button>
-          )}
-          <div
-            contentEditable={!readOnly}
-            onBlur={(e) => {
-              setCurrentNote((prev) => ({ ...prev, title: e.target.innerText }));
-            }}
-            className={classes.title}
-            onClick={(e) => {
-              e.stopPropagation();
-              const note = notes.find((element) => element.id === el.id);
-              setCurrentNote(note);
-            }}
-          >
-            {el.title}
+              {el.title}
+            </div>
+            {!readOnly && showIcon && (
+              <button
+                className={'bg-cyan-300 p-1 rounded-lg'}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setNotes((prev) => {
+                    const array = prev.filter((el) => el.id !== currentNote.id);
+                    array.unshift(currentNote);
+                    return array;
+                  });
+                }}
+              >
+                {editBtnChildren}
+              </button>
+            )}
           </div>
           {isShowText && (
             <div className={classes.text}>
