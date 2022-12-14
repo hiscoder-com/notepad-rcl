@@ -18,7 +18,6 @@ function ListOfNotes({
   readOnly,
 }) {
   const [currentNote, setCurrentNote] = useState(null);
-  const [_, setShowIcon] = useState(false);
 
   return (
     <div className={classes.wrapper}>
@@ -36,7 +35,6 @@ function ListOfNotes({
               onBlur={(e) => {
                 setCurrentNote((prev) => ({ ...prev, title: e.target.innerText }));
                 setTimeout(() => {
-                  setShowIcon(false);
                   setCurrentNote(null);
                 }, 250);
               }}
@@ -44,7 +42,6 @@ function ListOfNotes({
               onClick={(e) => {
                 e.stopPropagation();
                 setTimeout(() => {
-                  setShowIcon(true);
                   const note = notes.find((element) => element.id === el.id);
                   setCurrentNote(note);
                 }, 100);
