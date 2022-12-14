@@ -54,7 +54,7 @@ function ListOfNotes({
             </div>
             {!readOnly && el.id === currentNote?.id && (
               <button
-                className={'bg-cyan-300 p-1 rounded-lg'}
+                className={classes.editBtn}
                 onClick={(e) => {
                   e.stopPropagation();
                   setNotes((prev) => {

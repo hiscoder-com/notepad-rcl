@@ -122,9 +122,10 @@ function Component() {
               classes={{
                 wrapper: '',
                 item: 'm-5 p-5 bg-cyan-200 h-31 hover:bg-cyan-100 cursor-pointer rounded-lg shadow-md',
-                title: 'pr-2 mr-1 font-bold cursor-auto',
+                title: 'pr-2 mr-1 font-bold cursor-auto overflow-hidden',
                 text: 'overflow-hidden h-20',
                 delBtn: 'bg-cyan-300 p-2 rounded-md',
+                editBtn: 'bg-cyan-300 p-1 rounded-md',
               }}
               delBtnName={'Delete'}
               delBtnChildren={wasteIcon}
