@@ -32,6 +32,7 @@ function ListOfNotes({
           <div className="flex flex-row">
             <div
               contentEditable={!readOnly}
+              suppressContentEditableWarning={true}
               onBlur={(e) => {
                 setCurrentNote((prev) => ({ ...prev, title: e.target.innerText }));
                 setTimeout(() => {
