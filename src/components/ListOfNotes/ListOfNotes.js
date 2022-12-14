@@ -17,13 +17,18 @@ function ListOfNotes({
   dateOptions,
   readOnly,
 }) {
-  const [currentNote, setCurrentNote] = useState('');
-  const [showIcon, setShowIcon] = useState(false);
+  const [currentNote, setCurrentNote] = useState(null);
+  const [_, setShowIcon] = useState(false);
+
   return (
     <div className={classes.wrapper}>
       {notes.map((el) => (
-        // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-        <div key={el.id} className={classes.item} onClick={() => setNoteId(el.id)}>
+        <div
+          key={el.id}
+          className={classes.item}
+          onClick={() => setNoteId(el.id)}
+          aria-hidden="true"
+        >
           <div className="flex flex-row">
             <div
               contentEditable={!readOnly}
@@ -31,26 +36,29 @@ function ListOfNotes({
                 setCurrentNote((prev) => ({ ...prev, title: e.target.innerText }));
                 setTimeout(() => {
                   setShowIcon(false);
-                }, 500);
+                  setCurrentNote(null);
+                }, 250);
               }}
               className={classes.title}
               onClick={(e) => {
                 e.stopPropagation();
-                setShowIcon(true);
-                const note = notes.find((element) => element.id === el.id);
-                setCurrentNote(note);
+                setTimeout(() => {
+                  setShowIcon(true);
+                  const note = notes.find((element) => element.id === el.id);
+                  setCurrentNote(note);
+                }, 100);
               }}
               aria-hidden="true"
             >
               {el.title}
             </div>
-            {!readOnly && showIcon && (
+            {!readOnly && el.id === currentNote?.id && (
               <button
                 className={'bg-cyan-300 p-1 rounded-lg'}
                 onClick={(e) => {
                   e.stopPropagation();
                   setNotes((prev) => {
-                    const array = prev.filter((el) => el.id !== currentNote.id);
+                    const array = prev.filter((el) => el.id !== currentNote?.id);
                     array.unshift(currentNote);
                     return array;
                   });
