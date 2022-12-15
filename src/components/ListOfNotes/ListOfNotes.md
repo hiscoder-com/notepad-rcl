@@ -110,6 +110,24 @@ function Component() {
     </svg>
   );
 
+  const pencilSquare = (
+    <svg
+      width="15px"
+      height="15px"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth="1.5"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+      />
+    </svg>
+  );
+
   return (
     <div>
       <div>
@@ -125,14 +143,17 @@ function Component() {
               classes={{
                 wrapper: '',
                 item: 'm-5 p-5 bg-cyan-200 h-31 hover:bg-cyan-100 cursor-pointer rounded-lg shadow-md',
-                title: 'pr-2 mr-1 font-bold cursor-auto overflow-hidden',
+                title: 'pr-2 mr-1 font-bold overflow-hidden',
+                // title: 'pr-2 mr-1 font-bold cursor-auto overflow-hidden',
                 text: 'overflow-hidden h-20',
-                delBtn: 'bg-cyan-300 p-2 rounded-md',
-                editBtn: 'bg-cyan-300 p-1 rounded-md',
+                delBtn: 'bg-red-300 p-2 rounded-md',
+                editBtn: '',
+                saveBtn: 'bg-green-300 p-1 rounded-md',
               }}
               delBtnName={'Delete'}
               delBtnChildren={wasteIcon}
-              editBtnChildren={check}
+              editBtnChildren={pencilSquare}
+              saveBtnChildren={check}
               isShowDate
               isShowText
               isShowDelBtn

@@ -11,6 +11,7 @@ function ListOfNotes({
   classes,
   delBtnChildren,
   editBtnChildren,
+  saveBtnChildren,
   isShowDate,
   isShowText,
   isShowDelBtn,
@@ -18,6 +19,9 @@ function ListOfNotes({
   readOnly,
 }) {
   const [currentNote, setCurrentNote] = useState(null);
+  const [isShownBtn, setIsShownBtn] = useState(false);
+  const [titleIsEditable, setTitleIsEditable] = useState(false);
+  const [isSaveBtn, setIsSaveBtn] = useState(false);
 
   return (
     <div className={classes.wrapper}>
@@ -28,31 +32,83 @@ function ListOfNotes({
           onClick={() => setNoteId(el.id)}
           aria-hidden="true"
         >
-          <div className="flex flex-row">
-            <div
-              contentEditable={!readOnly}
-              suppressContentEditableWarning={true}
-              onBlur={(e) => {
-                setCurrentNote((prev) => ({ ...prev, title: e.target.innerText }));
-                setTimeout(() => {
-                  setCurrentNote(null);
-                }, 250);
-              }}
-              className={classes.title}
-              onClick={(e) => {
-                e.stopPropagation();
-                setTimeout(() => {
+          <div
+            onMouseEnter={() => {
+              const note = notes.find((element) => element.id === el.id);
+              setCurrentNote(note);
+              setTimeout(() => {
+                setIsShownBtn(true);
+              }, 2000);
+            }}
+            onMouseLeave={() => {
+              setIsShownBtn(false);
+              setCurrentNote(null);
+            }}
+            className="flex flex-row"
+          >
+            {titleIsEditable ? (
+              <div
+                contentEditable={!readOnly}
+                suppressContentEditableWarning={true}
+                onBlur={(e) => {
+                  setCurrentNote((prev) => ({ ...prev, title: e.target.innerText }));
+                  setTitleIsEditable(false);
+                  setTimeout(() => {
+                    setIsSaveBtn(false);
+                  }, 250);
+                }}
+                // onBlur={(e) => {
+                //   setCurrentNote((prev) => ({ ...prev, title: e.target.innerText }));
+                // setTimeout(() => {
+                //   setCurrentNote(null);
+                // }, 250);
+                // }}
+                className={classes.title}
+                onClick={(e) => {
+                  e.stopPropagation();
                   const note = notes.find((element) => element.id === el.id);
                   setCurrentNote(note);
-                }, 100);
-              }}
-              aria-hidden="true"
-            >
-              {el.title}
-            </div>
-            {!readOnly && el.id === currentNote?.id && (
+                }}
+                aria-hidden="true"
+              >
+                {el.title}
+              </div>
+            ) : (
+              <div className={classes.title} aria-hidden="true">
+                {el.title}
+              </div>
+            )}
+            {isShownBtn &&
+              el.id === currentNote?.id &&
+              (isSaveBtn ? (
+                <button
+                  className={classes.saveBtn}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setNotes((prev) => {
+                      const array = prev.filter((el) => el.id !== currentNote?.id);
+                      array.unshift(currentNote);
+                      return array;
+                    });
+                  }}
+                >
+                  {saveBtnChildren}
+                </button>
+              ) : (
+                <button
+                  className={classes.editBtn}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setTitleIsEditable(true);
+                    setIsSaveBtn(true);
+                  }}
+                >
+                  {editBtnChildren}
+                </button>
+              ))}
+            {/* {!readOnly && el.id === currentNote?.id && (
               <button
-                className={classes.editBtn}
+                className={classes.saveBtn}
                 onClick={(e) => {
                   e.stopPropagation();
                   setNotes((prev) => {
@@ -62,9 +118,9 @@ function ListOfNotes({
                   });
                 }}
               >
-                {editBtnChildren}
+                {saveBtnChildren}
               </button>
-            )}
+            )} */}
           </div>
           {isShowText && (
             <div className={classes.text}>
