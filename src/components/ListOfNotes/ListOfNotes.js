@@ -22,7 +22,7 @@ function ListOfNotes({
   const [isShownBtn, setIsShownBtn] = useState(false);
   const [titleIsEditable, setTitleIsEditable] = useState(false);
   const [isSaveBtn, setIsSaveBtn] = useState(false);
-
+  const [input, setInput] = useState('');
   return (
     <div className={classes.wrapper}>
       {notes.map((el) => (
@@ -38,7 +38,7 @@ function ListOfNotes({
               setCurrentNote(note);
               setTimeout(() => {
                 setIsShownBtn(true);
-              }, 2000);
+              }, 500);
             }}
             onMouseLeave={() => {
               setIsShownBtn(false);
@@ -47,33 +47,44 @@ function ListOfNotes({
             className="flex flex-row"
           >
             {titleIsEditable ? (
-              <div
-                contentEditable={!readOnly}
-                suppressContentEditableWarning={true}
+              // <textarea />
+              <input
+                type="text"
+                placeholder={el.title}
+                value={input}
                 onBlur={(e) => {
-                  setCurrentNote((prev) => ({ ...prev, title: e.target.innerText }));
-                  setTitleIsEditable(false);
-                  setTimeout(() => {
-                    setIsSaveBtn(false);
-                  }, 250);
+                  setCurrentNote((prev) => ({ ...prev, title: e.target.value }));
                 }}
-                // onBlur={(e) => {
-                //   setCurrentNote((prev) => ({ ...prev, title: e.target.innerText }));
-                // setTimeout(() => {
-                //   setCurrentNote(null);
-                // }, 250);
-                // }}
+                onChange={(e) => setInput(e.target.value)}
                 className={classes.title}
                 onClick={(e) => {
                   e.stopPropagation();
                   const note = notes.find((element) => element.id === el.id);
                   setCurrentNote(note);
+                  setInput(el.title);
                 }}
-                aria-hidden="true"
-              >
-                {el.title}
-              </div>
+              />
             ) : (
+              // <div
+              //   contentEditable={!readOnly}
+              //   suppressContentEditableWarning={true}
+              // onBlur={(e) => {
+              //   setCurrentNote((prev) => ({ ...prev, title: e.target.innerText }));
+              //     setTitleIsEditable(false);
+              //     setTimeout(() => {
+              //       setIsSaveBtn(false);
+              //     }, 250);
+              //   }}
+              //   className={classes.title}
+              //   onClick={(e) => {
+              //     e.stopPropagation();
+              //     const note = notes.find((element) => element.id === el.id);
+              //     setCurrentNote(note);
+              //   }}
+              //   aria-hidden="true"
+              // >
+              //   {el.title}
+              // </div>
               <div className={classes.title} aria-hidden="true">
                 {el.title}
               </div>
@@ -85,6 +96,7 @@ function ListOfNotes({
                   className={classes.saveBtn}
                   onClick={(e) => {
                     e.stopPropagation();
+                    setTitleIsEditable(false);
                     setNotes((prev) => {
                       const array = prev.filter((el) => el.id !== currentNote?.id);
                       array.unshift(currentNote);
@@ -106,21 +118,6 @@ function ListOfNotes({
                   {editBtnChildren}
                 </button>
               ))}
-            {/* {!readOnly && el.id === currentNote?.id && (
-              <button
-                className={classes.saveBtn}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setNotes((prev) => {
-                    const array = prev.filter((el) => el.id !== currentNote?.id);
-                    array.unshift(currentNote);
-                    return array;
-                  });
-                }}
-              >
-                {saveBtnChildren}
-              </button>
-            )} */}
           </div>
           {isShowText && (
             <div className={classes.text}>
