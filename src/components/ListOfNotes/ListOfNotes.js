@@ -20,7 +20,6 @@ function ListOfNotes({
   const [currentNote, setCurrentNote] = useState(null);
   const [isShownBtn, setIsShownBtn] = useState(false);
   const [titleIsEditable, setTitleIsEditable] = useState(false);
-  const [isSaveBtn, setIsSaveBtn] = useState(false);
   const [input, setInput] = useState('');
   return (
     <div className={classes.wrapper}>
@@ -33,37 +32,29 @@ function ListOfNotes({
         >
           {titleIsEditable ? (
             <div className="flex flex-row">
-              {titleIsEditable && el.id === currentNote?.id ? (
-                <input
-                  type="text"
-                  placeholder={el.title}
-                  value={input}
-                  onBlur={(e) => {
-                    setCurrentNote((prev) => ({ ...prev, title: e.target.value }));
-                  }}
-                  onChange={(e) => setInput(e.target.value)}
-                  className={classes.title}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    const note = notes.find((element) => element.id === el.id);
-                    setCurrentNote(note);
-                    setInput(el.title);
-                  }}
-                />
-              ) : (
-                <div className={classes.title} aria-hidden="true">
-                  {el.title}
-                </div>
-              )}
-              {isShownBtn &&
-                el.id === currentNote?.id &&
-                (isSaveBtn ? (
+              {el.id === currentNote?.id ? (
+                <>
+                  <input
+                    type="text"
+                    placeholder={el.title}
+                    value={input}
+                    onBlur={(e) => {
+                      setCurrentNote((prev) => ({ ...prev, title: e.target.value }));
+                    }}
+                    onChange={(e) => setInput(e.target.value)}
+                    className={classes.title}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const note = notes.find((element) => element.id === el.id);
+                      setCurrentNote(note);
+                      setInput(el.title);
+                    }}
+                  />
                   <button
                     className={classes.saveBtn}
                     onClick={(e) => {
                       e.stopPropagation();
                       setTitleIsEditable(false);
-                      setIsSaveBtn(false);
                       setNotes((prev) => {
                         const array = prev.filter((el) => el.id !== currentNote?.id);
                         array.unshift(currentNote);
@@ -74,18 +65,12 @@ function ListOfNotes({
                   >
                     {saveBtnChildren}
                   </button>
-                ) : (
-                  <button
-                    className={classes.editBtn}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setTitleIsEditable(true);
-                      setIsSaveBtn(true);
-                    }}
-                  >
-                    {editBtnChildren}
-                  </button>
-                ))}
+                </>
+              ) : (
+                <div className={classes.title} aria-hidden="true">
+                  {el.title}
+                </div>
+              )}
             </div>
           ) : (
             <div
@@ -94,7 +79,7 @@ function ListOfNotes({
                 setCurrentNote(note);
                 setTimeout(() => {
                   setIsShownBtn(true);
-                }, 500);
+                }, 1000);
               }}
               onMouseLeave={() => {
                 setIsShownBtn(false);
@@ -106,37 +91,17 @@ function ListOfNotes({
                 {el.title}
               </div>
 
-              {isShownBtn &&
-                el.id === currentNote?.id &&
-                (isSaveBtn ? (
-                  <button
-                    className={classes.saveBtn}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setTitleIsEditable(false);
-                      setIsSaveBtn(false);
-                      setNotes((prev) => {
-                        const array = prev.filter((el) => el.id !== currentNote?.id);
-                        array.unshift(currentNote);
-                        return array;
-                      });
-                      setInput('');
-                    }}
-                  >
-                    {saveBtnChildren}
-                  </button>
-                ) : (
-                  <button
-                    className={classes.editBtn}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setTitleIsEditable(true);
-                      setIsSaveBtn(true);
-                    }}
-                  >
-                    {editBtnChildren}
-                  </button>
-                ))}
+              {isShownBtn && el.id === currentNote?.id && (
+                <button
+                  className={classes.editBtn}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setTitleIsEditable(true);
+                  }}
+                >
+                  {editBtnChildren}
+                </button>
+              )}
             </div>
           )}
 
