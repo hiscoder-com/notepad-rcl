@@ -134,7 +134,6 @@ function Component() {
         {!activeNote ? (
           <>
             <ListOfNotes
-              readOnly={false}
               activeNote={activeNote}
               notes={notes}
               setNotes={setNotes}

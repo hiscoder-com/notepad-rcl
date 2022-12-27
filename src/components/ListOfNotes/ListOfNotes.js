@@ -16,7 +16,6 @@ function ListOfNotes({
   isShowText,
   isShowDelBtn,
   dateOptions,
-  readOnly,
 }) {
   const [currentNote, setCurrentNote] = useState(null);
   const [isShownBtn, setIsShownBtn] = useState(false);
@@ -47,7 +46,6 @@ function ListOfNotes({
             className="flex flex-row"
           >
             {titleIsEditable ? (
-              // <textarea />
               <input
                 type="text"
                 placeholder={el.title}
@@ -65,26 +63,6 @@ function ListOfNotes({
                 }}
               />
             ) : (
-              // <div
-              //   contentEditable={!readOnly}
-              //   suppressContentEditableWarning={true}
-              // onBlur={(e) => {
-              //   setCurrentNote((prev) => ({ ...prev, title: e.target.innerText }));
-              //     setTitleIsEditable(false);
-              //     setTimeout(() => {
-              //       setIsSaveBtn(false);
-              //     }, 250);
-              //   }}
-              //   className={classes.title}
-              //   onClick={(e) => {
-              //     e.stopPropagation();
-              //     const note = notes.find((element) => element.id === el.id);
-              //     setCurrentNote(note);
-              //   }}
-              //   aria-hidden="true"
-              // >
-              //   {el.title}
-              // </div>
               <div className={classes.title} aria-hidden="true">
                 {el.title}
               </div>
@@ -97,6 +75,7 @@ function ListOfNotes({
                   onClick={(e) => {
                     e.stopPropagation();
                     setTitleIsEditable(false);
+                    setIsSaveBtn(false);
                     setNotes((prev) => {
                       const array = prev.filter((el) => el.id !== currentNote?.id);
                       array.unshift(currentNote);
