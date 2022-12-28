@@ -33,7 +33,7 @@ function ListOfNotes({
           aria-hidden="true"
         >
           {titleReadOnly ? (
-            <div className="flex flex-row">
+            <div>
               <div className={classes.title} aria-hidden="true">
                 {el.title}
               </div>
@@ -53,7 +53,7 @@ function ListOfNotes({
           ) : (
             <>
               {titleIsEditable ? (
-                <div className="flex flex-row">
+                <div>
                   {el.id === currentNote?.id ? (
                     <>
                       <input
