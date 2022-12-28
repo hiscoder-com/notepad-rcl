@@ -37,18 +37,6 @@ function ListOfNotes({
               <div className={classes.title} aria-hidden="true">
                 {el.title}
               </div>
-
-              {isShownEditBtn && el.id === currentNote?.id && (
-                <button
-                  className={classes.editBtn}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setTitleIsEditable(true);
-                  }}
-                >
-                  {editBtnChildren}
-                </button>
-              )}
             </div>
           ) : (
             <>
@@ -67,7 +55,7 @@ function ListOfNotes({
                         className={classes.title}
                         onClick={(e) => {
                           e.stopPropagation();
-                          const note = notes.find((element) => element.id === el.id);
+                          const note = notes.find((note) => note.id === el.id);
                           setCurrentNote(note);
                           setEditableTitle(el.title);
                         }}
@@ -78,7 +66,9 @@ function ListOfNotes({
                           e.stopPropagation();
                           setTitleIsEditable(false);
                           setNotes((prev) => {
-                            const array = prev.filter((el) => el.id !== currentNote?.id);
+                            const array = prev.filter(
+                              (note) => note.id !== currentNote?.id
+                            );
                             array.unshift(currentNote);
                             return array;
                           });
@@ -97,7 +87,7 @@ function ListOfNotes({
               ) : (
                 <div
                   onMouseEnter={() => {
-                    const note = notes.find((element) => element.id === el.id);
+                    const note = notes.find((note) => note.id === el.id);
                     setCurrentNote(note);
                     setTimeout(() => {
                       setIsShownEditBtn(true);
