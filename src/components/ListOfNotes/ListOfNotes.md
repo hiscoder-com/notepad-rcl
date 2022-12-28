@@ -140,16 +140,12 @@ function Component() {
               removeNote={removeNote}
               setNoteId={setNoteId}
               classes={{
-                wrapper: '',
                 item: 'm-5 p-5 bg-cyan-200 h-31 hover:bg-cyan-100 cursor-pointer rounded-lg shadow-md',
                 title: 'pr-2 mr-1 font-bold overflow-hidden',
-                // title: 'pr-2 mr-1 font-bold cursor-auto overflow-hidden',
                 text: 'overflow-hidden h-20',
                 delBtn: 'bg-red-300 p-2 rounded-md',
-                editBtn: '',
                 saveBtn: 'bg-green-300 p-1 rounded-md',
               }}
-              delBtnName={'Delete'}
               delBtnChildren={wasteIcon}
               editBtnChildren={pencilSquare}
               saveBtnChildren={check}
@@ -242,13 +238,11 @@ function Component() {
               removeNote={removeNote}
               setNoteId={setNoteId}
               classes={{
-                wrapper: '',
-                item: ' m-5 p-5 bg-yellow-200 h-31 hover:bg-yellow-100 cursor-pointer rounded-lg shadow-md',
+                item: 'm-5 p-5 bg-yellow-200 h-31 hover:bg-yellow-100 cursor-pointer rounded-lg shadow-md',
                 title: 'mr-10 font-bold',
                 text: 'overflow-hidden',
                 delBtn: 'bg-orange-300 p-2 mt-4 rounded-lg',
               }}
-              delBtnName={'Delete'}
               isShowDelBtn
               isShowDate
               dateOptions={{
@@ -279,7 +273,7 @@ function Component() {
               classes={{ title: 'bg-inherit font-bold' }}
             />
             <button
-              className={'bg-orange-300 px-4 py-2  rounded-lg '}
+              className={'bg-orange-300 px-4 py-2 rounded-lg'}
               onClick={() => saveNote(noteId, activeNote)}
             >
               save

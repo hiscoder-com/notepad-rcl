@@ -18,9 +18,10 @@ function ListOfNotes({
   dateOptions,
 }) {
   const [currentNote, setCurrentNote] = useState(null);
-  const [isShownBtn, setIsShownBtn] = useState(false);
+  const [isShownEditBtn, setIsShownEditBtn] = useState(false);
   const [titleIsEditable, setTitleIsEditable] = useState(false);
-  const [input, setInput] = useState('');
+  const [editableTitle, setEditableTitle] = useState('');
+
   return (
     <div className={classes.wrapper}>
       {notes.map((el) => (
@@ -37,17 +38,17 @@ function ListOfNotes({
                   <input
                     type="text"
                     placeholder={el.title}
-                    value={input}
+                    value={editableTitle}
                     onBlur={(e) => {
                       setCurrentNote((prev) => ({ ...prev, title: e.target.value }));
                     }}
-                    onChange={(e) => setInput(e.target.value)}
+                    onChange={(e) => setEditableTitle(e.target.value)}
                     className={classes.title}
                     onClick={(e) => {
                       e.stopPropagation();
                       const note = notes.find((element) => element.id === el.id);
                       setCurrentNote(note);
-                      setInput(el.title);
+                      setEditableTitle(el.title);
                     }}
                   />
                   <button
@@ -60,7 +61,7 @@ function ListOfNotes({
                         array.unshift(currentNote);
                         return array;
                       });
-                      setInput('');
+                      setEditableTitle('');
                     }}
                   >
                     {saveBtnChildren}
@@ -78,11 +79,11 @@ function ListOfNotes({
                 const note = notes.find((element) => element.id === el.id);
                 setCurrentNote(note);
                 setTimeout(() => {
-                  setIsShownBtn(true);
-                }, 1000);
+                  setIsShownEditBtn(true);
+                }, 500);
               }}
               onMouseLeave={() => {
-                setIsShownBtn(false);
+                setIsShownEditBtn(false);
                 setCurrentNote(null);
               }}
               className="flex flex-row"
@@ -91,7 +92,7 @@ function ListOfNotes({
                 {el.title}
               </div>
 
-              {isShownBtn && el.id === currentNote?.id && (
+              {isShownEditBtn && el.id === currentNote?.id && (
                 <button
                   className={classes.editBtn}
                   onClick={(e) => {
@@ -134,16 +135,18 @@ function ListOfNotes({
 }
 
 ListOfNotes.defaultProps = {
-  notes: [],
   classes: {},
+  notes: [],
+  setNotes: () => {},
+  removeNote: (id) => {},
+  setNoteId: () => {},
+  editBtnChildren: [],
+  saveBtnChildren: {},
+  delBtnChildren: [],
   dateOptions: {},
   isShowDate: false,
   isShowText: false,
   isShowDelBtn: false,
-  delBtnName: '',
-  title: 'untitled',
-  setNoteId: () => {},
-  readOnly: true,
 };
 
 ListOfNotes.propTypes = {
@@ -158,6 +161,10 @@ ListOfNotes.propTypes = {
     item: PropTypes.string,
     /** class for delBtn */
     delBtn: PropTypes.string,
+    /** class for editBtn */
+    editBtn: PropTypes.string,
+    /** class for saveBtn */
+    saveBtn: PropTypes.string,
     /** class for delBtnIcon */
     delBtnIcon: PropTypes.string,
     /** class for date */
@@ -167,18 +174,26 @@ ListOfNotes.propTypes = {
   }),
   /** you can change the date representation (https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString) */
   dateOptions: PropTypes.object,
-  /** delete button text */
-  delBtnName: PropTypes.string,
-  /** note title in preview */
-  title: PropTypes.string,
   /** an array of existing notes. Required to display a list of notes */
   notes: PropTypes.array,
+  /** a function that is used to update the notes state */
+  setNotes: PropTypes.func,
+  /** the function that is used to delete the note. Accepts the id of the note to be deleted */
+  removeNote: PropTypes.func,
   /** pass the id of the selected note to the setter */
   setNoteId: PropTypes.func,
   /** if true, display note creation date during note preview */
   isShowDate: PropTypes.bool,
   /** if true, display note text during note preview */
   isShowText: PropTypes.bool,
+  /** if true, then display the delete button */
+  isShowDelBtn: PropTypes.bool,
+  /** delete note button */
+  delBtnChildren: PropTypes.object,
+  /** title edit button */
+  editBtnChildren: PropTypes.object,
+  /** save note button */
+  saveBtnChildren: PropTypes.object,
 };
 
 export default ListOfNotes;
