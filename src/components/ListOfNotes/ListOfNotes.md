@@ -134,24 +134,26 @@ function Component() {
         {!activeNote ? (
           <>
             <ListOfNotes
-              activeNote={activeNote}
-              notes={notes}
-              setNotes={setNotes}
-              removeNote={removeNote}
-              setNoteId={setNoteId}
               classes={{
                 item: 'm-5 p-5 bg-cyan-200 h-31 hover:bg-cyan-100 cursor-pointer rounded-lg shadow-md',
                 title: 'pr-2 mr-1 font-bold overflow-hidden',
-                text: 'overflow-hidden h-20',
-                delBtn: 'bg-red-300 p-2 rounded-md',
                 saveBtn: 'bg-green-300 p-1 rounded-md',
+                delBtn: 'bg-red-300 p-2 rounded-md',
+                text: 'overflow-hidden h-20',
+                wrapper: '',
               }}
-              delBtnChildren={wasteIcon}
               editBtnChildren={pencilSquare}
+              delBtnChildren={wasteIcon}
               saveBtnChildren={check}
+              removeNote={removeNote}
+              activeNote={activeNote}
+              setNoteId={setNoteId}
+              titleReadOnly={false}
+              setNotes={setNotes}
+              notes={notes}
+              isShowDelBtn
               isShowDate
               isShowText
-              isShowDelBtn
             />
             <div className="flex justify-end">
               <button
@@ -165,13 +167,13 @@ function Component() {
         ) : (
           <div className={'bg-cyan-200 p-6 relative'}>
             <Redactor
-              activeNote={activeNote}
-              setActiveNote={setActiveNote}
-              initId={'first'}
               classes={{
-                title: 'bg-inherit font-bold',
                 redactor: 'px-4 pt-4 pb-20 break-words bg-green-100 m-4',
+                title: 'bg-inherit font-bold',
               }}
+              setActiveNote={setActiveNote}
+              activeNote={activeNote}
+              initId={'first'}
             />
             <button
               className={'bg-cyan-300 px-4 py-2 rounded-lg'}
@@ -216,7 +218,6 @@ import { ListOfNotes, useData, Redactor } from '@texttree/notepad-rcl';
 function Component() {
   const [noteId, setNoteId] = useState('test_noteId');
   const { notes, addNote, removeNote, noteRequest, saveNote } = useData();
-
   const [activeNote, setActiveNote] = useState(null);
 
   useEffect(() => {
@@ -228,23 +229,37 @@ function Component() {
     getNote(noteId);
   }, [noteId]);
 
+  const wasteIcon = (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth="1.5"
+      stroke="currentColor"
+      width="15px"
+      height="15px"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+      />
+    </svg>
+  );
+
   return (
     <div>
       <div>
         {!activeNote ? (
           <>
             <ListOfNotes
-              notes={notes}
-              removeNote={removeNote}
-              setNoteId={setNoteId}
               classes={{
                 item: 'm-5 p-5 bg-yellow-200 h-31 hover:bg-yellow-100 cursor-pointer rounded-lg shadow-md',
+                delBtn: 'bg-orange-300 p-2 mt-4 rounded-lg',
                 title: 'mr-10 font-bold',
                 text: 'overflow-hidden',
-                delBtn: 'bg-orange-300 p-2 mt-4 rounded-lg',
+                wrapper: '',
               }}
-              isShowDelBtn
-              isShowDate
               dateOptions={{
                 weekday: 'long',
                 year: 'numeric',
@@ -254,6 +269,12 @@ function Component() {
                 minute: 'numeric',
                 second: 'numeric',
               }}
+              delBtnChildren={wasteIcon}
+              removeNote={removeNote}
+              setNoteId={setNoteId}
+              notes={notes}
+              isShowDelBtn
+              isShowDate
             />
             <div className="flex justify-end">
               <button
@@ -267,10 +288,10 @@ function Component() {
         ) : (
           <div className={'bg-yellow-200 p-6 relative shadow-md'}>
             <Redactor
-              activeNote={activeNote}
-              setActiveNote={setActiveNote}
-              initId={'second'}
               classes={{ title: 'bg-inherit font-bold' }}
+              setActiveNote={setActiveNote}
+              activeNote={activeNote}
+              initId={'second'}
             />
             <button
               className={'bg-orange-300 px-4 py-2 rounded-lg'}

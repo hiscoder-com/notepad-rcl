@@ -16,6 +16,7 @@ function ListOfNotes({
   isShowText,
   isShowDelBtn,
   dateOptions,
+  titleReadOnly,
 }) {
   const [currentNote, setCurrentNote] = useState(null);
   const [isShownEditBtn, setIsShownEditBtn] = useState(false);
@@ -31,63 +32,8 @@ function ListOfNotes({
           onClick={() => setNoteId(el.id)}
           aria-hidden="true"
         >
-          {titleIsEditable ? (
+          {titleReadOnly ? (
             <div className="flex flex-row">
-              {el.id === currentNote?.id ? (
-                <>
-                  <input
-                    type="text"
-                    placeholder={el.title}
-                    value={editableTitle}
-                    onBlur={(e) => {
-                      setCurrentNote((prev) => ({ ...prev, title: e.target.value }));
-                    }}
-                    onChange={(e) => setEditableTitle(e.target.value)}
-                    className={classes.title}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const note = notes.find((element) => element.id === el.id);
-                      setCurrentNote(note);
-                      setEditableTitle(el.title);
-                    }}
-                  />
-                  <button
-                    className={classes.saveBtn}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setTitleIsEditable(false);
-                      setNotes((prev) => {
-                        const array = prev.filter((el) => el.id !== currentNote?.id);
-                        array.unshift(currentNote);
-                        return array;
-                      });
-                      setEditableTitle('');
-                    }}
-                  >
-                    {saveBtnChildren}
-                  </button>
-                </>
-              ) : (
-                <div className={classes.title} aria-hidden="true">
-                  {el.title}
-                </div>
-              )}
-            </div>
-          ) : (
-            <div
-              onMouseEnter={() => {
-                const note = notes.find((element) => element.id === el.id);
-                setCurrentNote(note);
-                setTimeout(() => {
-                  setIsShownEditBtn(true);
-                }, 500);
-              }}
-              onMouseLeave={() => {
-                setIsShownEditBtn(false);
-                setCurrentNote(null);
-              }}
-              className="flex flex-row"
-            >
               <div className={classes.title} aria-hidden="true">
                 {el.title}
               </div>
@@ -104,6 +50,83 @@ function ListOfNotes({
                 </button>
               )}
             </div>
+          ) : (
+            <>
+              {titleIsEditable ? (
+                <div className="flex flex-row">
+                  {el.id === currentNote?.id ? (
+                    <>
+                      <input
+                        type="text"
+                        placeholder={el.title}
+                        value={editableTitle}
+                        onBlur={(e) => {
+                          setCurrentNote((prev) => ({ ...prev, title: e.target.value }));
+                        }}
+                        onChange={(e) => setEditableTitle(e.target.value)}
+                        className={classes.title}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const note = notes.find((element) => element.id === el.id);
+                          setCurrentNote(note);
+                          setEditableTitle(el.title);
+                        }}
+                      />
+                      <button
+                        className={classes.saveBtn}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setTitleIsEditable(false);
+                          setNotes((prev) => {
+                            const array = prev.filter((el) => el.id !== currentNote?.id);
+                            array.unshift(currentNote);
+                            return array;
+                          });
+                          setEditableTitle('');
+                        }}
+                      >
+                        {saveBtnChildren}
+                      </button>
+                    </>
+                  ) : (
+                    <div className={classes.title} aria-hidden="true">
+                      {el.title}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div
+                  onMouseEnter={() => {
+                    const note = notes.find((element) => element.id === el.id);
+                    setCurrentNote(note);
+                    setTimeout(() => {
+                      setIsShownEditBtn(true);
+                    }, 500);
+                  }}
+                  onMouseLeave={() => {
+                    setIsShownEditBtn(false);
+                    setCurrentNote(null);
+                  }}
+                  className="flex flex-row"
+                >
+                  <div className={classes.title} aria-hidden="true">
+                    {el.title}
+                  </div>
+
+                  {isShownEditBtn && el.id === currentNote?.id && (
+                    <button
+                      className={classes.editBtn}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setTitleIsEditable(true);
+                      }}
+                    >
+                      {editBtnChildren}
+                    </button>
+                  )}
+                </div>
+              )}
+            </>
           )}
 
           {isShowText && (
@@ -140,13 +163,14 @@ ListOfNotes.defaultProps = {
   setNotes: () => {},
   removeNote: (id) => {},
   setNoteId: () => {},
-  editBtnChildren: [],
+  editBtnChildren: {},
   saveBtnChildren: {},
-  delBtnChildren: [],
+  delBtnChildren: {},
   dateOptions: {},
   isShowDate: false,
   isShowText: false,
   isShowDelBtn: false,
+  titleReadOnly: true,
 };
 
 ListOfNotes.propTypes = {
@@ -194,6 +218,8 @@ ListOfNotes.propTypes = {
   editBtnChildren: PropTypes.object,
   /** save note button */
   saveBtnChildren: PropTypes.object,
+  /** if true, then the title of the note in the list of notes cannot be edited without opening the note */
+  titleReadOnly: PropTypes.bool,
 };
 
 export default ListOfNotes;
