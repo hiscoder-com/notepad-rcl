@@ -23,6 +23,13 @@ function ListOfNotes({
   const [titleIsEditable, setTitleIsEditable] = useState(false);
   const [editableTitle, setEditableTitle] = useState('');
 
+  const delayedBtn = () => {
+    setTimeout(() => {
+      setIsShownEditBtn(true);
+    }, 1000);
+    setIsShownEditBtn(false);
+  };
+
   return (
     <div className={classes.wrapper}>
       {notes.map((el) => (
@@ -89,12 +96,9 @@ function ListOfNotes({
                   onMouseEnter={() => {
                     const note = notes.find((note) => note.id === el.id);
                     setCurrentNote(note);
-                    setTimeout(() => {
-                      setIsShownEditBtn(true);
-                    }, 500);
+                    delayedBtn();
                   }}
                   onMouseLeave={() => {
-                    setIsShownEditBtn(false);
                     setCurrentNote(null);
                   }}
                   className="flex flex-row"
