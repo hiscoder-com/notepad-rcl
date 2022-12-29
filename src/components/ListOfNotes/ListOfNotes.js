@@ -32,28 +32,28 @@ function ListOfNotes({
 
   return (
     <div className={classes.wrapper}>
-      {notes.map((el) => (
+      {notes.map((note) => (
         <div
-          key={el.id}
+          key={note.id}
           className={classes.item}
-          onClick={() => setNoteId(el.id)}
+          onClick={() => setNoteId(note.id)}
           aria-hidden="true"
         >
           {titleReadOnly ? (
             <div>
               <div className={classes.title} aria-hidden="true">
-                {el.title}
+                {note.title}
               </div>
             </div>
           ) : (
             <>
               {titleIsEditable ? (
                 <div>
-                  {el.id === currentNote?.id ? (
+                  {note.id === currentNote?.id ? (
                     <>
                       <input
                         type="text"
-                        placeholder={el.title}
+                        placeholder={note.title}
                         value={editableTitle}
                         onBlur={(e) => {
                           setCurrentNote((prev) => ({ ...prev, title: e.target.value }));
@@ -62,9 +62,8 @@ function ListOfNotes({
                         className={classes.title}
                         onClick={(e) => {
                           e.stopPropagation();
-                          const note = notes.find((note) => note.id === el.id);
                           setCurrentNote(note);
-                          setEditableTitle(el.title);
+                          setEditableTitle(note.title);
                         }}
                       />
                       <button
@@ -87,14 +86,13 @@ function ListOfNotes({
                     </>
                   ) : (
                     <div className={classes.title} aria-hidden="true">
-                      {el.title}
+                      {note.title}
                     </div>
                   )}
                 </div>
               ) : (
                 <div
                   onMouseEnter={() => {
-                    const note = notes.find((note) => note.id === el.id);
                     setCurrentNote(note);
                     delayedBtn();
                   }}
@@ -104,10 +102,10 @@ function ListOfNotes({
                   className="flex flex-row"
                 >
                   <div className={classes.title} aria-hidden="true">
-                    {el.title}
+                    {note.title}
                   </div>
 
-                  {isShownEditBtn && el.id === currentNote?.id && (
+                  {isShownEditBtn && note.id === currentNote?.id && (
                     <button
                       className={classes.editBtn}
                       onClick={(e) => {
@@ -125,7 +123,7 @@ function ListOfNotes({
 
           {isShowText && (
             <div className={classes.text}>
-              <Blocks data={el.data} />
+              <Blocks data={note.data} />
             </div>
           )}
 
@@ -134,15 +132,15 @@ function ListOfNotes({
               className={classes.delBtn}
               onClick={(e) => {
                 e.stopPropagation();
-                removeNote(el.id);
+                removeNote(note.id);
               }}
             >
               {delBtnChildren}
             </button>
           )}
-          {isShowDate && el.created_at && (
+          {isShowDate && note.created_at && (
             <div className={classes.date}>
-              {new Date(el.created_at).toLocaleString('ru', dateOptions)}
+              {new Date(note.created_at).toLocaleString('ru', dateOptions)}
             </div>
           )}
         </div>
