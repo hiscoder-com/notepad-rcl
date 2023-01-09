@@ -5,51 +5,53 @@ import { useState, useEffect } from 'react';
 
 import { ListOfNotes, Redactor } from '@texttree/notepad-rcl';
 
+const defaultNotes = [
+  {
+    id: 'first_note_key_from_DB',
+    title: 'note1',
+    data: {
+      time: 1550476186479,
+      blocks: [
+        {
+          id: 'zbGZFPM-iI',
+          type: 'paragraph',
+          data: {
+            text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
+          },
+        },
+      ],
+      version: '2.25.0',
+    },
+    created_at: new Date('2022-10-15 07:59:58.3642'),
+    isFolder: false,
+    parent_id: null,
+  },
+  {
+    id: 'second_note_key_from_DB',
+    title: 'note2',
+    data: {
+      time: 1550476186479,
+      blocks: [
+        {
+          id: 'zbGZFPM-iI',
+          type: 'paragraph',
+          data: {
+            text: 'Designed to be extendable and pluggable with a simple API',
+          },
+        },
+      ],
+      version: '2.25.0',
+    },
+    created_at: new Date('2022-10-15 07:59:58.3642'),
+    isFolder: false,
+    parent_id: null,
+  },
+];
+
 function Component() {
   const [noteId, setNoteId] = useState('test_noteId');
   const [activeNote, setActiveNote] = useState(null);
-  const [notes, setNotes] = useState([
-    {
-      id: 'first_note_key_from_DB',
-      title: 'note1',
-      data: {
-        time: 1550476186479,
-        blocks: [
-          {
-            id: 'zbGZFPM-iI',
-            type: 'paragraph',
-            data: {
-              text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
-            },
-          },
-        ],
-        version: '2.25.0',
-      },
-      created_at: new Date('2022-10-15 07:59:58.3642'),
-      isFolder: false,
-      parent_id: null,
-    },
-    {
-      id: 'second_note_key_from_DB',
-      title: 'note2',
-      data: {
-        time: 1550476186479,
-        blocks: [
-          {
-            id: 'zbGZFPM-iI',
-            type: 'paragraph',
-            data: {
-              text: 'Designed to be extendable and pluggable with a simple API',
-            },
-          },
-        ],
-        version: '2.25.0',
-      },
-      created_at: new Date('2022-10-15 07:59:58.3642'),
-      isFolder: false,
-      parent_id: null,
-    },
-  ]);
+  const [notes, setNotes] = useState(defaultNotes);
 
   useEffect(() => {
     const note = notes.find((el) => el.id === noteId);
@@ -78,11 +80,6 @@ function Component() {
     const newArray = notes.filter((el) => el.id !== id);
     setNotes(newArray);
   };
-  const wasteIcon = 'delete';
-
-  const check = <span>&#10003;</span>;
-
-  const pencilSquare = <span>&#9998;</span>;
 
   return (
     <div>
@@ -95,13 +92,13 @@ function Component() {
                 title: 'pr-2 mr-1 font-bold overflow-hidden',
                 editBtn: 'rotate-90',
                 saveBtn: 'bg-green-300 px-2 rounded-md',
-                delBtn: 'bg-red-300 p-2 rounded-md',
+                delBtn: 'bg-red-400 p-2 rounded-md',
                 text: 'overflow-hidden h-20',
                 wrapper: '',
               }}
-              editBtnChildren={pencilSquare}
-              delBtnChildren={wasteIcon}
-              saveBtnChildren={check}
+              editBtnChildren={'\u270E'}
+              delBtnChildren={'\u2326'}
+              saveBtnChildren={'\u2713'}
               removeNote={removeNote}
               activeNote={activeNote}
               setNoteId={setNoteId}
@@ -186,24 +183,6 @@ function Component() {
     getNote(noteId);
   }, [noteId]);
 
-  const wasteIcon = (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth="1.5"
-      stroke="currentColor"
-      width="15px"
-      height="15px"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-      />
-    </svg>
-  );
-
   return (
     <div>
       <div>
@@ -226,7 +205,7 @@ function Component() {
                 minute: 'numeric',
                 second: 'numeric',
               }}
-              delBtnChildren={wasteIcon}
+              delBtnChildren={'\u2326'}
               removeNote={removeNote}
               setNoteId={setNoteId}
               notes={notes}
