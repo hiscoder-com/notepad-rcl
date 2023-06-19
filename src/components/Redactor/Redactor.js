@@ -1,4 +1,4 @@
-import { default as React, useState, useEffect, useRef } from 'react';
+import { default as React, useState, useEffect } from 'react';
 
 import PropTypes from 'prop-types';
 
