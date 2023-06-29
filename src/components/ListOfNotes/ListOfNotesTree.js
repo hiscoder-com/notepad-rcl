@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useEffect, useState } from 'react';
 
-import { Treebeard } from 'react-treebeard';
+import { Tree } from 'react-complex-tree';
 
 import PropTypes from 'prop-types';
 
@@ -92,7 +92,7 @@ function ListOfNotesTree({
   };
 
   return (
-    <Treebeard
+    <Tree
       style={style}
       data={data}
       toggled={true}
