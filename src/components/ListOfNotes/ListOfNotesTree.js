@@ -22,10 +22,10 @@ function ListOfNotesTree({
       .filter(({ parent_id }) => parent_id == id)
       .map(({ id, title, ...other }) => ({
         id,
-        ...other,
         title,
         parentBC,
-        children: makeTree(id, parentBC + '/' + title, notes),
+        children: makeTree(id, `${parentBC}/${title}`, notes),
+        ...other,
       }));
 
   const [data, setData] = useState({});
@@ -50,45 +50,37 @@ function ListOfNotesTree({
       node.toggled = toggled;
     }
     setActiveNote(node);
-    setData(Object.assign({}, data));
+    setData((prevData) => ({ ...prevData }));
   };
 
-  const decorators = {
-    Toggle: (props) => {
-      return <div style={props.style}></div>;
-    },
+  const Container = (props) => {
+    const { node } = props;
+    const isActiveNote = activeNote?.id === node.id;
 
-    Container: (props) => {
-      return (
-        <div
-          className={`${
-            activeNote?.id == props.node.id ? `${classes?.bgActiveNote}` : ''
-          } ${classes.wrapper}`}
-          onClick={() => {
-            props.onClick();
-          }}
-        >
-          <div className={classes.icon}>
-            {props.node.is_folder
-              ? !props.node.toggled
-                ? icons.closedFolder
-                : icons.openedFolder
-              : icons.note}
-          </div>
-          <div className={classes.title}>{props.node.title}</div>
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-              removeNote(props.node.id);
-            }}
-            className={classes.delBtn}
-          >
-            {delBtnIcon}
-            {delBtnName}
-          </div>
+    const handleClick = (e) => {
+      e.stopPropagation();
+      removeNote(node.id);
+    };
+
+    return (
+      <div
+        className={`${isActiveNote ? classes?.bgActiveNote : ''} ${classes.wrapper}`}
+        onClick={props.onClick}
+      >
+        <div className={classes.icon}>
+          {node.is_folder
+            ? node.toggled
+              ? icons.openedFolder
+              : icons.closedFolder
+            : icons.note}
         </div>
-      );
-    },
+        <div className={classes.title}>{node.title}</div>
+        <div className={classes.delBtn} onClick={handleClick}>
+          {delBtnIcon}
+          {delBtnName}
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -97,7 +89,7 @@ function ListOfNotesTree({
       data={data}
       toggled={true}
       onToggle={onToggle}
-      decorators={decorators}
+      decorators={{ Container, Toggle: () => <div></div> }}
     />
   );
 }

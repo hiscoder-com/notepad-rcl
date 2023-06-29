@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 
 import PropTypes from 'prop-types';
@@ -14,11 +15,20 @@ function ListOfNotes({
   isShowDelBtn,
   dateOptions,
 }) {
+  const handleClick = (id) => {
+    setNoteId(id);
+  };
+
+  const handleRemoveNote = (e, id) => {
+    e.stopPropagation();
+    removeNote(id);
+  };
+
   return (
     <div className={classes.wrapper}>
       {notes.map((el) => (
-        // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-        <div key={el.id} className={classes.item} onClick={() => setNoteId(el.id)}>
+        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+        <div key={el.id} className={classes.item} onClick={() => handleClick(el.id)}>
           <div className={classes.title}>{el.title}</div>
           {isShowText && (
             <div className={classes.text}>
@@ -29,14 +39,12 @@ function ListOfNotes({
           {isShowDelBtn && (
             <button
               className={classes.delBtn}
-              onClick={(e) => {
-                e.stopPropagation();
-                removeNote(el.id);
-              }}
+              onClick={(e) => handleRemoveNote(e, el.id)}
             >
               {delBtnChildren}
             </button>
           )}
+
           {isShowDate && el.created_at && (
             <div className={classes.date}>
               {new Date(el.created_at).toLocaleString('ru', dateOptions)}
@@ -55,7 +63,6 @@ ListOfNotes.defaultProps = {
   isShowDate: false,
   isShowText: false,
   isShowDelBtn: false,
-  delBtnName: '',
   title: 'untitled',
   setNoteId: () => {},
 };
@@ -81,8 +88,6 @@ ListOfNotes.propTypes = {
   }),
   /** you can change the date representation (https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString) */
   dateOptions: PropTypes.object,
-  /** delete button text */
-  delBtnName: PropTypes.string,
   /** note title in preview */
   title: PropTypes.string,
   /** an array of existing notes. Required to display a list of notes */
