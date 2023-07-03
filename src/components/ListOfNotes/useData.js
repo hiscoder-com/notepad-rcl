@@ -71,12 +71,12 @@ function useData() {
     }
   };
 
-  const addNote = async () => {
+  const addNote = async (title) => {
     const id =
       'note' + ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9);
     const newNote = {
       id,
-      title: 'New lf-note',
+      title: title || 'New LF-note',
       data: {
         blocks: [
           {
@@ -94,7 +94,14 @@ function useData() {
     setNotes((prev) => [...prev, newNote]);
   };
 
-  return { notes, removeNote, addNote, dBNameRegistration, noteRequest, saveNote };
+  return {
+    notes,
+    removeNote,
+    addNote,
+    dBNameRegistration,
+    noteRequest,
+    saveNote,
+  };
 }
 
 export default useData;
