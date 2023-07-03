@@ -1,6 +1,4 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
-
 import PropTypes from 'prop-types';
 import Blocks from 'editorjs-blocks-react-renderer';
 
@@ -27,7 +25,6 @@ function ListOfNotes({
   return (
     <div className={classes.wrapper}>
       {notes.map((el) => (
-        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
         <div key={el.id} className={classes.item} onClick={() => handleClick(el.id)}>
           <div className={classes.title}>{el.title}</div>
           {isShowText && (
@@ -64,6 +61,7 @@ ListOfNotes.defaultProps = {
   isShowText: false,
   isShowDelBtn: false,
   title: 'untitled',
+  delBtnChildren: 'Delete',
   setNoteId: () => {},
 };
 
@@ -91,13 +89,25 @@ ListOfNotes.propTypes = {
   /** note title in preview */
   title: PropTypes.string,
   /** an array of existing notes. Required to display a list of notes */
-  notes: PropTypes.array,
+  notes: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      title: PropTypes.string,
+      data: PropTypes.object,
+      created_at: PropTypes.string,
+    })
+  ),
+  /** function to remove a note */
+  removeNote: PropTypes.func,
   /** pass the id of the selected note to the setter */
   setNoteId: PropTypes.func,
+  /** if true, display delete button for each note */
+  isShowDelBtn: PropTypes.bool,
+  /** content of the delete button */
+  delBtnChildren: PropTypes.node,
   /** if true, display note creation date during note preview */
   isShowDate: PropTypes.bool,
   /** if true, display note text during note preview */
   isShowText: PropTypes.bool,
 };
-
 export default ListOfNotes;
