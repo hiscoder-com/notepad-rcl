@@ -5373,11 +5373,6 @@ raw-body@2.5.1:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-react-complex-tree@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/react-complex-tree/-/react-complex-tree-2.2.0.tgz#bb313a38b076cbd07d1509437457e22383202ee2"
-  integrity sha512-hcGPFKFtIZveUkJDGEmvS0EcXO8abmc86GyIVWF7jimczXhlPJ6DOjGl5XvECXK8m0welkiFJLnzk4TOEHXhAg==
-
 react-dev-utils@^12.0.0:
   version "12.0.1"
   resolved "https://registry.npmjs.org/react-dev-utils/-/react-dev-utils-12.0.1.tgz"
