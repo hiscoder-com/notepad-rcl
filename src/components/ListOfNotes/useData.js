@@ -9,11 +9,15 @@ function useData() {
   useEffect(() => {
     const fetchNotes = async () => {
       const arr = [];
-      await localforage.iterate((value, id) => {
-        if (id.includes('note')) {
-          arr.push(value);
-        }
-      });
+      try {
+        await localforage.iterate((value, id) => {
+          if (id.includes('note')) {
+            arr.push(value);
+          }
+        });
+      } catch (error) {
+        console.log('error:', error);
+      }
       setNotes(arr);
     };
 
@@ -80,13 +84,12 @@ function useData() {
             data: {},
           },
         ],
-        version: '2.25.0',
+        version: '2.27.2',
       },
       created_at: new Date(),
       parent_id: null,
       isFolder: false,
     };
-
     await localforage.setItem(id, newNote);
     setNotes((prev) => [...prev, newNote]);
   };
