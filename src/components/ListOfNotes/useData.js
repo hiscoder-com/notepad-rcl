@@ -7,22 +7,21 @@ function useData() {
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    const iterateNotes = async () => {
+    const fetchNotes = async () => {
       const arr = [];
-      await localforage
-        .iterate(function (value, id) {
+      try {
+        await localforage.iterate((value, id) => {
           if (id.includes('note')) {
             arr.push(value);
           }
-        })
-        .then(function () {
-          setNotes(arr);
-        })
-        .catch(function (err) {
-          console.log(err);
         });
+      } catch (error) {
+        console.log('error:', error);
+      }
+      setNotes(arr);
     };
-    iterateNotes();
+
+    fetchNotes();
   }, [isSaving]);
 
   // Assign a name to the database
@@ -43,58 +42,66 @@ function useData() {
       return;
     }
     const { title, data } = note;
-    await localforage.getItem(id).then(function (value) {
-      value
-        ? localforage.setItem(id, {
-            ...note,
-          })
-        : localforage.setItem(id, {
-            id: note.id,
-            title,
-            data,
-            created_at: new Date(),
-            parent_id: null,
-            isFolder: false,
-          });
-      setIsSaving(false);
-    });
-  };
 
-  const removeNote = (id) => {
-    localforage
-      .removeItem(id)
-      .then(function () {
-        setNotes((prev) => prev.filter((obj) => obj.id !== id));
-      })
-      .catch(function (err) {
-        console.log(err);
+    const existingNote = await localforage.getItem(id);
+    if (existingNote) {
+      await localforage.setItem(id, {
+        ...note,
       });
-  };
-
-  const addNote = () => {
-    const id =
-      'note' + ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9);
-    localforage
-      .setItem(id, {
-        id,
-        title: 'New lf-note',
-        data: {
-          blocks: [
-            {
-              type: 'paragraph',
-              data: {},
-            },
-          ],
-          version: '2.25.0',
-        },
+    } else {
+      await localforage.setItem(id, {
+        id: note.id,
+        title,
+        data,
         created_at: new Date(),
         parent_id: null,
         isFolder: false,
-      })
-      .then((note) => setNotes((prev) => [...prev, note]));
+      });
+    }
+
+    setIsSaving(false);
   };
 
-  return { notes, removeNote, addNote, dBNameRegistration, noteRequest, saveNote };
+  const removeNote = async (id) => {
+    try {
+      await localforage.removeItem(id);
+      setNotes((prev) => prev.filter((obj) => obj.id !== id));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const addNote = async (title) => {
+    const id =
+      'note' + ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9);
+    const newNote = {
+      id,
+      title: title || 'New LF-note',
+      data: {
+        blocks: [
+          {
+            type: 'paragraph',
+            data: {},
+          },
+        ],
+        version: '2.27.2',
+      },
+      created_at: new Date(),
+      parent_id: null,
+      isFolder: false,
+    };
+    await localforage.setItem(id, newNote);
+    setNotes((prev) => [...prev, newNote]);
+  };
+
+  return {
+    notes,
+    removeNote,
+    addNote,
+    dBNameRegistration,
+    noteRequest,
+    saveNote,
+  };
 }
 
 export default useData;

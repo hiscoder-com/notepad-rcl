@@ -15,13 +15,25 @@ function Redactor({
 }) {
   const ReactEditorJS = createReactEditorJS();
 
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState(activeNote?.title || '');
 
   useEffect(() => {
-    if (activeNote && Object.keys(activeNote).includes('title')) {
+    if (activeNote?.title) {
       setTitle(activeNote.title);
     }
   }, [activeNote]);
+
+  const handleTitleChange = (e) => {
+    const newTitle = e.target.innerText;
+    setActiveNote((prev) => ({ ...prev, title: newTitle }));
+    setTitle(newTitle);
+  };
+
+  const handleEditorChange = async (e) => {
+    const content = await e.saver.save();
+    setActiveNote((prev) => ({ ...prev, data: content }));
+  };
+
   return (
     <div className={classes.wrapper}>
       <div className={classes.parentBC}>{activeNote?.parentBC}</div>
@@ -31,19 +43,13 @@ function Redactor({
         maxLength="256"
         contentEditable={!readOnly}
         suppressContentEditableWarning={true}
-        onBlur={(e) => {
-          setActiveNote((prev) => ({ ...prev, title: e.target.innerText }));
-          setTitle(e.target.innerText);
-        }}
+        onBlur={handleTitleChange}
       >
         {title}
       </div>
       <div className={classes.redactor}>
         <ReactEditorJS
-          onChange={async (e) => {
-            const content = await e.saver.save();
-            setActiveNote((prev) => ({ ...prev, data: content }));
-          }}
+          onChange={handleEditorChange}
           autofocus={false}
           defaultValue={activeNote?.data}
           placeholder={placeholder}

@@ -8,7 +8,7 @@ export default function useData() {
 useData.defaultProps = {
   notes: [],
   removeNote: (id) => {},
-  addNote: () => {},
+  addNote: (title) => {},
   dBNameRegistration: (name) => {},
   noteRequest: (id) => {},
   saveNote: (id, note) => {},
@@ -25,6 +25,6 @@ useData.propTypes = {
   saveNote: PropTypes.func,
   /** pass a name for your DB */
   dBNameRegistration: PropTypes.func,
-  /** method for adding a new note to the database. Creates an empty note and saves to the database  */
+  /** method for adding a new note to the database. Creates an empty note and saves to the database. Accepts the title of the note as an optional parameter  */
   addNote: PropTypes.func,
 };
