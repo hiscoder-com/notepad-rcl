@@ -28,7 +28,6 @@ function Component() {
       isFolder: false,
       parent_id: null,
     },
-
     {
       id: 'second_note_key_from_DB',
       title: 'note2',
@@ -55,6 +54,60 @@ function Component() {
       created_at: new Date('2022-10-15 07:59:58.3642'),
       isFolder: true,
       parent_id: null,
+    },
+    {
+      id: 'second_folder_key_from_DB',
+      title: 'folder2',
+      created_at: new Date('2022-10-15 07:59:58.3642'),
+      isFolder: true,
+      parent_id: 'first_folder_key_from_DB',
+    },
+    {
+      id: 'third_note_key_from_DB',
+      title: 'note3',
+      data: {
+        time: 1550476186479,
+        blocks: [
+          {
+            id: 'zbGZFPM-iI',
+            type: 'paragraph',
+            data: {
+              text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
+            },
+          },
+        ],
+        version: '2.27.2',
+      },
+      created_at: new Date('2022-10-15 07:59:58.3642'),
+      isFolder: false,
+      parent_id: 'second_folder_key_from_DB',
+    },
+    {
+      id: 'third_folder_key_from_DB',
+      title: 'folder3',
+      created_at: new Date('2022-10-15 07:59:58.3642'),
+      isFolder: true,
+      parent_id: 'second_folder_key_from_DB',
+    },
+    {
+      id: 'fourth_note_key_from_DB',
+      title: 'note4',
+      data: {
+        time: 1550476186479,
+        blocks: [
+          {
+            id: 'zbGZFPM-iI',
+            type: 'paragraph',
+            data: {
+              text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
+            },
+          },
+        ],
+        version: '2.27.2',
+      },
+      created_at: new Date('2022-10-15 07:59:58.3642'),
+      isFolder: false,
+      parent_id: 'third_folder_key_from_DB',
     },
   ]);
 

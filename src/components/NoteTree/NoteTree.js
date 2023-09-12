@@ -3,47 +3,30 @@ import { Tree } from 'react-arborist';
 
 function NoteTree({ notes }) {
   function convertNotesToSampleData(notes) {
+    // Function to find all children for a given parent_id
+    function findChildren(id) {
+      const children = [];
+      notes.forEach((note) => {
+        if (note.parent_id === id) {
+          const child = { id: note.id, name: note.title };
+          if (note.isFolder) {
+            child.children = findChildren(note.id);
+          }
+          children.push(child);
+        }
+      });
+      return children;
+    }
+
+    // We start with the root elements whose parent_id is null
     const resultArray = [];
-    const childrenArrays = new Map();
-
     notes.forEach((note) => {
-      const { id, title, parent_id, isFolder } = note;
-
-      // Обработка обычной заметки
-      if (!isFolder) {
-        // Заметка без родителя, добавляем в корень resultArray
-        if (parent_id === null) {
-          resultArray.push({ id, name: title });
-        } else {
-          // Проверяем, есть ли массив children для данного parent_id
-          if (!childrenArrays.has(parent_id)) {
-            childrenArrays.set(parent_id, []);
-          }
-          // Добавляем заметку в массив children
-          childrenArrays.get(parent_id).push({ id, name: title });
+      if (note.parent_id === null) {
+        const item = { id: note.id, name: note.title };
+        if (note.isFolder) {
+          item.children = findChildren(note.id);
         }
-      }
-      // Обработка папки
-      else {
-        // Папка без родителя, добавляем в корень resultArray
-        if (parent_id === null) {
-          resultArray.push({ id, name: title, children: [] });
-        } else {
-          // Проверяем, есть ли массив children для данного parent_id
-          if (!childrenArrays.has(parent_id)) {
-            childrenArrays.set(parent_id, []);
-          }
-          // Добавляем папку в массив children
-          childrenArrays.get(parent_id).push({ id, name: title, children: [] });
-        }
-      }
-    });
-
-    // Связываем папки и заметки
-    childrenArrays.forEach((children, parent_id) => {
-      const parentIndex = resultArray.findIndex((item) => item.id === parent_id);
-      if (parentIndex !== -1) {
-        resultArray[parentIndex].children = children;
+        resultArray.push(item);
       }
     });
 
