@@ -3,7 +3,6 @@ import { Tree } from 'react-arborist';
 
 function NoteTree({ notes }) {
   function convertNotesToSampleData(notes) {
-    // Function to find all children for a given parent_id
     function findChildren(id) {
       const children = [];
       notes.forEach((note) => {
@@ -18,7 +17,6 @@ function NoteTree({ notes }) {
       return children;
     }
 
-    // We start with the root elements whose parent_id is null
     const resultArray = [];
     notes.forEach((note) => {
       if (note.parent_id === null) {
@@ -34,8 +32,13 @@ function NoteTree({ notes }) {
   }
 
   const treeData = convertNotesToSampleData(notes);
-  console.log(treeData);
-  return <Tree initialData={treeData} />;
+
+  return (
+    <Tree
+      initialData={treeData}
+      openByDefault={false} // To collapse all folders by default
+    />
+  );
 }
 
 export default NoteTree;

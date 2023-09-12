@@ -109,6 +109,26 @@ function Component() {
       isFolder: false,
       parent_id: 'third_folder_key_from_DB',
     },
+    {
+      id: 'fifth_note_key_from_DB',
+      title: 'note5',
+      data: {
+        time: 1550476186479,
+        blocks: [
+          {
+            id: 'zbGZFPM-iI',
+            type: 'paragraph',
+            data: {
+              text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
+            },
+          },
+        ],
+        version: '2.27.2',
+      },
+      created_at: new Date('2022-10-15 07:59:58.3642'),
+      isFolder: false,
+      parent_id: 'third_folder_key_from_DB',
+    },
   ]);
 
   return (
