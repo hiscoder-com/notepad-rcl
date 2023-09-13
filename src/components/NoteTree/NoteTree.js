@@ -1,6 +1,15 @@
 import React from 'react';
 import { Tree } from 'react-arborist';
 
+function Node({ node, style, dragHandle }) {
+  /* Customize the appearance of file nodes */
+  return (
+    <div onClick={() => node.toggle()}>
+      {node.isLeaf ? '📄' : '🗀'} {node.data.name}
+    </div>
+  );
+}
+
 function NoteTree({ notes }) {
   function convertNotesToSampleData(notes) {
     function findChildren(id) {
@@ -37,7 +46,9 @@ function NoteTree({ notes }) {
     <Tree
       initialData={treeData}
       openByDefault={false} // To collapse all folders by default
-    />
+    >
+      {Node}
+    </Tree>
   );
 }
 
