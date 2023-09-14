@@ -34,11 +34,9 @@ function NoteTree({ notes }) {
   const [data, setData] = useState(convertNotesToSampleData(notes));
   const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [term, setTerm] = useState();
-  console.log({ selectedNodeId });
 
   const handleDeleteNode = () => {
     if (selectedNodeId) {
-      // Создаем новый массив данных дерева без узла с выбранным ID и его детей
       const updatedTreeData = removeNodeAndChildren(data, selectedNodeId);
       setData(updatedTreeData);
       setSelectedNodeId(null);
@@ -49,24 +47,45 @@ function NoteTree({ notes }) {
   const removeNodeAndChildren = (treeData, nodeId) => {
     return treeData.filter((node) => {
       if (node.id === nodeId) {
-        // If a node to delete is found, we recursively delete its children
         if (node.children) {
           node.children.forEach((child) => {
             removeNodeAndChildren(treeData, child.id);
           });
         }
-        return false; // Не добавляем узел в новый массив
+        return false;
       } else if (node.children) {
-        // Если это не удаляемый узел, проверяем его детей на удаление
         node.children = removeNodeAndChildren(node.children, nodeId);
-        return true; // Добавляем узел в новый массив
+        return true;
       }
-      return true; // Добавляем узел в новый массив
+      return true;
     });
   };
 
   const handleNodeClick = (nodeId) => {
     setSelectedNodeId(nodeId);
+  };
+
+  // Recursive function to rename a node and its children
+  const handleRenameNode = () => {
+    if (selectedNodeId) {
+      const newName = prompt('Введите новое имя узла:', '');
+      if (newName !== null) {
+        const updatedTreeData = renameNode(data, selectedNodeId, newName);
+        setData(updatedTreeData);
+      }
+    }
+  };
+
+  const renameNode = (treeData, nodeId, newName) => {
+    return treeData.map((node) => {
+      if (node.id === nodeId) {
+        node.name = newName;
+      }
+      if (node.children) {
+        node.children = renameNode(node.children, nodeId, newName);
+      }
+      return node;
+    });
   };
 
   return (
@@ -111,6 +130,12 @@ function NoteTree({ notes }) {
           Удалить выбранный узел
         </button>
       </div>
+      <div style={{ marginBottom: '10px', color: 'blue' }}>
+        <button onClick={handleRenameNode} disabled={!selectedNodeId}>
+          Переименовать выбранный узел
+        </button>
+      </div>
+
       <Tree
         data={data}
         searchTerm={term}
@@ -122,6 +147,7 @@ function NoteTree({ notes }) {
           const indent = nodeProps.node.level * 20;
           const isFolderOpen = nodeProps.node.isOpen;
           const isFile = nodeProps.node.isLeaf;
+
           return (
             <div
               style={{
@@ -130,8 +156,13 @@ function NoteTree({ notes }) {
                 backgroundColor:
                   nodeProps.node.id === selectedNodeId ? 'lightblue' : 'transparent',
                 borderRadius: '5px',
+                userSelect: 'none',
               }}
-              onClick={() => handleNodeClick(nodeProps.node.id)}
+              onClick={() => {
+                handleNodeClick(nodeProps.node.id);
+                console.log(nodeProps.node.data.name);
+              }}
+              onDoubleClick={() => nodeProps.node.toggle()}
             >
               {isFile ? '🗎' : isFolderOpen ? '🗁' : '🗀'} {nodeProps.node.data.name}
             </div>
