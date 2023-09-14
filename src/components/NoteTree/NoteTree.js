@@ -1,33 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Tree } from 'react-arborist';
-
-function Node({ node }) {
-  const indent = node.level * 20;
-  const isFolderOpen = node.isOpen; // State Properties, Returns true if node is internal and in an open state.
-  const isFile = node.isLeaf; // State Properties, Returns true if the children property is not an array.
-
-  const handleRename = () => {
-    const newName = prompt('Введите новое имя узла:', node.data.name);
-    if (newName !== null && newName !== node.data.name) {
-      node.onRename(newName, node.id);
-    }
-  };
-
-  return (
-    <div
-      style={{
-        paddingLeft: `${indent}px`,
-        cursor: 'pointer',
-        backgroundColor: node.isSelected ? 'lightblue' : 'transparent', // State Properties, Returns true if node is selected.
-        borderRadius: '5px',
-      }}
-      onClick={() => node.toggle()} // Open/Close Methods, Toggles the open/closed state of the node if it is an internal node.
-      onDoubleClick={handleRename}
-    >
-      {isFile ? '🗎' : isFolderOpen ? '🗁' : '🗀'} {node.data.name}
-    </div>
-  );
-}
 
 function NoteTree({ notes }) {
   function convertNotesToSampleData(notes) {
@@ -59,24 +31,50 @@ function NoteTree({ notes }) {
     return resultArray;
   }
 
-  const [treeData, setTreeData] = useState(convertNotesToSampleData(notes));
+  const [data, setData] = useState(convertNotesToSampleData(notes));
+  const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [term, setTerm] = useState();
-  const onRename = (newName, nodeId) => {
-    const updatedData = treeData.map((node) => {
-      if (node.id === nodeId) {
-        return { ...node, name: newName };
-      }
-      return node;
-    });
+  console.log({ selectedNodeId });
 
-    setTreeData(updatedData);
+  const handleDeleteNode = () => {
+    if (selectedNodeId) {
+      // Создаем новый массив данных дерева без узла с выбранным ID и его детей
+      const updatedTreeData = removeNodeAndChildren(data, selectedNodeId);
+      setData(updatedTreeData);
+      setSelectedNodeId(null);
+    }
   };
+
+  // Recursive function to remove a node and its children
+  const removeNodeAndChildren = (treeData, nodeId) => {
+    return treeData.filter((node) => {
+      if (node.id === nodeId) {
+        // If a node to delete is found, we recursively delete its children
+        if (node.children) {
+          node.children.forEach((child) => {
+            removeNodeAndChildren(treeData, child.id);
+          });
+        }
+        return false; // Не добавляем узел в новый массив
+      } else if (node.children) {
+        // Если это не удаляемый узел, проверяем его детей на удаление
+        node.children = removeNodeAndChildren(node.children, nodeId);
+        return true; // Добавляем узел в новый массив
+      }
+      return true; // Добавляем узел в новый массив
+    });
+  };
+
+  const handleNodeClick = (nodeId) => {
+    setSelectedNodeId(nodeId);
+  };
+
   return (
     <div>
       <div
         style={{
           position: 'relative',
-          marginBottom: '36px',
+          marginBottom: '10px',
           maxWidth: '300px',
         }}
       >
@@ -108,16 +106,37 @@ function NoteTree({ notes }) {
           Search
         </label>
       </div>
+      <div style={{ marginBottom: '10px', color: 'red' }}>
+        <button onClick={handleDeleteNode} disabled={!selectedNodeId}>
+          Удалить выбранный узел
+        </button>
+      </div>
       <Tree
-        data={treeData}
-        onRename={onRename}
-        openByDefault={false}
+        data={data}
         searchTerm={term}
         searchMatch={(node, term) =>
           node.data.name.toLowerCase().includes(term.toLowerCase())
         }
       >
-        {Node}
+        {(nodeProps) => {
+          const indent = nodeProps.node.level * 20;
+          const isFolderOpen = nodeProps.node.isOpen;
+          const isFile = nodeProps.node.isLeaf;
+          return (
+            <div
+              style={{
+                cursor: 'pointer',
+                paddingLeft: `${indent}px`,
+                backgroundColor:
+                  nodeProps.node.id === selectedNodeId ? 'lightblue' : 'transparent',
+                borderRadius: '5px',
+              }}
+              onClick={() => handleNodeClick(nodeProps.node.id)}
+            >
+              {isFile ? '🗎' : isFolderOpen ? '🗁' : '🗀'} {nodeProps.node.data.name}
+            </div>
+          );
+        }}
       </Tree>
     </div>
   );
