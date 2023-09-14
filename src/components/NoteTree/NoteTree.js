@@ -68,7 +68,7 @@ function NoteTree({ notes }) {
   // Recursive function to rename a node and its children
   const handleRenameNode = () => {
     if (selectedNodeId) {
-      const newName = prompt('Введите новое имя узла:', '');
+      const newName = prompt('Enter a new name:', '');
       if (newName !== null) {
         const updatedTreeData = renameNode(data, selectedNodeId, newName);
         setData(updatedTreeData);
@@ -127,12 +127,12 @@ function NoteTree({ notes }) {
       </div>
       <div style={{ marginBottom: '10px', color: 'red' }}>
         <button onClick={handleDeleteNode} disabled={!selectedNodeId}>
-          Удалить выбранный узел
+          Delete selected node
         </button>
       </div>
       <div style={{ marginBottom: '10px', color: 'blue' }}>
         <button onClick={handleRenameNode} disabled={!selectedNodeId}>
-          Переименовать выбранный узел
+          Rename selected node
         </button>
       </div>
 
@@ -160,7 +160,6 @@ function NoteTree({ notes }) {
               }}
               onClick={() => {
                 handleNodeClick(nodeProps.node.id);
-                console.log(nodeProps.node.data.name);
               }}
               onDoubleClick={() => nodeProps.node.toggle()}
             >
