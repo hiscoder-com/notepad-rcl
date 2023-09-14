@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Tree } from 'react-arborist';
 
 function NoteTree({ notes }) {
@@ -34,6 +34,14 @@ function NoteTree({ notes }) {
   const [data, setData] = useState(convertNotesToSampleData(notes));
   const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [term, setTerm] = useState();
+  // const treeRef = useRef();
+
+  // если нужно получить onContextMenu onDelete, когда {Node} будет отдельным компонентом
+  // useEffect(() => {
+  //   const tree = treeRef.current;
+  //   const testingRef = tree.props;
+  //   console.log({ testingRef });
+  // }, [selectedNodeId]);
 
   const handleDeleteNode = () => {
     if (selectedNodeId) {
@@ -65,15 +73,33 @@ function NoteTree({ notes }) {
     setSelectedNodeId(nodeId);
   };
 
-  // Recursive function to rename a node and its children
   const handleRenameNode = () => {
     if (selectedNodeId) {
-      const newName = prompt('Enter a new name:', '');
-      if (newName !== null) {
-        const updatedTreeData = renameNode(data, selectedNodeId, newName);
-        setData(updatedTreeData);
+      const nodeToRename = findNodeById(data, selectedNodeId);
+      if (nodeToRename) {
+        const newName = prompt('Enter a new name:', nodeToRename.name);
+        if (newName !== null) {
+          const updatedTreeData = renameNode(data, selectedNodeId, newName);
+          setData(updatedTreeData);
+        }
       }
     }
+  };
+
+  // Recursive function to find a node by id
+  const findNodeById = (treeData, nodeId) => {
+    for (const node of treeData) {
+      if (node.id === nodeId) {
+        return node;
+      }
+      if (node.children) {
+        const foundNode = findNodeById(node.children, nodeId);
+        if (foundNode) {
+          return foundNode;
+        }
+      }
+    }
+    return null;
   };
 
   const renameNode = (treeData, nodeId, newName) => {
@@ -86,6 +112,15 @@ function NoteTree({ notes }) {
       }
       return node;
     });
+  };
+
+  const handleContextMenu = (node) => {
+    console.log(`Контекстное меню для узла с ID ${node.id}`);
+  };
+
+  const handleTestDelete = ({ ids }) => {
+    const updatedTreeData = removeNodeAndChildren(data, ids[0]);
+    setData(updatedTreeData);
   };
 
   return (
@@ -137,6 +172,9 @@ function NoteTree({ notes }) {
       </div>
 
       <Tree
+        // ref={treeRef}
+        onContextMenu={handleContextMenu}
+        onDelete={handleTestDelete}
         data={data}
         searchTerm={term}
         searchMatch={(node, term) =>
@@ -162,6 +200,10 @@ function NoteTree({ notes }) {
                 handleNodeClick(nodeProps.node.id);
               }}
               onDoubleClick={() => nodeProps.node.toggle()}
+              onContextMenu={(event) => {
+                event.preventDefault();
+                nodeProps.node.tree.props.onContextMenu(nodeProps.node);
+              }}
             >
               {isFile ? '🗎' : isFolderOpen ? '🗁' : '🗀'} {nodeProps.node.data.name}
             </div>
