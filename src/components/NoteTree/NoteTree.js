@@ -33,8 +33,7 @@ function NoteTree({ notes }) {
 
   const [data, setData] = useState(convertNotesToSampleData(notes));
   const [selectedNodeId, setSelectedNodeId] = useState(null);
-  const [term, setTerm] = useState();
-  // const treeRef = useRef();
+  const [term, setTerm] = useState('');
 
   // если нужно получить onContextMenu onDelete, когда {Node} будет отдельным компонентом
   // useEffect(() => {
@@ -43,6 +42,15 @@ function NoteTree({ notes }) {
   //   console.log({ testingRef });
   // }, [selectedNodeId]);
 
+  const handleNodeClick = (nodeId) => {
+    setSelectedNodeId(nodeId);
+  };
+
+  const handleTreeEventDelete = ({ ids }) => {
+    const updatedTreeData = removeNodeAndChildren(data, ids[0]);
+    setData(updatedTreeData);
+  };
+
   const handleDeleteNode = () => {
     if (selectedNodeId) {
       const updatedTreeData = removeNodeAndChildren(data, selectedNodeId);
@@ -50,7 +58,6 @@ function NoteTree({ notes }) {
       setSelectedNodeId(null);
     }
   };
-
   // Recursive function to remove a node and its children
   const removeNodeAndChildren = (treeData, nodeId) => {
     return treeData.filter((node) => {
@@ -69,24 +76,19 @@ function NoteTree({ notes }) {
     });
   };
 
-  const handleNodeClick = (nodeId) => {
-    setSelectedNodeId(nodeId);
-  };
-
   const handleRenameNode = () => {
     if (selectedNodeId) {
       const nodeToRename = findNodeById(data, selectedNodeId);
       if (nodeToRename) {
         const newName = prompt('Enter a new name:', nodeToRename.name);
         if (newName !== null) {
-          const updatedTreeData = renameNode(data, selectedNodeId, newName);
+          const updatedTreeData = renameNodeInTree(data, selectedNodeId, newName);
           setData(updatedTreeData);
         }
       }
     }
   };
 
-  // Recursive function to find a node by id
   const findNodeById = (treeData, nodeId) => {
     for (const node of treeData) {
       if (node.id === nodeId) {
@@ -102,13 +104,13 @@ function NoteTree({ notes }) {
     return null;
   };
 
-  const renameNode = (treeData, nodeId, newName) => {
+  const renameNodeInTree = (treeData, nodeId, newName) => {
     return treeData.map((node) => {
       if (node.id === nodeId) {
         node.name = newName;
       }
       if (node.children) {
-        node.children = renameNode(node.children, nodeId, newName);
+        node.children = renameNodeInTree(node.children, nodeId, newName);
       }
       return node;
     });
@@ -116,11 +118,6 @@ function NoteTree({ notes }) {
 
   const handleContextMenu = (node) => {
     console.log(`Контекстное меню для узла с ID ${node.id}`);
-  };
-
-  const handleTestDelete = ({ ids }) => {
-    const updatedTreeData = removeNodeAndChildren(data, ids[0]);
-    setData(updatedTreeData);
   };
 
   return (
@@ -172,19 +169,19 @@ function NoteTree({ notes }) {
       </div>
 
       <Tree
-        // ref={treeRef}
-        onContextMenu={handleContextMenu}
-        onDelete={handleTestDelete}
         data={data}
+        // ref={treeRef}
         searchTerm={term}
+        onDelete={handleTreeEventDelete}
+        onContextMenu={handleContextMenu}
         searchMatch={(node, term) =>
           node.data.name.toLowerCase().includes(term.toLowerCase())
         }
       >
         {(nodeProps) => {
+          const isFile = nodeProps.node.isLeaf;
           const indent = nodeProps.node.level * 20;
           const isFolderOpen = nodeProps.node.isOpen;
-          const isFile = nodeProps.node.isLeaf;
 
           return (
             <div
