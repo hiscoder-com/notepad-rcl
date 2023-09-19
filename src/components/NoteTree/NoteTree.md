@@ -7,7 +7,58 @@ import { NoteTree } from '@texttree/notepad-rcl';
 function Component() {
   const [noteId, setNoteId] = useState('test_noteId');
   const [activeNote, setActiveNote] = useState(null);
-  const [notes, setNotes] = useState([
+
+  const style = {
+    searchContainer: {
+      position: 'relative',
+      marginBottom: '10px',
+      maxWidth: '320px',
+    },
+    searchInput: {
+      border: '0',
+      borderBottom: '1px solid #555',
+      background: 'transparent',
+      width: '100%',
+      padding: '24px 0 5px 0',
+      fontSize: '14px',
+      outline: 'none',
+    },
+    searchLabel: {
+      position: 'absolute',
+      top: '0px',
+      left: '0px',
+      fontSize: '14px',
+      color: '#555',
+      transition: 'all 0.5s ease-in-out',
+    },
+    buttonRemoveContainer: {
+      marginBottom: '10px',
+      marginRight: '10px',
+      color: 'red',
+    },
+    buttonRenameContainer: {
+      marginBottom: '10px',
+      color: 'blue',
+    },
+    contextMenuContainer: {
+      position: 'absolute',
+      backgroundColor: 'white',
+      border: '1px solid #ccc',
+      borderRadius: '5px',
+      boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)',
+      zIndex: '100',
+      whiteSpace: 'nowrap',
+    },
+    contextMenuItem: {
+      padding: '4px 30px 4px 10px',
+      cursor: 'pointer',
+      ':hover': {
+        backgroundColor: '#f0f0f0',
+      },
+    },
+  };
+
+  const notes = [
     {
       id: 'first_note_key_from_DB',
       title: 'note1',
@@ -149,14 +200,43 @@ function Component() {
       isFolder: false,
       parent_id: null,
     },
-  ]);
+  ];
+
+  function convertNotesToSampleData(notes) {
+    function findChildren(id) {
+      const children = [];
+      notes.forEach((note) => {
+        if (note.parent_id === id) {
+          const child = { id: note.id, name: note.title };
+          if (note.isFolder) {
+            child.children = findChildren(note.id);
+          }
+          children.push(child);
+        }
+      });
+      return children;
+    }
+
+    const resultArray = [];
+    notes.forEach((note) => {
+      if (note.parent_id === null) {
+        const item = { id: note.id, name: note.title };
+        if (note.isFolder) {
+          item.children = findChildren(note.id);
+        }
+        resultArray.push(item);
+      }
+    });
+
+    return resultArray;
+  }
 
   return (
     <div>
       <div>
         {!activeNote ? (
           <>
-            <NoteTree notes={notes} />
+            <NoteTree notes={convertNotesToSampleData(notes)} style={style} />
             <div className="flex justify-end">
               <button className="text-3xl bg-cyan-400 px-4 py-1 rounded-xl hover:bg-cyan-300">
                 +
