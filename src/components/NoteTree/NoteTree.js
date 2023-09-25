@@ -13,6 +13,7 @@ function NoteTree({ notes, style }) {
 
   const handleNodeClick = (nodeId) => {
     setSelectedNodeId(nodeId);
+    hideContextMenu();
   };
 
   const handleTreeEventDelete = ({ ids }) => {
@@ -96,8 +97,6 @@ function NoteTree({ notes, style }) {
   };
 
   useEffect(() => {
-    hideContextMenu();
-
     window.addEventListener('scroll', handleScroll);
     document.addEventListener('click', handleOutsideClick);
 
@@ -107,27 +106,16 @@ function NoteTree({ notes, style }) {
     };
   }, [selectedNodeId]);
 
-  useEffect(() => {
-    if (selectedNodeId) {
-      const nodeElement = document.getElementById(selectedNodeId);
-      if (nodeElement) {
-        const rect = nodeElement.getBoundingClientRect();
-        setContextMenuPosition({ top: rect.bottom, left: rect.left });
-        setContextMenuVisible(true);
-      }
-    } else {
-      setContextMenuVisible(false);
-    }
-  }, [selectedNodeId]);
-
   const handleContextMenu = (event) => {
     let nodeIdToUse = null;
-    if (selectedNodeId === null && hoveredNodeId !== null) {
+    if (hoveredNodeId !== null) {
       nodeIdToUse = hoveredNodeId;
     } else if (selectedNodeId !== null) {
       nodeIdToUse = selectedNodeId;
     }
-    setNodeIdToUse(nodeIdToUse);
+
+    setSelectedNodeId(nodeIdToUse);
+    setNodeIdToUse(nodeIdToUse); // передаём ID в контекстное меню
     showContextMenu(event, nodeIdToUse);
   };
 
@@ -217,7 +205,6 @@ function NoteTree({ notes, style }) {
                 cursor: 'pointer',
                 paddingLeft: `${indent}px`,
                 backgroundColor:
-                  // nodeProps.node.id === selectedNodeId ? 'lightblue' : 'transparent',
                   nodeProps.node.id === selectedNodeId
                     ? 'lightblue'
                     : nodeProps.node.id === hoveredNodeId
@@ -232,7 +219,6 @@ function NoteTree({ notes, style }) {
               onDoubleClick={() => nodeProps.node.toggle()}
               onContextMenu={(event) => {
                 event.preventDefault();
-                // nodeProps.node.tree.props.onContextMenu(nodeProps.node);
                 nodeProps.node.tree.props.onContextMenu(event);
               }}
               onMouseOver={() => {
