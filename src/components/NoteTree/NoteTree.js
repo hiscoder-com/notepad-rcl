@@ -13,33 +13,24 @@ function NoteTree({ notes, style }) {
 
   function convertNotesToSampleData(notes) {
     function findChildren(id) {
-      const children = [];
-      notes
+      return notes
         .filter((note) => note.parent_id === id)
         .sort((a, b) => a.sorting - b.sorting)
-        .forEach((note) => {
-          const child = { id: note.id, name: note.title };
-          if (note.isFolder) {
-            child.children = findChildren(note.id);
-          }
-          children.push(child);
-        });
-      return children;
+        .map((note) => ({
+          id: note.id,
+          name: note.title,
+          children: note.isFolder ? findChildren(note.id) : undefined,
+        }));
     }
 
-    const resultArray = [];
-    notes
+    return notes
       .filter((note) => note.parent_id === null)
       .sort((a, b) => a.sorting - b.sorting)
-      .forEach((note) => {
-        const item = { id: note.id, name: note.title };
-        if (note.isFolder) {
-          item.children = findChildren(note.id);
-        }
-        resultArray.push(item);
-      });
-
-    return resultArray;
+      .map((note) => ({
+        id: note.id,
+        name: note.title,
+        children: note.isFolder ? findChildren(note.id) : undefined,
+      }));
   }
 
   const [data, setData] = useState(convertNotesToSampleData(note));
@@ -200,32 +191,43 @@ function NoteTree({ notes, style }) {
     hideContextMenu();
   };
 
-  const updateDataFromNote = () => {
-    const newData = convertNotesToSampleData(note);
-    setData(newData);
-  };
-
-  const moveNode = ({ dragIds, parentId, index }) => {
-    setNote(
-      note.map((el) => {
-        if (el.id === dragIds[0]) {
-          return { ...el, sorting: index, parent_id: parentId };
-        } else if (el.parent_id === parentId) {
-          if (el.sorting >= index) {
-            return { ...el, sorting: index + 1 };
-          } else {
-            return el;
-          }
-        } else {
-          return el;
-        }
-      })
-    );
-  };
-
   const onMove = ({ dragIds, parentId, index }) => {
     moveNode({ dragIds, parentId, index });
     updateDataFromNote();
+  };
+
+  const moveNode = ({ dragIds, parentId, index }) => {
+    const draggedNode = note.find((node) => node.id === dragIds[0]);
+
+    if (draggedNode) {
+      draggedNode.parent_id = parentId;
+
+      let newSorting = index;
+      if (newSorting >= draggedNode.sorting) {
+        newSorting--;
+      }
+      draggedNode.sorting = newSorting;
+
+      const sortedNodes = [...note].sort((a, b) => a.sorting - b.sorting);
+
+      let currentIndex = 0;
+      for (const node of sortedNodes) {
+        if (node.id !== draggedNode.id) {
+          if (currentIndex === index) {
+            currentIndex++;
+          }
+          node.sorting = currentIndex;
+          currentIndex++;
+        }
+      }
+
+      setNote(sortedNodes);
+    }
+  };
+
+  const updateDataFromNote = () => {
+    const newData = convertNotesToSampleData(note);
+    setData(newData);
   };
 
   return (

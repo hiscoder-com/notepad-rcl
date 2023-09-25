@@ -26,10 +26,11 @@ function Component() {
       created_at: new Date('2022-10-15 07:59:58.3642'),
       isFolder: false,
       parent_id: null,
-      sorting: 2,
+      sorting: 0,
     },
+
     {
-      id: 'second_note_key_from_DB',
+      id: 'sixth_note_key_from_DB',
       title: 'note2',
       data: {
         time: 1550476186479,
@@ -38,7 +39,7 @@ function Component() {
             id: 'zbGZFPM-iI',
             type: 'paragraph',
             data: {
-              text: 'Designed to be extendable and pluggable with a simple API',
+              text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
             },
           },
         ],
@@ -46,27 +47,11 @@ function Component() {
       },
       created_at: new Date('2022-10-15 07:59:58.3642'),
       isFolder: false,
-      parent_id: 'first_folder_key_from_DB',
-      sorting: 0,
-    },
-    {
-      id: 'first_folder_key_from_DB',
-      title: 'folder1',
-      created_at: new Date('2022-10-15 07:59:58.3642'),
-      isFolder: true,
       parent_id: null,
-      sorting: 0,
-    },
-    {
-      id: 'second_folder_key_from_DB',
-      title: 'folder2',
-      created_at: new Date('2022-10-15 07:59:58.3642'),
-      isFolder: true,
-      parent_id: 'first_folder_key_from_DB',
       sorting: 1,
     },
     {
-      id: 'third_note_key_from_DB',
+      id: 'seven_note_key_from_DB',
       title: 'note3',
       data: {
         time: 1550476186479,
@@ -83,19 +68,11 @@ function Component() {
       },
       created_at: new Date('2022-10-15 07:59:58.3642'),
       isFolder: false,
-      parent_id: 'second_folder_key_from_DB',
-      sorting: 0,
+      parent_id: null,
+      sorting: 2,
     },
     {
-      id: 'third_folder_key_from_DB',
-      title: 'folder3',
-      created_at: new Date('2022-10-15 07:59:58.3642'),
-      isFolder: true,
-      parent_id: 'second_folder_key_from_DB',
-      sorting: 1,
-    },
-    {
-      id: 'fourth_note_key_from_DB',
+      id: 'eight_note_key_from_DB',
       title: 'note4',
       data: {
         time: 1550476186479,
@@ -112,11 +89,11 @@ function Component() {
       },
       created_at: new Date('2022-10-15 07:59:58.3642'),
       isFolder: false,
-      parent_id: 'third_folder_key_from_DB',
-      sorting: 0,
+      parent_id: null,
+      sorting: 3,
     },
     {
-      id: 'fifth_note_key_from_DB',
+      id: 'nineth_note_key_from_DB',
       title: 'note5',
       data: {
         time: 1550476186479,
@@ -133,11 +110,19 @@ function Component() {
       },
       created_at: new Date('2022-10-15 07:59:58.3642'),
       isFolder: false,
-      parent_id: 'third_folder_key_from_DB',
-      sorting: 1,
+      parent_id: null,
+      sorting: 4,
     },
     {
-      id: 'sixth_note_key_from_DB',
+      id: 'first_folder_key_from_DB',
+      title: 'folder1',
+      created_at: new Date('2022-10-15 07:59:58.3642'),
+      isFolder: true,
+      parent_id: null,
+      sorting: 5,
+    },
+    {
+      id: 'test_note_key_from_DB',
       title: 'note6',
       data: {
         time: 1550476186479,
@@ -154,8 +139,16 @@ function Component() {
       },
       created_at: new Date('2022-10-15 07:59:58.3642'),
       isFolder: false,
-      parent_id: null,
-      sorting: 1,
+      parent_id: 'first_folder_key_from_DB',
+      sorting: 4,
+    },
+    {
+      id: 'test2_folder_key_from_DB',
+      title: 'folder2',
+      created_at: new Date('2022-10-15 07:59:58.3642'),
+      isFolder: true,
+      parent_id: 'first_folder_key_from_DB',
+      sorting: 5,
     },
   ]);
 
