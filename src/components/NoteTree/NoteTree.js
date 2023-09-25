@@ -4,12 +4,49 @@ import { Tree } from 'react-arborist';
 function NoteTree({ notes, style }) {
   const treeRef = useRef(null);
   const [term, setTerm] = useState('');
-  const [data, setData] = useState(notes);
+  const [note, setNote] = useState(notes);
   const [hoveredNodeId, setHoveredNodeId] = useState(null);
   const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [nodeIdToUse, setNodeIdToUse] = useState(null);
   const [contextMenuVisible, setContextMenuVisible] = useState(false);
   const [contextMenuPosition, setContextMenuPosition] = useState({ top: 0, left: 0 });
+
+  function convertNotesToSampleData(notes) {
+    function findChildren(id) {
+      const children = [];
+      notes
+        .filter((note) => note.parent_id === id)
+        .sort((a, b) => a.sorting - b.sorting)
+        .forEach((note) => {
+          const child = { id: note.id, name: note.title };
+          if (note.isFolder) {
+            child.children = findChildren(note.id);
+          }
+          children.push(child);
+        });
+      return children;
+    }
+
+    const resultArray = [];
+    notes
+      .filter((note) => note.parent_id === null)
+      .sort((a, b) => a.sorting - b.sorting)
+      .forEach((note) => {
+        const item = { id: note.id, name: note.title };
+        if (note.isFolder) {
+          item.children = findChildren(note.id);
+        }
+        resultArray.push(item);
+      });
+
+    return resultArray;
+  }
+
+  const [data, setData] = useState(convertNotesToSampleData(note));
+
+  useEffect(() => {
+    setData(convertNotesToSampleData(note));
+  }, [note]);
 
   const handleNodeClick = (nodeId) => {
     setSelectedNodeId(nodeId);
@@ -17,29 +54,31 @@ function NoteTree({ notes, style }) {
   };
 
   const handleTreeEventDelete = ({ ids }) => {
-    const updatedTreeData = removeNodeAndChildren(data, ids[0]);
-    setData(updatedTreeData);
+    const updatedNote = note.filter((el) => el.id !== ids[0]);
+    setNote(updatedNote);
+
+    const updatedData = removeNodeFromData(data, ids[0]);
+    setData(updatedData);
   };
 
   const handleDeleteNode = () => {
     if (selectedNodeId) {
-      const updatedTreeData = removeNodeAndChildren(data, selectedNodeId);
-      setData(updatedTreeData);
+      const updatedNote = note.filter((el) => el.id !== selectedNodeId);
+      setNote(updatedNote);
+
+      const updatedData = removeNodeFromData(data, selectedNodeId);
+      setData(updatedData);
+
       setSelectedNodeId(null);
     }
   };
-  // Recursive function to remove a node and its children
-  const removeNodeAndChildren = (treeData, nodeId) => {
+
+  const removeNodeFromData = (treeData, nodeId) => {
     return treeData.filter((node) => {
       if (node.id === nodeId) {
-        if (node.children) {
-          node.children.forEach((child) => {
-            removeNodeAndChildren(treeData, child.id);
-          });
-        }
         return false;
       } else if (node.children) {
-        node.children = removeNodeAndChildren(node.children, nodeId);
+        node.children = removeNodeFromData(node.children, nodeId);
         return true;
       }
       return true;
@@ -52,8 +91,11 @@ function NoteTree({ notes, style }) {
       if (nodeToRename) {
         const newName = prompt('Enter a new name:', nodeToRename.name);
         if (newName !== null) {
-          const updatedTreeData = renameNodeInTree(data, selectedNodeId, newName);
-          setData(updatedTreeData);
+          const updatedNote = renameNodeInNote(note, selectedNodeId, newName);
+          setNote(updatedNote);
+
+          const updatedData = renameNodeInTree(data, selectedNodeId, newName);
+          setData(updatedData);
         }
       }
     }
@@ -72,6 +114,15 @@ function NoteTree({ notes, style }) {
       }
     }
     return null;
+  };
+
+  const renameNodeInNote = (noteData, nodeId, newName) => {
+    return noteData.map((node) => {
+      if (node.id === nodeId) {
+        node.title = newName;
+      }
+      return node;
+    });
   };
 
   const renameNodeInTree = (treeData, nodeId, newName) => {
@@ -93,6 +144,7 @@ function NoteTree({ notes, style }) {
   const handleOutsideClick = (event) => {
     if (treeRef.current && !treeRef.current.contains(event.target)) {
       setSelectedNodeId(null);
+      hideContextMenu();
     }
   };
 
@@ -115,7 +167,7 @@ function NoteTree({ notes, style }) {
     }
 
     setSelectedNodeId(nodeIdToUse);
-    setNodeIdToUse(nodeIdToUse); // передаём ID в контекстное меню
+    setNodeIdToUse(nodeIdToUse);
     showContextMenu(event, nodeIdToUse);
   };
 
@@ -139,14 +191,42 @@ function NoteTree({ notes, style }) {
   };
 
   const handleRename = () => {
+    handleRenameNode();
     hideContextMenu();
   };
 
   const handleDelete = () => {
+    handleDeleteNode();
     hideContextMenu();
   };
 
-  // console.log({ hoveredNodeId, selectedNodeId });
+  const updateDataFromNote = () => {
+    const newData = convertNotesToSampleData(note);
+    setData(newData);
+  };
+
+  const moveNode = ({ dragIds, parentId, index }) => {
+    setNote(
+      note.map((el) => {
+        if (el.id === dragIds[0]) {
+          return { ...el, sorting: index, parent_id: parentId };
+        } else if (el.parent_id === parentId) {
+          if (el.sorting >= index) {
+            return { ...el, sorting: index + 1 };
+          } else {
+            return el;
+          }
+        } else {
+          return el;
+        }
+      })
+    );
+  };
+
+  const onMove = ({ dragIds, parentId, index }) => {
+    moveNode({ dragIds, parentId, index });
+    updateDataFromNote();
+  };
 
   return (
     <div
@@ -193,6 +273,7 @@ function NoteTree({ notes, style }) {
         searchMatch={(node, term) =>
           node.data.name.toLowerCase().includes(term.toLowerCase())
         }
+        onMove={onMove}
       >
         {(nodeProps) => {
           const isFile = nodeProps.node.isLeaf;
@@ -201,14 +282,15 @@ function NoteTree({ notes, style }) {
 
           return (
             <div
+              ref={nodeProps.dragHandle}
               style={{
                 cursor: 'pointer',
                 paddingLeft: `${indent}px`,
                 backgroundColor:
                   nodeProps.node.id === selectedNodeId
-                    ? 'lightblue'
+                    ? '#FFB703'
                     : nodeProps.node.id === hoveredNodeId
-                    ? 'lightyellow'
+                    ? '#FFF5DD'
                     : 'transparent',
                 borderRadius: '5px',
                 userSelect: 'none',
@@ -258,24 +340,52 @@ function NoteTree({ notes, style }) {
 
 export default NoteTree;
 
+function MenuItem({ onClick, itemId, hoveredItemId, style, children, handleMouseEnter }) {
+  const isHovered = itemId === hoveredItemId;
+
+  return (
+    <div
+      style={{
+        ...style.contextMenuItem,
+        backgroundColor: isHovered ? '#EDEDED' : 'transparent',
+      }}
+      onClick={onClick}
+      onMouseEnter={() => handleMouseEnter(itemId)}
+      onMouseLeave={() => handleMouseEnter(null)}
+    >
+      {children}
+    </div>
+  );
+}
+
 function ContextMenu({ onNewDocument, onNewFolder, onRename, onDelete, nodeId, style }) {
+  const [hoveredItemId, setHoveredItemId] = useState(null);
+
+  const handleMouseEnter = (itemId) => {
+    setHoveredItemId(itemId);
+  };
+
+  const menuItems = [
+    { id: 'newDocument', label: '📄 New document', action: onNewDocument },
+    { id: 'newFolder', label: '📁 New folder', action: onNewFolder },
+    { id: 'rename', label: '✏️ Rename', action: onRename },
+    { id: 'delete', label: '🗑️ Delete', action: onDelete },
+  ];
+
   return (
     <div style={style.contextMenuContainer}>
-      <div style={style.contextMenuItem} onClick={onNewDocument}>
-        {nodeId ? <span>✅ {nodeId} ✅</span> : <span>❌ No nodeId! ❌</span>}
-      </div>
-      <div style={style.contextMenuItem} onClick={onNewDocument}>
-        <span>📄 New document</span>
-      </div>
-      <div style={style.contextMenuItem} onClick={onNewFolder}>
-        <span>📁 New folder</span>
-      </div>
-      <div style={style.contextMenuItem} onClick={onRename}>
-        <span>✏️ Rename</span>
-      </div>
-      <div style={style.contextMenuItem} onClick={onDelete}>
-        <span>🗑️ Delete</span>
-      </div>
+      {menuItems.map((item) => (
+        <MenuItem
+          key={item.id}
+          itemId={item.id}
+          hoveredItemId={hoveredItemId}
+          onClick={item.action}
+          style={style}
+          handleMouseEnter={handleMouseEnter}
+        >
+          <span>{item.label}</span>
+        </MenuItem>
+      ))}
     </div>
   );
 }
