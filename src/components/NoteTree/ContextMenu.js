@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
 function ContextMenu({
-  onNewDocument,
-  onNewFolder,
-  onRename,
-  onDelete,
-  style,
   setSelectedNodeId,
   selectedNodeId,
   objectForMenu,
+  onNewDocument,
+  onNewFolder,
+  onDelete,
+  onRename,
   treeRef,
+  style,
 }) {
   const [hoveredItemId, setHoveredItemId] = useState(null);
   const [contextMenuVisible, setContextMenuVisible] = useState(false);
@@ -53,7 +53,9 @@ function ContextMenu({
       <div
         style={{
           ...style.contextMenuItem,
-          backgroundColor: isHovered ? '#EDEDED' : 'transparent',
+          backgroundColor: isHovered
+            ? style.contextMenuItem.hoveredColor
+            : style.contextMenuItem.backgroundColor,
         }}
         onClick={onClick}
         onMouseEnter={() => handleMouseEnter(itemId)}
@@ -67,21 +69,6 @@ function ContextMenu({
   useEffect(() => {
     contextMenuVisible && setContextMenuVisible(false);
   }, [selectedNodeId]);
-
-  const hideContextMenu = () => {
-    setContextMenuVisible(false);
-  };
-
-  const handleScroll = () => {
-    hideContextMenu();
-  };
-
-  const handleOutsideClick = (event) => {
-    if (treeRef.current && !treeRef.current.contains(event.target)) {
-      setSelectedNodeId(null);
-      hideContextMenu();
-    }
-  };
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -105,15 +92,29 @@ function ContextMenu({
     }
   }, [objectForMenu]);
 
+  const handleScroll = () => {
+    hideContextMenu();
+  };
+
+  const handleOutsideClick = (event) => {
+    if (treeRef.current && !treeRef.current.contains(event.target)) {
+      setSelectedNodeId(null);
+      hideContextMenu();
+    }
+  };
+
+  const hideContextMenu = () => {
+    setContextMenuVisible(false);
+  };
+
   return (
     <>
       {contextMenuVisible && (
         <div
           style={{
-            position: 'fixed',
-            top: contextMenuPosition.top + 'px',
-            left: contextMenuPosition.left + 'px',
-            zIndex: 1000,
+            ...style.contextMenuWrapperStyle,
+            top: style.contextMenuWrapperStyle.top || contextMenuPosition.top + 'px',
+            left: style.contextMenuWrapperStyle.left || contextMenuPosition.left + 'px',
           }}
         >
           <div style={style.contextMenuContainer}>

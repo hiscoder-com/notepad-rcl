@@ -2,45 +2,32 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Tree } from 'react-arborist';
 import ContextMenu from './ContextMenu';
 
-function NoteTree({ notes, style, handleNewDocument, handleNewFolder }) {
+function NoteTree({ notes, style, handleNewDocument, handleNewFolder, indent = 20 }) {
   const treeRef = useRef(null);
   const [term, setTerm] = useState('');
   const [note, setNote] = useState(notes);
   const [hoveredNodeId, setHoveredNodeId] = useState(null);
-  const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [objectForMenu, setObjectForMenu] = useState(null);
-
-  function convertNotesToSampleData(notes) {
-    function findChildren(id) {
-      return notes
-        .filter((note) => note.parent_id === id)
-        .sort((a, b) => a.sorting - b.sorting)
-        .map((note) => ({
-          id: note.id,
-          name: note.title,
-          children: note.isFolder ? findChildren(note.id) : undefined,
-        }));
-    }
-
-    return notes
-      .filter((note) => note.parent_id === null)
-      .sort((a, b) => a.sorting - b.sorting)
-      .map((note) => ({
-        id: note.id,
-        name: note.title,
-        children: note.isFolder ? findChildren(note.id) : undefined,
-      }));
-  }
-
+  const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [data, setData] = useState(convertNotesToSampleData(note));
 
   useEffect(() => {
     setData(convertNotesToSampleData(note));
   }, [note]);
 
-  const handleNodeClick = (nodeId) => {
-    setSelectedNodeId(nodeId);
-  };
+  function convertNotesToSampleData(notes, parentId = null) {
+    const filteredNotes = notes.filter((note) => note.parent_id === parentId);
+
+    filteredNotes.sort((a, b) => a.sorting - b.sorting);
+
+    return filteredNotes.map((note) => ({
+      id: note.id,
+      name: note.title,
+      ...(note.isFolder && {
+        children: convertNotesToSampleData(notes, note.id),
+      }),
+    }));
+  }
 
   const handleTreeEventDelete = ({ ids }) => {
     const updatedNote = note.filter((el) => el.id !== ids[0]);
@@ -226,26 +213,23 @@ function NoteTree({ notes, style, handleNewDocument, handleNewFolder }) {
       >
         {(nodeProps) => {
           const isFile = nodeProps.node.isLeaf;
-          const indent = nodeProps.node.level * 20;
           const isFolderOpen = nodeProps.node.isOpen;
 
           return (
             <div
               ref={nodeProps.dragHandle}
               style={{
-                cursor: 'pointer',
-                paddingLeft: `${indent}px`,
+                ...style.nodeStyle,
+                paddingLeft: `${nodeProps.node.level * indent}px`,
                 backgroundColor:
                   nodeProps.node.id === selectedNodeId
-                    ? '#FFB703'
+                    ? style.nodeStyle.selectedColor
                     : nodeProps.node.id === hoveredNodeId
-                    ? '#FFF5DD'
-                    : 'transparent',
-                borderRadius: '5px',
-                userSelect: 'none',
+                    ? style.nodeStyle.hoveredColor
+                    : style.nodeStyle.backgroundColor,
               }}
               onClick={() => {
-                handleNodeClick(nodeProps.node.id);
+                setSelectedNodeId(nodeProps.node.id);
               }}
               onDoubleClick={() => nodeProps.node.toggle()}
               onContextMenu={(event) => {

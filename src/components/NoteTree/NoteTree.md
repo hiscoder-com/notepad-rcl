@@ -158,6 +158,14 @@ function Component() {
       marginBottom: '10px',
       maxWidth: '320px',
     },
+    nodeStyle: {
+      cursor: 'pointer',
+      borderRadius: '5px',
+      userSelect: 'none',
+      selectedColor: '#FFB703',
+      hoveredColor: '#FFF5DD',
+      backgroundColor: 'transparent',
+    },
     searchInput: {
       border: '0',
       borderBottom: '1px solid #555',
@@ -196,11 +204,12 @@ function Component() {
     contextMenuItem: {
       padding: '4px 30px 4px 10px',
       cursor: 'pointer',
-      ':hover': {
-        backgroundColor: '#f0f0f0',
-      },
+      hoveredColor: '#EDEDED',
+      backgroundColor: 'transparent',
     },
+    contextMenuWrapperStyle: { position: 'fixed', zIndex: 50 },
   };
+
   const onRename = (id) => {};
   const onDeleteNote = (id) => {};
 
