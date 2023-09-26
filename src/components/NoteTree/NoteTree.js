@@ -1,15 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Tree } from 'react-arborist';
+import ContextMenu from './ContextMenu';
 
-function NoteTree({ notes, style }) {
+function NoteTree({ notes, style, handleNewDocument, handleNewFolder }) {
   const treeRef = useRef(null);
   const [term, setTerm] = useState('');
   const [note, setNote] = useState(notes);
   const [hoveredNodeId, setHoveredNodeId] = useState(null);
   const [selectedNodeId, setSelectedNodeId] = useState(null);
-  const [nodeIdToUse, setNodeIdToUse] = useState(null);
-  const [contextMenuVisible, setContextMenuVisible] = useState(false);
-  const [contextMenuPosition, setContextMenuPosition] = useState({ top: 0, left: 0 });
+  const [objectForMenu, setObjectForMenu] = useState(null);
 
   function convertNotesToSampleData(notes) {
     function findChildren(id) {
@@ -41,7 +40,6 @@ function NoteTree({ notes, style }) {
 
   const handleNodeClick = (nodeId) => {
     setSelectedNodeId(nodeId);
-    hideContextMenu();
   };
 
   const handleTreeEventDelete = ({ ids }) => {
@@ -128,27 +126,6 @@ function NoteTree({ notes, style }) {
     });
   };
 
-  const handleScroll = () => {
-    hideContextMenu();
-  };
-
-  const handleOutsideClick = (event) => {
-    if (treeRef.current && !treeRef.current.contains(event.target)) {
-      setSelectedNodeId(null);
-      hideContextMenu();
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    document.addEventListener('click', handleOutsideClick);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      document.removeEventListener('click', handleOutsideClick);
-    };
-  }, [selectedNodeId]);
-
   const handleContextMenu = (event) => {
     let nodeIdToUse = null;
     if (hoveredNodeId !== null) {
@@ -158,37 +135,7 @@ function NoteTree({ notes, style }) {
     }
 
     setSelectedNodeId(nodeIdToUse);
-    setNodeIdToUse(nodeIdToUse);
-    showContextMenu(event, nodeIdToUse);
-  };
-
-  const showContextMenu = (event, nodeId) => {
-    if (nodeId) {
-      setContextMenuVisible(true);
-      setContextMenuPosition({ top: event.clientY, left: event.clientX });
-    }
-  };
-
-  const hideContextMenu = () => {
-    setContextMenuVisible(false);
-  };
-
-  const handleNewDocument = () => {
-    hideContextMenu();
-  };
-
-  const handleNewFolder = () => {
-    hideContextMenu();
-  };
-
-  const handleRename = () => {
-    handleRenameNode();
-    hideContextMenu();
-  };
-
-  const handleDelete = () => {
-    handleDeleteNode();
-    hideContextMenu();
+    setObjectForMenu({ event, nodeIdToUse });
   };
 
   const onMove = ({ dragIds, parentId, index }) => {
@@ -317,77 +264,19 @@ function NoteTree({ notes, style }) {
           );
         }}
       </Tree>
-      {contextMenuVisible && (
-        <div
-          style={{
-            position: 'fixed',
-            top: contextMenuPosition.top + 'px',
-            left: contextMenuPosition.left + 'px',
-            zIndex: 1000,
-          }}
-        >
-          <ContextMenu
-            onNewDocument={handleNewDocument}
-            onNewFolder={handleNewFolder}
-            onRename={handleRename}
-            onDelete={handleDelete}
-            nodeId={nodeIdToUse}
-            style={style}
-          />
-        </div>
-      )}
+      <ContextMenu
+        onNewDocument={handleNewDocument}
+        onNewFolder={handleNewFolder}
+        onRename={handleRenameNode}
+        onDelete={handleDeleteNode}
+        setSelectedNodeId={setSelectedNodeId}
+        selectedNodeId={selectedNodeId}
+        style={style}
+        objectForMenu={objectForMenu}
+        treeRef={treeRef}
+      />
     </div>
   );
 }
 
 export default NoteTree;
-
-function MenuItem({ onClick, itemId, hoveredItemId, style, children, handleMouseEnter }) {
-  const isHovered = itemId === hoveredItemId;
-
-  return (
-    <div
-      style={{
-        ...style.contextMenuItem,
-        backgroundColor: isHovered ? '#EDEDED' : 'transparent',
-      }}
-      onClick={onClick}
-      onMouseEnter={() => handleMouseEnter(itemId)}
-      onMouseLeave={() => handleMouseEnter(null)}
-    >
-      {children}
-    </div>
-  );
-}
-
-function ContextMenu({ onNewDocument, onNewFolder, onRename, onDelete, nodeId, style }) {
-  const [hoveredItemId, setHoveredItemId] = useState(null);
-
-  const handleMouseEnter = (itemId) => {
-    setHoveredItemId(itemId);
-  };
-
-  const menuItems = [
-    { id: 'newDocument', label: '📄 New document', action: onNewDocument },
-    { id: 'newFolder', label: '📁 New folder', action: onNewFolder },
-    { id: 'rename', label: '✏️ Rename', action: onRename },
-    { id: 'delete', label: '🗑️ Delete', action: onDelete },
-  ];
-
-  return (
-    <div style={style.contextMenuContainer}>
-      {menuItems.map((item) => (
-        <MenuItem
-          key={item.id}
-          itemId={item.id}
-          hoveredItemId={hoveredItemId}
-          onClick={item.action}
-          style={style}
-          handleMouseEnter={handleMouseEnter}
-        >
-          <span>{item.label}</span>
-        </MenuItem>
-      ))}
-    </div>
-  );
-}
