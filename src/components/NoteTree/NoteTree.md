@@ -1,12 +1,19 @@
 ### **Save in Database**
 
 ```jsx
-import React, { useState } from 'react';
-import { NoteTree } from '@texttree/notepad-rcl';
+import React, { useState, useEffect, useRef } from 'react';
+import { NoteTree, ContextMenu } from '@texttree/notepad-rcl';
 
 function Component() {
+  const treeRef = useRef(null);
+  const [term, setTerm] = useState('');
+  const [selectedNodeId, setSelectedNodeId] = useState(null);
+
   const [activeNote, setActiveNote] = useState(null);
-  const [notes, setNotes] = useState([
+  const [objectForMenu, setObjectForMenu] = useState(null);
+  const [hoveredNodeId, setHoveredNodeId] = useState(null);
+
+  const [databaseNotes, setDatabaseNotes] = useState([
     {
       id: 'first_note_key_from_DB',
       title: 'note1',
@@ -28,7 +35,6 @@ function Component() {
       parent_id: null,
       sorting: 0,
     },
-
     {
       id: 'sixth_note_key_from_DB',
       title: 'note2',
@@ -121,36 +127,39 @@ function Component() {
       parent_id: null,
       sorting: 5,
     },
-    {
-      id: 'test_note_key_from_DB',
-      title: 'note6',
-      data: {
-        time: 1550476186479,
-        blocks: [
-          {
-            id: 'zbGZFPM-iI',
-            type: 'paragraph',
-            data: {
-              text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
-            },
-          },
-        ],
-        version: '2.27.2',
-      },
-      created_at: new Date('2022-10-15 07:59:58.3642'),
-      isFolder: false,
-      parent_id: 'first_folder_key_from_DB',
-      sorting: 4,
-    },
-    {
-      id: 'test2_folder_key_from_DB',
-      title: 'folder2',
-      created_at: new Date('2022-10-15 07:59:58.3642'),
-      isFolder: true,
-      parent_id: 'first_folder_key_from_DB',
-      sorting: 5,
-    },
+    // {
+    //   id: 'test_note_key_from_DB',
+    //   title: 'note6',
+    //   data: {
+    //     time: 1550476186479,
+    //     blocks: [
+    //       {
+    //         id: 'zbGZFPM-iI',
+    //         type: 'paragraph',
+    //         data: {
+    //           text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
+    //         },
+    //       },
+    //     ],
+    //     version: '2.27.2',
+    //   },
+    //   created_at: new Date('2022-10-15 07:59:58.3642'),
+    //   isFolder: false,
+    //   parent_id: 'first_folder_key_from_DB',
+    //   sorting: 0,
+    // },
+    // {
+    //   id: 'test2_folder_key_from_DB',
+    //   title: 'folder2',
+    //   created_at: new Date('2022-10-15 07:59:58.3642'),
+    //   isFolder: true,
+    //   parent_id: 'first_folder_key_from_DB',
+    //   sorting: 1,
+    // },
   ]);
+  const [visualHierarchyData, setVisualHierarchyData] = useState(
+    convertNotesToTree(databaseNotes)
+  );
 
   const style = {
     searchContainer: {
@@ -210,20 +219,207 @@ function Component() {
     contextMenuWrapperStyle: { position: 'fixed', zIndex: 50 },
   };
 
-  const onRename = (id) => {};
-  const onDeleteNote = (id) => {};
+  function convertNotesToTree(notes, parentId = null) {
+    const filteredNotes = notes.filter((note) => note.parent_id === parentId);
+
+    filteredNotes.sort((a, b) => a.sorting - b.sorting);
+
+    return filteredNotes.map((note) => ({
+      id: note.id,
+      name: note.title,
+      ...(note.isFolder && {
+        children: convertNotesToTree(notes, note.id),
+      }),
+    }));
+  }
+
+  useEffect(() => {
+    setVisualHierarchyData(convertNotesToTree(databaseNotes));
+  }, [databaseNotes]);
+
+  const removeNodeFromData = (treeData, nodeId) => {
+    return treeData.filter((node) => {
+      if (node.id === nodeId) {
+        return false;
+      } else if (node.children) {
+        node.children = removeNodeFromData(node.children, nodeId);
+        return true;
+      }
+      return true;
+    });
+  };
+
+  const handleTreeEventDelete = ({ ids }) => {
+    const updatedNote = databaseNotes.filter((el) => el.id !== ids[0]);
+    setDatabaseNotes(updatedNote); // идёт обновление БД
+
+    const updatedData = removeNodeFromData(visualHierarchyData, ids[0]);
+    setVisualHierarchyData(updatedData);
+  };
+
+  const handleDeleteNode = () => {
+    if (selectedNodeId) {
+      const updatedNote = databaseNotes.filter((el) => el.id !== selectedNodeId);
+      setDatabaseNotes(updatedNote); // идёт обновление БД
+
+      const updatedData = removeNodeFromData(visualHierarchyData, selectedNodeId);
+      setVisualHierarchyData(updatedData);
+
+      setSelectedNodeId(null);
+    }
+  };
+
+  const handleNewDocument = () => {};
+
+  const handleNewFolder = () => {};
+
+  const handleRenameNode = () => {
+    if (!selectedNodeId) return;
+
+    const nodeToRename = findNodeById(visualHierarchyData, selectedNodeId);
+    if (!nodeToRename) return;
+
+    const newName = prompt('Enter a new name:', nodeToRename.name);
+    const updatedNote = renameNodeInNote(databaseNotes, selectedNodeId, newName);
+    setDatabaseNotes(updatedNote);
+
+    const updatedData = renameNodeInTree(visualHierarchyData, selectedNodeId, newName);
+    setVisualHierarchyData(updatedData);
+  };
+
+  const findNodeById = (treeData, nodeId) => treeData.find((node) => node.id === nodeId);
+
+  const renameNodeInNote = (noteData, nodeId, newName) =>
+    noteData.map((node) => (node.id === nodeId ? { ...node, title: newName } : node));
+
+  const renameNodeInTree = (treeData, nodeId, newName) =>
+    treeData.map((node) => ({
+      ...node,
+      name: node.id === nodeId ? newName : node.name,
+      children: node.children
+        ? renameNodeInTree(node.children, nodeId, newName)
+        : undefined,
+    }));
+
+  const onMove = ({ dragIds, parentId, index }) => {
+    moveNode({ dragIds, parentId, index });
+    updateDataFromNote();
+  };
+
+  const moveNode = ({ dragIds, parentId, index }) => {
+    const draggedNode = databaseNotes.find((node) => node.id === dragIds[0]);
+
+    if (draggedNode) {
+      draggedNode.parent_id = parentId;
+
+      let newSorting = index;
+      if (newSorting >= draggedNode.sorting) {
+        newSorting--;
+      }
+      draggedNode.sorting = newSorting;
+
+      const sortedNodes = [...databaseNotes].sort((a, b) => a.sorting - b.sorting);
+
+      let currentIndex = 0;
+      for (let i = 0; i < sortedNodes.length; i++) {
+        const node = sortedNodes[i];
+        if (node.id !== draggedNode.id) {
+          if (currentIndex === index) {
+            currentIndex++;
+          }
+          node.sorting = currentIndex;
+          currentIndex++;
+        }
+      }
+
+      setDatabaseNotes(sortedNodes); // идёт обновление БД
+    }
+  };
+
+  const updateDataFromNote = () => {
+    const newData = convertNotesToTree(databaseNotes);
+    setVisualHierarchyData(newData);
+  };
+
+  const handleContextMenu = (event) => {
+    let nodeIdToUse = null;
+    if (hoveredNodeId !== null) {
+      nodeIdToUse = hoveredNodeId;
+    } else if (selectedNodeId !== null) {
+      nodeIdToUse = selectedNodeId;
+    }
+
+    setSelectedNodeId(nodeIdToUse);
+    setObjectForMenu({ event, nodeIdToUse });
+  };
+
+  const onSelect = (node) => {
+    setSelectedNodeId(node.id);
+
+    console.log(node.id);
+  };
 
   return (
     <div>
       <div>
         {!activeNote ? (
           <>
+            <div style={style.searchContainer}>
+              <input
+                type="text"
+                value={term}
+                onChange={(event) => setTerm(event.target.value)}
+                style={style.searchInput}
+                onClick={() => {
+                  setSelectedNodeId(null);
+                }}
+              />
+              <label htmlFor="search" style={style.searchLabel}>
+                Search
+              </label>
+            </div>
+
+            <button
+              onClick={handleDeleteNode}
+              disabled={!selectedNodeId}
+              style={style.buttonRemoveContainer}
+            >
+              Delete selected node
+            </button>
+            <button
+              onClick={handleRenameNode}
+              disabled={!selectedNodeId}
+              style={style.buttonRenameContainer}
+            >
+              Rename selected node
+            </button>
+
             <NoteTree
-              notes={notes}
               style={style}
-              onRename={onRename}
-              onDeleteNote={onDeleteNote}
+              onSelect={onSelect}
+              term={term}
+              treeRef={treeRef}
+              visualHierarchyData={visualHierarchyData}
+              handleTreeEventDelete={handleTreeEventDelete}
+              selectedNodeId={selectedNodeId}
+              onMove={onMove}
+              handleContextMenu={handleContextMenu}
+              databaseNotes={databaseNotes}
+              hoveredNodeId={hoveredNodeId}
+              setHoveredNodeId={setHoveredNodeId}
             />
+            <ContextMenu
+              onNewDocument={handleNewDocument}
+              onNewFolder={handleNewFolder}
+              onRename={handleRenameNode}
+              onDelete={handleDeleteNode}
+              setSelectedNodeId={setSelectedNodeId}
+              selectedNodeId={selectedNodeId}
+              style={style}
+              objectForMenu={objectForMenu}
+              treeRef={treeRef}
+            />
+
             <div className="flex justify-end">
               <button className="text-3xl bg-cyan-400 px-4 py-1 rounded-xl hover:bg-cyan-300">
                 +
