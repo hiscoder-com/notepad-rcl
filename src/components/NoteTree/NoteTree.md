@@ -7,11 +7,10 @@ import { NoteTree, ContextMenu } from '@texttree/notepad-rcl';
 function Component() {
   const treeRef = useRef(null);
   const [term, setTerm] = useState('');
-  const [selectedNodeId, setSelectedNodeId] = useState(null);
-
   const [activeNote, setActiveNote] = useState(null);
-  const [objectForMenu, setObjectForMenu] = useState(null);
   const [hoveredNodeId, setHoveredNodeId] = useState(null);
+  const [objectForMenu, setObjectForMenu] = useState(null);
+  const [selectedNodeId, setSelectedNodeId] = useState(null);
 
   const [databaseNotes, setDatabaseNotes] = useState([
     {
@@ -197,10 +196,6 @@ function Component() {
       marginRight: '10px',
       color: '#EB5E28',
     },
-    buttonRenameContainer: {
-      marginBottom: '10px',
-      color: '#62929E',
-    },
     contextMenuContainer: {
       position: 'absolute',
       backgroundColor: 'white',
@@ -272,22 +267,22 @@ function Component() {
   const handleNewDocument = () => {};
 
   const handleNewFolder = () => {};
-
-  const handleRenameNode = () => {
-    if (!selectedNodeId) return;
-
-    const nodeToRename = findNodeById(visualHierarchyData, selectedNodeId);
-    if (!nodeToRename) return;
-
-    const newName = prompt('Enter a new name:', nodeToRename.name);
-    const updatedNote = renameNodeInNote(databaseNotes, selectedNodeId, newName);
-    setDatabaseNotes(updatedNote);
-
-    const updatedData = renameNodeInTree(visualHierarchyData, selectedNodeId, newName);
-    setVisualHierarchyData(updatedData);
+  // переимоновать на "ренейм"
+  const getUpdateName = (updatedName) => {
+    if (selectedNodeId) {
+      handleRenameNode(selectedNodeId, updatedName);
+    }
   };
 
-  const findNodeById = (treeData, nodeId) => treeData.find((node) => node.id === nodeId);
+  const handleRenameNode = (nodeId, newName) => {
+    if (!nodeId) return;
+
+    const updatedNote = renameNodeInNote(databaseNotes, nodeId, newName);
+    setDatabaseNotes(updatedNote);
+
+    const updatedData = renameNodeInTree(visualHierarchyData, nodeId, newName);
+    setVisualHierarchyData(updatedData);
+  };
 
   const renameNodeInNote = (noteData, nodeId, newName) =>
     noteData.map((node) => (node.id === nodeId ? { ...node, title: newName } : node));
@@ -355,8 +350,6 @@ function Component() {
 
   const onSelect = (node) => {
     setSelectedNodeId(node.id);
-
-    console.log(node.id);
   };
 
   return (
@@ -386,38 +379,31 @@ function Component() {
             >
               Delete selected node
             </button>
-            <button
-              onClick={handleRenameNode}
-              disabled={!selectedNodeId}
-              style={style.buttonRenameContainer}
-            >
-              Rename selected node
-            </button>
 
             <NoteTree
-              style={style}
-              onSelect={onSelect}
               term={term}
-              treeRef={treeRef}
-              visualHierarchyData={visualHierarchyData}
-              handleTreeEventDelete={handleTreeEventDelete}
-              selectedNodeId={selectedNodeId}
+              style={style}
               onMove={onMove}
-              handleContextMenu={handleContextMenu}
+              treeRef={treeRef}
+              onSelect={onSelect}
               databaseNotes={databaseNotes}
               hoveredNodeId={hoveredNodeId}
               setHoveredNodeId={setHoveredNodeId}
+              handleContextMenu={handleContextMenu}
+              visualHierarchyData={visualHierarchyData}
+              handleTreeEventDelete={handleTreeEventDelete}
+              onUpdate={getUpdateName}
             />
             <ContextMenu
+              setSelectedNodeId={setSelectedNodeId}
               onNewDocument={handleNewDocument}
+              selectedNodeId={selectedNodeId}
+              objectForMenu={objectForMenu}
               onNewFolder={handleNewFolder}
               onRename={handleRenameNode}
               onDelete={handleDeleteNode}
-              setSelectedNodeId={setSelectedNodeId}
-              selectedNodeId={selectedNodeId}
-              style={style}
-              objectForMenu={objectForMenu}
               treeRef={treeRef}
+              style={style}
             />
 
             <div className="flex justify-end">
