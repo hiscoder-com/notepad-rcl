@@ -11,7 +11,7 @@ function Component() {
   const [hoveredNodeId, setHoveredNodeId] = useState(null);
   const [objectForMenu, setObjectForMenu] = useState(null);
   const [selectedNodeId, setSelectedNodeId] = useState(null);
-
+  const [currentNodeProps, setCurrentNodeProps] = useState(null);
   const [databaseNotes, setDatabaseNotes] = useState([
     {
       id: 'first_note_key_from_DB',
@@ -252,6 +252,12 @@ function Component() {
     setVisualHierarchyData(updatedData);
   };
 
+  useEffect(() => {
+    if (currentNodeProps) {
+      currentNodeProps.node.isSelected && setSelectedNodeId(currentNodeProps.node.id);
+    }
+  }, [currentNodeProps]);
+
   const handleDeleteNode = () => {
     if (selectedNodeId) {
       const updatedNote = databaseNotes.filter((el) => el.id !== selectedNodeId);
@@ -267,34 +273,15 @@ function Component() {
   const handleNewDocument = () => {};
 
   const handleNewFolder = () => {};
-  // переимоновать на "ренейм"
-  const getUpdateName = (updatedName) => {
-    if (selectedNodeId) {
-      handleRenameNode(selectedNodeId, updatedName);
+
+  const handleRenameNode = (newName, nodeId) => {
+    if (nodeId) {
+      const updatedNote = databaseNotes.map((node) =>
+        node.id === nodeId ? { ...node, title: newName } : node
+      );
+      setDatabaseNotes(updatedNote);
     }
   };
-
-  const handleRenameNode = (nodeId, newName) => {
-    if (!nodeId) return;
-
-    const updatedNote = renameNodeInNote(databaseNotes, nodeId, newName);
-    setDatabaseNotes(updatedNote);
-
-    const updatedData = renameNodeInTree(visualHierarchyData, nodeId, newName);
-    setVisualHierarchyData(updatedData);
-  };
-
-  const renameNodeInNote = (noteData, nodeId, newName) =>
-    noteData.map((node) => (node.id === nodeId ? { ...node, title: newName } : node));
-
-  const renameNodeInTree = (treeData, nodeId, newName) =>
-    treeData.map((node) => ({
-      ...node,
-      name: node.id === nodeId ? newName : node.name,
-      children: node.children
-        ? renameNodeInTree(node.children, nodeId, newName)
-        : undefined,
-    }));
 
   const onMove = ({ dragIds, parentId, index }) => {
     moveNode({ dragIds, parentId, index });
@@ -348,10 +335,6 @@ function Component() {
     setObjectForMenu({ event, nodeIdToUse });
   };
 
-  const onSelect = (node) => {
-    setSelectedNodeId(node.id);
-  };
-
   return (
     <div>
       <div>
@@ -381,26 +364,26 @@ function Component() {
             </button>
 
             <NoteTree
+              setCurrentNodeProps={setCurrentNodeProps}
               term={term}
               style={style}
               onMove={onMove}
               treeRef={treeRef}
-              onSelect={onSelect}
               databaseNotes={databaseNotes}
               hoveredNodeId={hoveredNodeId}
               setHoveredNodeId={setHoveredNodeId}
               handleContextMenu={handleContextMenu}
               visualHierarchyData={visualHierarchyData}
               handleTreeEventDelete={handleTreeEventDelete}
-              onUpdate={getUpdateName}
+              handleRenameNode={handleRenameNode}
             />
             <ContextMenu
+              currentNodeProps={currentNodeProps}
               setSelectedNodeId={setSelectedNodeId}
               onNewDocument={handleNewDocument}
               selectedNodeId={selectedNodeId}
               objectForMenu={objectForMenu}
               onNewFolder={handleNewFolder}
-              onRename={handleRenameNode}
               onDelete={handleDeleteNode}
               treeRef={treeRef}
               style={style}

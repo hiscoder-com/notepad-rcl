@@ -7,9 +7,9 @@ function ContextMenu({
   onNewDocument,
   onNewFolder,
   onDelete,
-  onRename,
   treeRef,
   style,
+  currentNodeProps,
 }) {
   const [hoveredItemId, setHoveredItemId] = useState(null);
   const [contextMenuVisible, setContextMenuVisible] = useState(false);
@@ -30,7 +30,7 @@ function ContextMenu({
   };
 
   const handleRename = () => {
-    onRename();
+    currentNodeProps.node.edit();
     hideContextMenu();
   };
 

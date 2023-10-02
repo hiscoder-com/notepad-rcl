@@ -7,12 +7,12 @@ function NoteTree({
   handleContextMenu,
   setHoveredNodeId,
   hoveredNodeId,
-  onSelect,
   treeRef,
   onMove,
   style,
   term,
-  onUpdate,
+  handleRenameNode,
+  setCurrentNodeProps,
   indent = 20,
 }) {
   return (
@@ -49,12 +49,14 @@ function NoteTree({
                   : style.nodeStyle.backgroundColor,
               }}
               onClick={() => {
-                onSelect(nodeProps.node);
+                setCurrentNodeProps(nodeProps);
               }}
               onDoubleClick={() => nodeProps.node.isInternal && nodeProps.node.toggle()}
               onContextMenu={(event) => {
                 event.preventDefault();
+                nodeProps.node.select();
                 nodeProps.node.tree.props.onContextMenu(event);
+                setCurrentNodeProps(nodeProps);
               }}
               onMouseOver={() => {
                 setHoveredNodeId(nodeProps.node.id);
@@ -75,8 +77,7 @@ function NoteTree({
                       if (e.key === 'Escape') nodeProps.node.reset();
                       if (e.key === 'Enter') {
                         nodeProps.node.submit(e.currentTarget.value);
-                        // console.log(nodeProps.node.tree.props.data);
-                        onUpdate(e.currentTarget.value);
+                        handleRenameNode(e.currentTarget.value, nodeProps.node.id);
                       }
                     }}
                     autoFocus
