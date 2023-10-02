@@ -10,6 +10,7 @@ function NoteTree({
   handleRenameNode,
   handleDragDrop,
   hoveredNodeId,
+  onClick,
   treeRef,
   style,
   term,
@@ -49,7 +50,10 @@ function NoteTree({
                   : style.nodeStyle.backgroundColor,
               }}
               onClick={() => {
-                getCurrentNodeProps(nodeProps);
+                if (!nodeProps.node.isInternal) {
+                  getCurrentNodeProps(nodeProps);
+                  onClick();
+                }
               }}
               onDoubleClick={() => nodeProps.node.isInternal && nodeProps.node.toggle()}
               onContextMenu={(event) => {
@@ -86,11 +90,20 @@ function NoteTree({
                   <span>{nodeProps.node.data.name}</span>
                 )}
               </span>
-              <button onClick={() => nodeProps.node.edit()} title="Rename...">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  nodeProps.node.edit();
+                }}
+                title="Rename..."
+              >
                 ✏️
               </button>
               <button
-                onClick={() => nodeProps.tree.delete(nodeProps.node.id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  nodeProps.tree.delete(nodeProps.node.id);
+                }}
                 title="Delete"
               >
                 🗑️

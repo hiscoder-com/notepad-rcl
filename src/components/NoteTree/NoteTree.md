@@ -3,6 +3,7 @@
 ```jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { NoteTree, ContextMenu } from '@texttree/notepad-rcl';
+import { initialData, style } from './data';
 
 function Component() {
   const treeRef = useRef(null);
@@ -12,202 +13,10 @@ function Component() {
   const [objectForMenu, setObjectForMenu] = useState(null);
   const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [currentNodeProps, setCurrentNodeProps] = useState(null);
-  const [databaseNotes, setDatabaseNotes] = useState([
-    {
-      id: 'first_note_key_from_DB',
-      title: 'note1',
-      data: {
-        time: 1550476186479,
-        blocks: [
-          {
-            id: 'zbGZFPM-iI',
-            type: 'paragraph',
-            data: {
-              text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
-            },
-          },
-        ],
-        version: '2.27.2',
-      },
-      created_at: new Date('2022-10-15 07:59:58.3642'),
-      isFolder: false,
-      parent_id: null,
-      sorting: 0,
-    },
-    {
-      id: 'sixth_note_key_from_DB',
-      title: 'note2',
-      data: {
-        time: 1550476186479,
-        blocks: [
-          {
-            id: 'zbGZFPM-iI',
-            type: 'paragraph',
-            data: {
-              text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
-            },
-          },
-        ],
-        version: '2.27.2',
-      },
-      created_at: new Date('2022-10-15 07:59:58.3642'),
-      isFolder: false,
-      parent_id: null,
-      sorting: 1,
-    },
-    {
-      id: 'seven_note_key_from_DB',
-      title: 'note3',
-      data: {
-        time: 1550476186479,
-        blocks: [
-          {
-            id: 'zbGZFPM-iI',
-            type: 'paragraph',
-            data: {
-              text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
-            },
-          },
-        ],
-        version: '2.27.2',
-      },
-      created_at: new Date('2022-10-15 07:59:58.3642'),
-      isFolder: false,
-      parent_id: null,
-      sorting: 2,
-    },
-    {
-      id: 'eight_note_key_from_DB',
-      title: 'note4',
-      data: {
-        time: 1550476186479,
-        blocks: [
-          {
-            id: 'zbGZFPM-iI',
-            type: 'paragraph',
-            data: {
-              text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
-            },
-          },
-        ],
-        version: '2.27.2',
-      },
-      created_at: new Date('2022-10-15 07:59:58.3642'),
-      isFolder: false,
-      parent_id: null,
-      sorting: 3,
-    },
-    {
-      id: 'nineth_note_key_from_DB',
-      title: 'note5',
-      data: {
-        time: 1550476186479,
-        blocks: [
-          {
-            id: 'zbGZFPM-iI',
-            type: 'paragraph',
-            data: {
-              text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
-            },
-          },
-        ],
-        version: '2.27.2',
-      },
-      created_at: new Date('2022-10-15 07:59:58.3642'),
-      isFolder: false,
-      parent_id: null,
-      sorting: 4,
-    },
-    {
-      id: 'first_folder_key_from_DB',
-      title: 'folder1',
-      created_at: new Date('2022-10-15 07:59:58.3642'),
-      isFolder: true,
-      parent_id: null,
-      sorting: 5,
-    },
-    // {
-    //   id: 'test_note_key_from_DB',
-    //   title: 'note6',
-    //   data: {
-    //     time: 1550476186479,
-    //     blocks: [
-    //       {
-    //         id: 'zbGZFPM-iI',
-    //         type: 'paragraph',
-    //         data: {
-    //           text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
-    //         },
-    //       },
-    //     ],
-    //     version: '2.27.2',
-    //   },
-    //   created_at: new Date('2022-10-15 07:59:58.3642'),
-    //   isFolder: false,
-    //   parent_id: 'first_folder_key_from_DB',
-    //   sorting: 0,
-    // },
-    // {
-    //   id: 'test2_folder_key_from_DB',
-    //   title: 'folder2',
-    //   created_at: new Date('2022-10-15 07:59:58.3642'),
-    //   isFolder: true,
-    //   parent_id: 'first_folder_key_from_DB',
-    //   sorting: 1,
-    // },
-  ]);
+  const [databaseNotes, setDatabaseNotes] = useState(initialData);
   const [visualHierarchyData, setVisualHierarchyData] = useState(
     convertNotesToTree(databaseNotes)
   );
-
-  const style = {
-    searchContainer: {
-      position: 'relative',
-      marginBottom: '10px',
-      maxWidth: '320px',
-    },
-    nodeStyle: {
-      cursor: 'pointer',
-      borderRadius: '5px',
-      userSelect: 'none',
-      selectedColor: '#FFB703',
-      hoveredColor: '#FFF5DD',
-      backgroundColor: 'transparent',
-    },
-    searchInput: {
-      border: '0',
-      borderBottom: '1px solid #555',
-      background: 'transparent',
-      width: '100%',
-      padding: '24px 0 5px 0',
-      fontSize: '14px',
-      outline: 'none',
-    },
-    searchLabel: {
-      position: 'absolute',
-      top: '0px',
-      left: '0px',
-      fontSize: '14px',
-      color: '#555',
-      transition: 'all 0.5s ease-in-out',
-    },
-    contextMenuContainer: {
-      position: 'absolute',
-      backgroundColor: 'white',
-      border: '1px solid #ccc',
-      borderRadius: '5px',
-      boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)',
-      zIndex: '100',
-      whiteSpace: 'nowrap',
-    },
-    contextMenuItem: {
-      padding: '4px 30px 4px 10px',
-      cursor: 'pointer',
-      hoveredColor: '#EDEDED',
-      backgroundColor: 'transparent',
-    },
-    contextMenuWrapperStyle: { position: 'fixed', zIndex: 50 },
-  };
 
   function convertNotesToTree(notes, parentId = null) {
     const filteredNotes = notes.filter((note) => note.parent_id === parentId);
@@ -296,7 +105,11 @@ function Component() {
     }
 
     setSelectedNodeId(nodeIdToUse);
-    setObjectForMenu({ event, nodeIdToUse });
+    setObjectForMenu({ event });
+  };
+
+  const noteOnClick = () => {
+    setActiveNote(true);
   };
 
   return (
@@ -323,6 +136,7 @@ function Component() {
               term={term}
               style={style}
               treeRef={treeRef}
+              onClick={noteOnClick}
               hoveredNodeId={hoveredNodeId}
               handleDragDrop={handleDragDrop}
               handleRenameNode={handleRenameNode}
@@ -337,8 +151,8 @@ function Component() {
               currentNodeProps={currentNodeProps}
               onNewDocument={handleNewDocument}
               selectedNodeId={selectedNodeId}
-              objectForMenu={objectForMenu}
               onNewFolder={handleNewFolder}
+              data={objectForMenu}
               treeRef={treeRef}
               style={style}
             />
@@ -350,7 +164,15 @@ function Component() {
             </div>
           </>
         ) : (
-          <div>test</div>
+          <>
+            <button
+              onClick={() => setActiveNote(!activeNote)}
+              style={{ color: 'red', paddingRight: '30px' }}
+            >
+              Go Back
+            </button>
+            {selectedNodeId}
+          </>
         )}
       </div>
     </div>

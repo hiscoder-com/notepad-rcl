@@ -4,15 +4,15 @@ function ContextMenu({
   setSelectedNodeId,
   currentNodeProps,
   selectedNodeId,
-  objectForMenu,
   onNewDocument,
   onNewFolder,
   treeRef,
   style,
+  data,
 }) {
   const [hoveredItemId, setHoveredItemId] = useState(null);
-  const [contextMenuVisible, setContextMenuVisible] = useState(false);
-  const [contextMenuPosition, setContextMenuPosition] = useState({ top: 0, left: 0 });
+  const [visible, setVisible] = useState(false);
+  const [position, setPosition] = useState({ top: 0, left: 0 });
 
   const handleMouseEnter = (itemId) => {
     setHoveredItemId(itemId);
@@ -66,7 +66,7 @@ function ContextMenu({
   }
 
   useEffect(() => {
-    contextMenuVisible && setContextMenuVisible(false);
+    visible && setVisible(false);
   }, [selectedNodeId]);
 
   useEffect(() => {
@@ -80,16 +80,16 @@ function ContextMenu({
   }, [selectedNodeId]);
 
   useEffect(() => {
-    if (objectForMenu) {
-      const { event, nodeIdToUse } = objectForMenu;
-      if (nodeIdToUse) {
-        setContextMenuVisible(true);
-        setContextMenuPosition({ top: event.clientY, left: event.clientX });
+    if (data) {
+      const { event } = data;
+      if (selectedNodeId) {
+        setVisible(true);
+        setPosition({ top: event.clientY, left: event.clientX });
       }
     } else {
-      setContextMenuVisible(false);
+      setVisible(false);
     }
-  }, [objectForMenu]);
+  }, [data]);
 
   const handleScroll = () => {
     hideContextMenu();
@@ -103,17 +103,17 @@ function ContextMenu({
   };
 
   const hideContextMenu = () => {
-    setContextMenuVisible(false);
+    setVisible(false);
   };
 
   return (
     <>
-      {contextMenuVisible && (
+      {visible && (
         <div
           style={{
             ...style.contextMenuWrapperStyle,
-            top: style.contextMenuWrapperStyle.top || contextMenuPosition.top + 'px',
-            left: style.contextMenuWrapperStyle.left || contextMenuPosition.left + 'px',
+            top: style.contextMenuWrapperStyle.top || position.top + 'px',
+            left: style.contextMenuWrapperStyle.left || position.left + 'px',
           }}
         >
           <div style={style.contextMenuContainer}>
