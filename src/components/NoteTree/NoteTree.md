@@ -191,11 +191,6 @@ function Component() {
       color: '#555',
       transition: 'all 0.5s ease-in-out',
     },
-    buttonRemoveContainer: {
-      marginBottom: '10px',
-      marginRight: '10px',
-      color: '#EB5E28',
-    },
     contextMenuContainer: {
       position: 'absolute',
       backgroundColor: 'white',
@@ -232,41 +227,23 @@ function Component() {
     setVisualHierarchyData(convertNotesToTree(databaseNotes));
   }, [databaseNotes]);
 
-  const removeNodeFromData = (treeData, nodeId) => {
-    return treeData.filter((node) => {
-      if (node.id === nodeId) {
-        return false;
-      } else if (node.children) {
-        node.children = removeNodeFromData(node.children, nodeId);
-        return true;
-      }
-      return true;
-    });
-  };
-
-  const handleTreeEventDelete = ({ ids }) => {
-    const updatedNote = databaseNotes.filter((el) => el.id !== ids[0]);
-    setDatabaseNotes(updatedNote); // идёт обновление БД
-
-    const updatedData = removeNodeFromData(visualHierarchyData, ids[0]);
-    setVisualHierarchyData(updatedData);
-  };
-
   useEffect(() => {
     if (currentNodeProps) {
       currentNodeProps.node.isSelected && setSelectedNodeId(currentNodeProps.node.id);
     }
   }, [currentNodeProps]);
 
-  const handleDeleteNode = () => {
-    if (selectedNodeId) {
-      const updatedNote = databaseNotes.filter((el) => el.id !== selectedNodeId);
+  const handleTreeEventDelete = ({ ids }) => {
+    const updatedNote = databaseNotes.filter((el) => el.id !== ids[0]);
+    setDatabaseNotes(updatedNote); // идёт обновление БД
+  };
+
+  const handleRenameNode = (newName, nodeId) => {
+    if (nodeId) {
+      const updatedNote = databaseNotes.map((node) =>
+        node.id === nodeId ? { ...node, title: newName } : node
+      );
       setDatabaseNotes(updatedNote); // идёт обновление БД
-
-      const updatedData = removeNodeFromData(visualHierarchyData, selectedNodeId);
-      setVisualHierarchyData(updatedData);
-
-      setSelectedNodeId(null);
     }
   };
 
@@ -274,18 +251,10 @@ function Component() {
 
   const handleNewFolder = () => {};
 
-  const handleRenameNode = (newName, nodeId) => {
-    if (nodeId) {
-      const updatedNote = databaseNotes.map((node) =>
-        node.id === nodeId ? { ...node, title: newName } : node
-      );
-      setDatabaseNotes(updatedNote);
-    }
-  };
-
-  const onMove = ({ dragIds, parentId, index }) => {
+  const handleDragDrop = ({ dragIds, parentId, index }) => {
     moveNode({ dragIds, parentId, index });
-    updateDataFromNote();
+
+    setVisualHierarchyData(convertNotesToTree(databaseNotes));
   };
 
   const moveNode = ({ dragIds, parentId, index }) => {
@@ -316,11 +285,6 @@ function Component() {
 
       setDatabaseNotes(sortedNodes); // идёт обновление БД
     }
-  };
-
-  const updateDataFromNote = () => {
-    const newData = convertNotesToTree(databaseNotes);
-    setVisualHierarchyData(newData);
   };
 
   const handleContextMenu = (event) => {
@@ -355,36 +319,26 @@ function Component() {
               </label>
             </div>
 
-            <button
-              onClick={handleDeleteNode}
-              disabled={!selectedNodeId}
-              style={style.buttonRemoveContainer}
-            >
-              Delete selected node
-            </button>
-
             <NoteTree
-              setCurrentNodeProps={setCurrentNodeProps}
               term={term}
               style={style}
-              onMove={onMove}
               treeRef={treeRef}
-              databaseNotes={databaseNotes}
               hoveredNodeId={hoveredNodeId}
+              handleDragDrop={handleDragDrop}
+              handleRenameNode={handleRenameNode}
               setHoveredNodeId={setHoveredNodeId}
               handleContextMenu={handleContextMenu}
               visualHierarchyData={visualHierarchyData}
+              getCurrentNodeProps={setCurrentNodeProps}
               handleTreeEventDelete={handleTreeEventDelete}
-              handleRenameNode={handleRenameNode}
             />
             <ContextMenu
-              currentNodeProps={currentNodeProps}
               setSelectedNodeId={setSelectedNodeId}
+              currentNodeProps={currentNodeProps}
               onNewDocument={handleNewDocument}
               selectedNodeId={selectedNodeId}
               objectForMenu={objectForMenu}
               onNewFolder={handleNewFolder}
-              onDelete={handleDeleteNode}
               treeRef={treeRef}
               style={style}
             />

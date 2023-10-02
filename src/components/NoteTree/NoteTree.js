@@ -4,15 +4,15 @@ import { Tree } from 'react-arborist';
 function NoteTree({
   handleTreeEventDelete,
   visualHierarchyData,
+  getCurrentNodeProps,
   handleContextMenu,
   setHoveredNodeId,
+  handleRenameNode,
+  handleDragDrop,
   hoveredNodeId,
   treeRef,
-  onMove,
   style,
   term,
-  handleRenameNode,
-  setCurrentNodeProps,
   indent = 20,
 }) {
   return (
@@ -26,8 +26,8 @@ function NoteTree({
         onContextMenu={handleContextMenu}
         onDelete={handleTreeEventDelete}
         data={visualHierarchyData}
+        onMove={handleDragDrop}
         searchTerm={term}
-        onMove={onMove}
         searchMatch={(node, term) =>
           node.data.name.toLowerCase().includes(term.toLowerCase())
         }
@@ -49,14 +49,14 @@ function NoteTree({
                   : style.nodeStyle.backgroundColor,
               }}
               onClick={() => {
-                setCurrentNodeProps(nodeProps);
+                getCurrentNodeProps(nodeProps);
               }}
               onDoubleClick={() => nodeProps.node.isInternal && nodeProps.node.toggle()}
               onContextMenu={(event) => {
                 event.preventDefault();
                 nodeProps.node.select();
                 nodeProps.node.tree.props.onContextMenu(event);
-                setCurrentNodeProps(nodeProps);
+                getCurrentNodeProps(nodeProps);
               }}
               onMouseOver={() => {
                 setHoveredNodeId(nodeProps.node.id);

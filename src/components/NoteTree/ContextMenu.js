@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 
 function ContextMenu({
   setSelectedNodeId,
+  currentNodeProps,
   selectedNodeId,
   objectForMenu,
   onNewDocument,
   onNewFolder,
-  onDelete,
   treeRef,
   style,
-  currentNodeProps,
 }) {
   const [hoveredItemId, setHoveredItemId] = useState(null);
   const [contextMenuVisible, setContextMenuVisible] = useState(false);
@@ -35,7 +34,7 @@ function ContextMenu({
   };
 
   const handleDelete = () => {
-    onDelete();
+    currentNodeProps.tree.delete(currentNodeProps.node.id);
     hideContextMenu();
   };
 
