@@ -3,15 +3,15 @@
 ```jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { NoteTree, ContextMenu } from '@texttree/notepad-rcl';
-import { initialData, style } from './data';
+import { initialData, style, initialData_2 } from './data';
 
 function Component() {
   const treeRef = useRef(null);
   const [term, setTerm] = useState('');
   const [activeNote, setActiveNote] = useState(null);
   const [hoveredNodeId, setHoveredNodeId] = useState(null);
-  const [objectForMenu, setObjectForMenu] = useState(null);
   const [selectedNodeId, setSelectedNodeId] = useState(null);
+  const [contextMenuEvent, setContextMenuEvent] = useState(null);
   const [currentNodeProps, setCurrentNodeProps] = useState(null);
   const [databaseNotes, setDatabaseNotes] = useState(initialData);
   const [visualHierarchyData, setVisualHierarchyData] = useState(
@@ -35,12 +35,6 @@ function Component() {
   useEffect(() => {
     setVisualHierarchyData(convertNotesToTree(databaseNotes));
   }, [databaseNotes]);
-
-  useEffect(() => {
-    if (currentNodeProps) {
-      currentNodeProps.node.isSelected && setSelectedNodeId(currentNodeProps.node.id);
-    }
-  }, [currentNodeProps]);
 
   const handleTreeEventDelete = ({ ids }) => {
     const updatedNote = databaseNotes.filter((el) => el.id !== ids[0]);
@@ -97,15 +91,8 @@ function Component() {
   };
 
   const handleContextMenu = (event) => {
-    let nodeIdToUse = null;
-    if (hoveredNodeId !== null) {
-      nodeIdToUse = hoveredNodeId;
-    } else if (selectedNodeId !== null) {
-      nodeIdToUse = selectedNodeId;
-    }
-
-    setSelectedNodeId(nodeIdToUse);
-    setObjectForMenu({ event });
+    setSelectedNodeId(hoveredNodeId);
+    setContextMenuEvent({ event });
   };
 
   const noteOnClick = () => {
@@ -124,7 +111,7 @@ function Component() {
                 onChange={(event) => setTerm(event.target.value)}
                 style={style.searchInput}
                 onClick={() => {
-                  setSelectedNodeId(null);
+                  currentNodeProps && currentNodeProps.tree.deselect(selectedNodeId);
                 }}
               />
               <label htmlFor="search" style={style.searchLabel}>
@@ -141,6 +128,7 @@ function Component() {
               handleDragDrop={handleDragDrop}
               handleRenameNode={handleRenameNode}
               setHoveredNodeId={setHoveredNodeId}
+              setSelectedNodeId={setSelectedNodeId}
               handleContextMenu={handleContextMenu}
               visualHierarchyData={visualHierarchyData}
               getCurrentNodeProps={setCurrentNodeProps}
@@ -152,7 +140,7 @@ function Component() {
               onNewDocument={handleNewDocument}
               selectedNodeId={selectedNodeId}
               onNewFolder={handleNewFolder}
-              data={objectForMenu}
+              data={contextMenuEvent}
               treeRef={treeRef}
               style={style}
             />

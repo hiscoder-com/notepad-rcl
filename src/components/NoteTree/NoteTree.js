@@ -6,6 +6,7 @@ function NoteTree({
   visualHierarchyData,
   getCurrentNodeProps,
   handleContextMenu,
+  setSelectedNodeId,
   setHoveredNodeId,
   handleRenameNode,
   handleDragDrop,
@@ -34,8 +35,8 @@ function NoteTree({
         }
       >
         {(nodeProps) => {
-          const isFile = nodeProps.node.isLeaf;
-          const isFolderOpen = nodeProps.node.isOpen;
+          const isFile = nodeProps.node.isLeaf; // Returns true if the children property is not an array
+          const isFolderOpen = nodeProps.node.isOpen; // Returns true if node is internal and in an open state
 
           return (
             <div
@@ -43,16 +44,17 @@ function NoteTree({
               style={{
                 ...style.nodeStyle,
                 paddingLeft: `${nodeProps.node.level * indent}px`,
-                backgroundColor: nodeProps.node.state.isSelected
+                backgroundColor: nodeProps.node.state.isSelected // isSelected Returns true if node is selected
                   ? style.nodeStyle.selectedColor
                   : nodeProps.node.id === hoveredNodeId
                   ? style.nodeStyle.hoveredColor
                   : style.nodeStyle.backgroundColor,
               }}
               onClick={() => {
+                setSelectedNodeId(nodeProps.node.id);
+                // isInternal Returns true if the children property is an array
                 if (!nodeProps.node.isInternal) {
-                  getCurrentNodeProps(nodeProps);
-                  onClick();
+                  // onClick();
                 }
               }}
               onDoubleClick={() => nodeProps.node.isInternal && nodeProps.node.toggle()}
@@ -69,7 +71,15 @@ function NoteTree({
                 setHoveredNodeId(null);
               }}
             >
-              {isFile ? '🗎' : isFolderOpen ? '⏷ 🗁' : '⏵ 🗀'}{' '}
+              {!isFile
+                ? nodeProps.node.children.length > 0
+                  ? isFolderOpen
+                    ? '⏷ 🗁'
+                    : '⏵ 🗀'
+                  : isFolderOpen
+                  ? '🗁'
+                  : '🗀'
+                : '🗎'}
               <span className="node-text">
                 {nodeProps.node.isEditing ? (
                   <input

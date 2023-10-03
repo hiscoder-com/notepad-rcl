@@ -66,10 +66,21 @@ function ContextMenu({
   }
 
   useEffect(() => {
-    visible && setVisible(false);
-  }, [selectedNodeId]);
+    if (visible) {
+      setVisible(false);
+    }
 
-  useEffect(() => {
+    const handleScroll = () => {
+      hideContextMenu();
+    };
+
+    const handleOutsideClick = (event) => {
+      if (treeRef.current && !treeRef.current.contains(event.target)) {
+        setSelectedNodeId(null);
+        hideContextMenu();
+      }
+    };
+
     window.addEventListener('scroll', handleScroll);
     document.addEventListener('click', handleOutsideClick);
 
@@ -90,17 +101,6 @@ function ContextMenu({
       setVisible(false);
     }
   }, [data]);
-
-  const handleScroll = () => {
-    hideContextMenu();
-  };
-
-  const handleOutsideClick = (event) => {
-    if (treeRef.current && !treeRef.current.contains(event.target)) {
-      setSelectedNodeId(null);
-      hideContextMenu();
-    }
-  };
 
   const hideContextMenu = () => {
     setVisible(false);

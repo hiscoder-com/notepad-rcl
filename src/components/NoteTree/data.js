@@ -1,6 +1,6 @@
 export const initialData = [
   {
-    id: 'first_note_key_from_DB',
+    id: '1_note_key_from_DB',
     title: 'note1',
     data: {
       time: 1550476186479,
@@ -21,7 +21,7 @@ export const initialData = [
     sorting: 0,
   },
   {
-    id: 'sixth_note_key_from_DB',
+    id: '2_note_key_from_DB',
     title: 'note2',
     data: {
       time: 1550476186479,
@@ -42,7 +42,7 @@ export const initialData = [
     sorting: 1,
   },
   {
-    id: 'seven_note_key_from_DB',
+    id: '3_note_key_from_DB',
     title: 'note3',
     data: {
       time: 1550476186479,
@@ -63,7 +63,7 @@ export const initialData = [
     sorting: 2,
   },
   {
-    id: 'eight_note_key_from_DB',
+    id: '4_note_key_from_DB',
     title: 'note4',
     data: {
       time: 1550476186479,
@@ -84,7 +84,7 @@ export const initialData = [
     sorting: 3,
   },
   {
-    id: 'nineth_note_key_from_DB',
+    id: '5_note_key_from_DB',
     title: 'note5',
     data: {
       time: 1550476186479,
@@ -105,12 +105,20 @@ export const initialData = [
     sorting: 4,
   },
   {
-    id: 'first_folder_key_from_DB',
+    id: '1_folder_key_from_DB',
     title: 'folder1',
     created_at: new Date('2022-10-15 07:59:58.3642'),
     isFolder: true,
     parent_id: null,
     sorting: 5,
+  },
+  {
+    id: '2_folder_key_from_DB',
+    title: 'folder2',
+    created_at: new Date('2022-10-15 07:59:58.3642'),
+    isFolder: true,
+    parent_id: null,
+    sorting: 6,
   },
   // {
   //   id: 'test_note_key_from_DB',
@@ -191,3 +199,140 @@ export const style = {
   },
   contextMenuWrapperStyle: { position: 'fixed', zIndex: 50 },
 };
+
+export const initialData_2 = [
+  {
+    id: 'first_folder_key_from_DB',
+    title: 'folder1',
+    created_at: new Date('2022-10-15 07:59:58.3642'),
+    isFolder: true,
+    parent_id: null,
+    sorting: 0,
+  },
+  {
+    id: 'sixth_note_key_from_DB',
+    title: 'note6',
+    data: {
+      time: 1550476186479,
+      blocks: [
+        {
+          id: 'zbGZFPM-iI',
+          type: 'paragraph',
+          data: {
+            text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
+          },
+        },
+      ],
+      version: '2.27.2',
+    },
+    created_at: new Date('2022-10-15 07:59:58.3642'),
+    isFolder: false,
+    parent_id: null,
+    sorting: 1,
+  },
+  {
+    id: 'first_note_key_from_DB',
+    title: 'note1',
+    data: {
+      time: 1550476186479,
+      blocks: [
+        {
+          id: 'zbGZFPM-iI',
+          type: 'paragraph',
+          data: {
+            text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
+          },
+        },
+      ],
+      version: '2.27.2',
+    },
+    created_at: new Date('2022-10-15 07:59:58.3642'),
+    isFolder: false,
+    parent_id: null,
+    sorting: 2,
+  },
+  {
+    id: 'second_note_key_from_DB',
+    title: 'note2',
+    data: {
+      time: 1550476186479,
+      blocks: [
+        {
+          id: 'zbGZFPM-iI',
+          type: 'paragraph',
+          data: {
+            text: 'Designed to be extendable and pluggable with a simple API',
+          },
+        },
+      ],
+      version: '2.27.2',
+    },
+    created_at: new Date('2022-10-15 07:59:58.3642'),
+    isFolder: false,
+    parent_id: 'first_folder_key_from_DB',
+    sorting: 0,
+  },
+  {
+    id: 'third_note_key_from_DB',
+    title: 'note3',
+    data: {
+      time: 1550476186479,
+      blocks: [
+        {
+          id: 'zbGZFPM-iI',
+          type: 'paragraph',
+          data: {
+            text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
+          },
+        },
+      ],
+      version: '2.27.2',
+    },
+    created_at: new Date('2022-10-15 07:59:58.3642'),
+    isFolder: false,
+    parent_id: 'first_folder_key_from_DB',
+    sorting: 1,
+  },
+  {
+    id: 'fourth_note_key_from_DB',
+    title: 'note4',
+    data: {
+      time: 1550476186479,
+      blocks: [
+        {
+          id: 'zbGZFPM-iI',
+          type: 'paragraph',
+          data: {
+            text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
+          },
+        },
+      ],
+      version: '2.27.2',
+    },
+    created_at: new Date('2022-10-15 07:59:58.3642'),
+    isFolder: false,
+    parent_id: 'first_folder_key_from_DB',
+    sorting: 2,
+  },
+  {
+    id: 'fifth_note_key_from_DB',
+    title: 'note5',
+    data: {
+      time: 1550476186479,
+      blocks: [
+        {
+          id: 'zbGZFPM-iI',
+          type: 'paragraph',
+          data: {
+            text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
+          },
+        },
+      ],
+      version: '2.27.2',
+    },
+    created_at: new Date('2022-10-15 07:59:58.3642'),
+    isFolder: false,
+    parent_id: 'first_folder_key_from_DB',
+    sorting: 3,
+  },
+];
