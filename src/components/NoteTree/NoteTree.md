@@ -22,7 +22,6 @@ function Component() {
     const filteredNotes = notes.filter((note) => note.parent_id === parentId);
 
     filteredNotes.sort((a, b) => a.sorting - b.sorting);
-
     return filteredNotes.map((note) => ({
       id: note.id,
       name: note.title,
@@ -38,6 +37,7 @@ function Component() {
 
   const handleTreeEventDelete = ({ ids }) => {
     const updatedNote = databaseNotes.filter((el) => el.id !== ids[0]);
+
     setDatabaseNotes(updatedNote); // идёт обновление БД
   };
 
@@ -56,35 +56,54 @@ function Component() {
 
   const handleDragDrop = ({ dragIds, parentId, index }) => {
     moveNode({ dragIds, parentId, index });
-
-    setVisualHierarchyData(convertNotesToTree(databaseNotes));
   };
+
+  useEffect(() => {
+    console.log(databaseNotes);
+  }, [databaseNotes]);
 
   const moveNode = ({ dragIds, parentId, index }) => {
     const draggedNode = databaseNotes.find((node) => node.id === dragIds[0]);
 
     if (draggedNode) {
+      let startParentId = draggedNode.parent_id;
+      let newSorting = index;
       draggedNode.parent_id = parentId;
 
-      let newSorting = index;
-      if (newSorting >= draggedNode.sorting) {
+      // если новый sorting больше старого sorting и ParentId не меняется, то уменьшаем значение sorting
+      if (newSorting > draggedNode.sorting && startParentId === draggedNode.parent_id) {
         newSorting--;
       }
+
       draggedNode.sorting = newSorting;
 
-      const sortedNodes = [...databaseNotes].sort((a, b) => a.sorting - b.sorting);
-
       let currentIndex = 0;
-      for (let i = 0; i < sortedNodes.length; i++) {
-        const node = sortedNodes[i];
+      for (let i = 0; i < databaseNotes.length; i++) {
+        const node = databaseNotes[i];
+
         if (node.id !== draggedNode.id) {
-          if (currentIndex === index) {
+          const sortingDifference = node.sorting - draggedNode.sorting;
+          const haveSameParent = draggedNode.parent_id === node.parent_id;
+
+          if (sortingDifference >= -5 && sortingDifference <= 5 && !haveSameParent) {
+            console.log(
+              `${node.title} node.sorting === draggedNode.sorting ${sortingDifference}`
+            );
+
+            node.sorting = node.sorting - 1;
+          } else if (haveSameParent) {
+            console.log(`${node.title} заголовок узла`);
+
+            if (currentIndex === index || currentIndex === draggedNode.sorting) {
+              currentIndex++;
+            }
+
+            node.sorting = currentIndex;
             currentIndex++;
           }
-          node.sorting = currentIndex;
-          currentIndex++;
         }
       }
+      const sortedNodes = [...databaseNotes].sort((a, b) => a.sorting - b.sorting);
 
       setDatabaseNotes(sortedNodes); // идёт обновление БД
     }

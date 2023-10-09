@@ -1,154 +1,46 @@
 export const initialData = [
   {
-    id: '1_note_key_from_DB',
+    id: '1_n',
     title: 'note1',
-    data: {
-      time: 1550476186479,
-      blocks: [
-        {
-          id: 'zbGZFPM-iI',
-          type: 'paragraph',
-          data: {
-            text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
-          },
-        },
-      ],
-      version: '2.27.2',
-    },
-    created_at: new Date('2022-10-15 07:59:58.3642'),
     isFolder: false,
     parent_id: null,
     sorting: 0,
   },
   {
-    id: '2_note_key_from_DB',
+    id: '2_n',
     title: 'note2',
-    data: {
-      time: 1550476186479,
-      blocks: [
-        {
-          id: 'zbGZFPM-iI',
-          type: 'paragraph',
-          data: {
-            text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
-          },
-        },
-      ],
-      version: '2.27.2',
-    },
-    created_at: new Date('2022-10-15 07:59:58.3642'),
     isFolder: false,
     parent_id: null,
     sorting: 1,
   },
   {
-    id: '3_note_key_from_DB',
+    id: '3_n',
     title: 'note3',
-    data: {
-      time: 1550476186479,
-      blocks: [
-        {
-          id: 'zbGZFPM-iI',
-          type: 'paragraph',
-          data: {
-            text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
-          },
-        },
-      ],
-      version: '2.27.2',
-    },
-    created_at: new Date('2022-10-15 07:59:58.3642'),
     isFolder: false,
     parent_id: null,
     sorting: 2,
   },
   {
-    id: '4_note_key_from_DB',
+    id: '4_n',
     title: 'note4',
-    data: {
-      time: 1550476186479,
-      blocks: [
-        {
-          id: 'zbGZFPM-iI',
-          type: 'paragraph',
-          data: {
-            text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
-          },
-        },
-      ],
-      version: '2.27.2',
-    },
-    created_at: new Date('2022-10-15 07:59:58.3642'),
     isFolder: false,
     parent_id: null,
     sorting: 3,
   },
   {
-    id: '5_note_key_from_DB',
+    id: '5_n',
     title: 'note5',
-    data: {
-      time: 1550476186479,
-      blocks: [
-        {
-          id: 'zbGZFPM-iI',
-          type: 'paragraph',
-          data: {
-            text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
-          },
-        },
-      ],
-      version: '2.27.2',
-    },
-    created_at: new Date('2022-10-15 07:59:58.3642'),
     isFolder: false,
     parent_id: null,
     sorting: 4,
   },
   {
-    id: '1_folder_key_from_DB',
+    id: '1_fol',
     title: 'folder1',
-    created_at: new Date('2022-10-15 07:59:58.3642'),
     isFolder: true,
     parent_id: null,
     sorting: 5,
   },
-  {
-    id: '2_folder_key_from_DB',
-    title: 'folder2',
-    created_at: new Date('2022-10-15 07:59:58.3642'),
-    isFolder: true,
-    parent_id: null,
-    sorting: 6,
-  },
-  // {
-  //   id: 'test_note_key_from_DB',
-  //   title: 'note6',
-  //   data: {
-  //     time: 1550476186479,
-  //     blocks: [
-  //       {
-  //         id: 'zbGZFPM-iI',
-  //         type: 'paragraph',
-  //         data: {
-  //           text: 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.',
-  //         },
-  //       },
-  //     ],
-  //     version: '2.27.2',
-  //   },
-  //   created_at: new Date('2022-10-15 07:59:58.3642'),
-  //   isFolder: false,
-  //   parent_id: 'first_folder_key_from_DB',
-  //   sorting: 0,
-  // },
-  // {
-  //   id: 'test2_folder_key_from_DB',
-  //   title: 'folder2',
-  //   created_at: new Date('2022-10-15 07:59:58.3642'),
-  //   isFolder: true,
-  //   parent_id: 'first_folder_key_from_DB',
-  //   sorting: 1,
-  // },
 ];
 
 export const style = {
