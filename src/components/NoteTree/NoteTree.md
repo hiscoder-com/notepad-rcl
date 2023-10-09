@@ -65,47 +65,48 @@ function Component() {
   const moveNode = ({ dragIds, parentId, index }) => {
     const draggedNode = databaseNotes.find((node) => node.id === dragIds[0]);
 
+    if (index < 0) {
+      return;
+    }
     if (draggedNode) {
-      let startParentId = draggedNode.parent_id;
-      let newSorting = index;
-      draggedNode.parent_id = parentId;
-
-      // если новый sorting больше старого sorting и ParentId не меняется, то уменьшаем значение sorting
-      if (newSorting > draggedNode.sorting && startParentId === draggedNode.parent_id) {
-        newSorting--;
-      }
-
-      draggedNode.sorting = newSorting;
-
-      let currentIndex = 0;
-      for (let i = 0; i < databaseNotes.length; i++) {
-        const node = databaseNotes[i];
-
-        if (node.id !== draggedNode.id) {
-          const sortingDifference = node.sorting - draggedNode.sorting;
-          const haveSameParent = draggedNode.parent_id === node.parent_id;
-
-          if (sortingDifference >= -5 && sortingDifference <= 5 && !haveSameParent) {
-            console.log(
-              `${node.title} node.sorting === draggedNode.sorting ${sortingDifference}`
-            );
-
-            node.sorting = node.sorting - 1;
-          } else if (haveSameParent) {
-            console.log(`${node.title} заголовок узла`);
-
-            if (currentIndex === index || currentIndex === draggedNode.sorting) {
-              currentIndex++;
-            }
-
-            node.sorting = currentIndex;
-            currentIndex++;
-          }
+      const newSorting = index;
+      const oldSorting = draggedNode.sorting;
+      const newParentId = parentId;
+      const oldParentId = draggedNode.parent_id;
+      const filtered = databaseNotes.filter((note) => note.id !== dragIds[0]);
+      if (parentId === draggedNode.parent_id) {
+        if (newSorting === oldSorting || index < 0) {
+          return;
         }
-      }
-      const sortedNodes = [...databaseNotes].sort((a, b) => a.sorting - b.sorting);
+        const sorted = filtered.map((note) => {
+          const isIncreasing = newSorting > oldSorting;
+          const isInRange = isIncreasing
+            ? note.sorting < newSorting &&
+              note.sorting > oldSorting &&
+              note.parent_id === parentId
+            : note.sorting >= newSorting &&
+              note.sorting < oldSorting &&
+              note.parent_id === parentId;
+          draggedNode.sorting = isIncreasing ? index - 1 : index;
 
-      setDatabaseNotes(sortedNodes); // идёт обновление БД
+          return isInRange
+            ? { ...note, sorting: isIncreasing ? note.sorting - 1 : note.sorting + 1 }
+            : note;
+        });
+        setDatabaseNotes(sorted.concat(draggedNode));
+      } else {
+        draggedNode.parent_id = parentId;
+        draggedNode.sorting = index;
+        const sorted = filtered.map((note) => {
+          if (note.parent_id === oldParentId && note.sorting > oldSorting) {
+            return { ...note, sorting: note.sorting - 1 };
+          } else if (note.parent_id === newParentId && note.sorting >= newSorting) {
+            return { ...note, sorting: note.sorting + 1 };
+          }
+          return note;
+        });
+        setDatabaseNotes(sorted.concat(draggedNode));
+      }
     }
   };
 
