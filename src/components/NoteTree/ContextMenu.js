@@ -111,9 +111,9 @@ function ContextMenu({
       {visible && (
         <div
           style={{
-            ...style.contextMenuWrapperStyle,
-            top: style.contextMenuWrapperStyle.top || position.top + 'px',
-            left: style.contextMenuWrapperStyle.left || position.left + 'px',
+            ...style.contextMenuWrapper,
+            top: style.contextMenuWrapper.top || position.top + 'px',
+            left: style.contextMenuWrapper.left || position.left + 'px',
           }}
         >
           <div style={style.contextMenuContainer}>

@@ -144,7 +144,6 @@ function Component() {
               term={term}
               style={style}
               treeRef={treeRef}
-              // onClick={noteOnClick}
               onDoubleClick={noteOnClick}
               hoveredNodeId={hoveredNodeId}
               handleDragDrop={handleDragDrop}

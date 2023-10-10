@@ -17,6 +17,13 @@ function NoteTree({
   style,
   term,
   indent = 20,
+  fileIcon = '🗎 ',
+  openFolderIcon = '🗁 ',
+  closeFolderIcon = '🗀 ',
+  showDeleteButton = true,
+  showRenameButton = true,
+  removeButton = { content: '🗑️', title: 'Delete' },
+  renameButton = { content: '✏️', title: 'Rename...' },
 }) {
   return (
     <div
@@ -74,16 +81,16 @@ function NoteTree({
                 setHoveredNodeId(null);
               }}
             >
-              {!isFile
-                ? nodeProps.node.children.length > 0
-                  ? isFolderOpen
-                    ? '⏷ 🗁'
-                    : '⏵ 🗀'
-                  : isFolderOpen
-                  ? '🗁'
-                  : '🗀'
-                : '🗎'}
               <span className="node-text">
+                {!isFile
+                  ? nodeProps.node.children.length > 0
+                    ? isFolderOpen
+                      ? '⏷ ' + openFolderIcon
+                      : '⏵ ' + closeFolderIcon
+                    : isFolderOpen
+                    ? openFolderIcon
+                    : closeFolderIcon
+                  : fileIcon}
                 {nodeProps.node.isEditing ? (
                   <input
                     type="text"
@@ -103,24 +110,32 @@ function NoteTree({
                   <span>{nodeProps.node.data.name}</span>
                 )}
               </span>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  nodeProps.node.edit();
-                }}
-                title="Rename..."
-              >
-                ✏️
-              </button>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  nodeProps.tree.delete(nodeProps.node.id);
-                }}
-                title="Delete"
-              >
-                🗑️
-              </button>
+              <span>
+                {showRenameButton && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      nodeProps.node.edit();
+                    }}
+                    title={renameButton.title}
+                    style={style.renameButton}
+                  >
+                    {renameButton.content}
+                  </button>
+                )}
+                {showDeleteButton && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      nodeProps.tree.delete(nodeProps.node.id);
+                    }}
+                    title={removeButton.title}
+                    style={style.removeButton}
+                  >
+                    {removeButton.content}
+                  </button>
+                )}
+              </span>
             </div>
           );
         }}

@@ -17,7 +17,7 @@ export const initialData = [
     id: '3_n',
     title: 'note3',
     isFolder: false,
-    parent_id: '1_fol',
+    parent_id: null,
     sorting: 2,
   },
   {
@@ -56,6 +56,8 @@ export const style = {
     selectedColor: '#FFB703',
     hoveredColor: '#FFF5DD',
     backgroundColor: 'transparent',
+    display: 'flex',
+    justifyContent: 'space-between',
   },
   searchInput: {
     border: '0',
@@ -89,5 +91,7 @@ export const style = {
     hoveredColor: '#EDEDED',
     backgroundColor: 'transparent',
   },
-  contextMenuWrapperStyle: { position: 'fixed', zIndex: 50 },
+  contextMenuWrapper: { position: 'fixed', zIndex: 50 },
+  renameButton: { paddingLeft: '30px' },
+  removeButton: { paddingLeft: '5px' },
 };
