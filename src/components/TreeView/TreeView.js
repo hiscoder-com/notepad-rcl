@@ -1,5 +1,6 @@
 import React from 'react';
 import { Tree } from 'react-arborist';
+import PropTypes from 'prop-types';
 
 function TreeView({
   handleTreeEventDelete,
@@ -9,23 +10,23 @@ function TreeView({
   setSelectedNodeId,
   setHoveredNodeId,
   handleRenameNode,
+  showDeleteButton,
+  showRenameButton,
+  closeFolderIcon,
   handleDragDrop,
+  openFolderIcon,
   hoveredNodeId,
   onDoubleClick,
+  removeButton,
+  renameButton,
   treeHeight,
   treeWidth,
+  fileIcon,
   onClick,
   treeRef,
+  indent,
   style,
   term,
-  indent = 20,
-  fileIcon = '🗎 ',
-  openFolderIcon = '🗁 ',
-  closeFolderIcon = '🗀 ',
-  showDeleteButton = true,
-  showRenameButton = true,
-  removeButton = { content: '🗑️', title: 'Delete' },
-  renameButton = { content: '✏️', title: 'Rename...' },
 }) {
   return (
     <div
@@ -148,5 +149,92 @@ function TreeView({
     </div>
   );
 }
+
+TreeView.defaultProps = {
+  handleTreeEventDelete: () => {},
+  visualHierarchyData: [],
+  getCurrentNodeProps: () => {},
+  handleContextMenu: () => {},
+  setSelectedNodeId: () => {},
+  setHoveredNodeId: () => {},
+  handleRenameNode: () => {},
+  handleDragDrop: () => {},
+  hoveredNodeId: null,
+  onDoubleClick: null,
+  onClick: () => {},
+  treeRef: null,
+  style: {},
+  term: '',
+  indent: 20,
+  fileIcon: '🗎 ',
+  openFolderIcon: '🗁 ',
+  closeFolderIcon: '🗀 ',
+  showDeleteButton: true,
+  showRenameButton: true,
+  removeButton: { content: '🗑️', title: 'Delete' },
+  renameButton: { content: '✏️', title: 'Rename...' },
+};
+
+TreeView.propTypes = {
+  /** Tree element deletion event handler function */
+  handleTreeEventDelete: PropTypes.func,
+  /** Data for visual representation of hierarchy */
+  visualHierarchyData: PropTypes.array,
+  /** Function to get properties of the current node */
+  getCurrentNodeProps: PropTypes.func,
+  /** Context menu handler function */
+  handleContextMenu: PropTypes.func,
+  /** Function to set the selected node */
+  setSelectedNodeId: PropTypes.func,
+  /** Function to set hover node */
+  setHoveredNodeId: PropTypes.func,
+  /** Node rename handler function */
+  handleRenameNode: PropTypes.func,
+  /** Node drag handler function */
+  handleDragDrop: PropTypes.func,
+  /** Hover node ID */
+  hoveredNodeId: PropTypes.string,
+  /** Double click handler function */
+  onDoubleClick: PropTypes.func,
+  /** Tree height */
+  treeHeight: PropTypes.number,
+  /** Tree width */
+  treeWidth: PropTypes.number,
+  /** Click handler function */
+  onClick: PropTypes.func,
+  /** Tree component reference */
+  treeRef: PropTypes.object,
+  /** Component styles */
+  style: PropTypes.shape({
+    nodeStyle: PropTypes.object,
+    renameInput: PropTypes.object,
+    renameButton: PropTypes.object,
+    removeButton: PropTypes.object,
+  }),
+  /** Search query */
+  term: PropTypes.string,
+  /** Indentation between nesting levels */
+  indent: PropTypes.number,
+  /** File icon */
+  fileIcon: PropTypes.string,
+  /** Open folder icon */
+  openFolderIcon: PropTypes.string,
+  /** Closed folder icon */
+  closeFolderIcon: PropTypes.string,
+  /** Show delete button */
+  showDeleteButton: PropTypes.bool,
+  /** Show rename button */
+  showRenameButton: PropTypes.bool,
+  /** Delete button with content and title */
+  removeButton: PropTypes.shape({
+    content: PropTypes.string,
+    title: PropTypes.string,
+  }),
+  /** Rename button with content and title */
+  renameButton: PropTypes.shape({
+    content: PropTypes.string,
+    title: PropTypes.string,
+  }),
+};
 
 export default TreeView;
