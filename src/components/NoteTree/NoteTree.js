@@ -12,6 +12,8 @@ function NoteTree({
   handleDragDrop,
   hoveredNodeId,
   onDoubleClick,
+  treeHeight,
+  treeWidth,
   onClick,
   treeRef,
   style,
@@ -37,6 +39,8 @@ function NoteTree({
         onDelete={handleTreeEventDelete}
         data={visualHierarchyData}
         onMove={handleDragDrop}
+        height={treeHeight}
+        width={treeWidth}
         searchTerm={term}
         searchMatch={(node, term) =>
           node.data.name.toLowerCase().includes(term.toLowerCase())
@@ -105,6 +109,7 @@ function NoteTree({
                       }
                     }}
                     autoFocus
+                    style={style.renameInput}
                   />
                 ) : (
                   <span>{nodeProps.node.data.name}</span>

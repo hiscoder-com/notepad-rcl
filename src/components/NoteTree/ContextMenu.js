@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 function ContextMenu({
   setSelectedNodeId,
-  currentNodeProps,
   selectedNodeId,
-  onNewDocument,
-  onNewFolder,
+  menuItems,
   treeRef,
   style,
   data,
@@ -13,57 +11,6 @@ function ContextMenu({
   const [hoveredItemId, setHoveredItemId] = useState(null);
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: 0 });
-
-  const handleMouseEnter = (itemId) => {
-    setHoveredItemId(itemId);
-  };
-
-  const handleNewDocument = () => {
-    onNewDocument();
-    hideContextMenu();
-  };
-
-  const handleNewFolder = () => {
-    onNewFolder();
-    hideContextMenu();
-  };
-
-  const handleRename = () => {
-    currentNodeProps.node.edit();
-    hideContextMenu();
-  };
-
-  const handleDelete = () => {
-    currentNodeProps.tree.delete(currentNodeProps.node.id);
-    hideContextMenu();
-  };
-
-  const menuItems = [
-    { id: 'newDocument', label: '📄 New document', action: handleNewDocument },
-    { id: 'newFolder', label: '📁 New folder', action: handleNewFolder },
-    { id: 'rename', label: '✏️ Rename', action: handleRename },
-    { id: 'delete', label: '🗑️ Delete', action: handleDelete },
-  ];
-
-  function MenuItem({ onClick, itemId, children }) {
-    const isHovered = itemId === hoveredItemId;
-
-    return (
-      <div
-        style={{
-          ...style.contextMenuItem,
-          backgroundColor: isHovered
-            ? style.contextMenuItem.hoveredColor
-            : style.contextMenuItem.backgroundColor,
-        }}
-        onClick={onClick}
-        onMouseEnter={() => handleMouseEnter(itemId)}
-        onMouseLeave={() => handleMouseEnter(null)}
-      >
-        {children}
-      </div>
-    );
-  }
 
   useEffect(() => {
     if (visible) {
@@ -101,6 +48,30 @@ function ContextMenu({
       setVisible(false);
     }
   }, [data]);
+
+  const handleMouseEnter = (itemId) => {
+    setHoveredItemId(itemId);
+  };
+
+  function MenuItem({ onClick, itemId, children }) {
+    const isHovered = itemId === hoveredItemId;
+
+    return (
+      <div
+        style={{
+          ...style.contextMenuItem,
+          backgroundColor: isHovered
+            ? style.contextMenuItem.hoveredColor
+            : style.contextMenuItem.backgroundColor,
+        }}
+        onClick={onClick}
+        onMouseEnter={() => handleMouseEnter(itemId)}
+        onMouseLeave={() => handleMouseEnter(null)}
+      >
+        {children}
+      </div>
+    );
+  }
 
   const hideContextMenu = () => {
     setVisible(false);

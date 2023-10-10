@@ -47,7 +47,7 @@ export const style = {
   searchContainer: {
     position: 'relative',
     marginBottom: '10px',
-    maxWidth: '320px',
+    maxWidth: '300px',
   },
   nodeStyle: {
     cursor: 'pointer',
@@ -94,4 +94,5 @@ export const style = {
   contextMenuWrapper: { position: 'fixed', zIndex: 50 },
   renameButton: { paddingLeft: '30px' },
   removeButton: { paddingLeft: '5px' },
+  renameInput: { width: '120px' },
 };

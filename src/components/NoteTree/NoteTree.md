@@ -50,10 +50,6 @@ function Component() {
     }
   };
 
-  const handleNewDocument = () => {};
-
-  const handleNewFolder = () => {};
-
   const handleDragDrop = ({ dragIds, parentId, index }) => {
     moveNode({ dragIds, parentId, index });
   };
@@ -120,6 +116,19 @@ function Component() {
     setActiveNote(true);
   };
 
+  const handleRename = () => {
+    currentNodeProps.node.edit();
+  };
+
+  const handleDelete = () => {
+    currentNodeProps.tree.delete(currentNodeProps.node.id);
+  };
+
+  const menuItems = [
+    { id: 'rename', label: '✏️ Rename', action: handleRename },
+    { id: 'delete', label: '🗑️ Delete', action: handleDelete },
+  ];
+
   return (
     <div>
       <div>
@@ -143,6 +152,7 @@ function Component() {
             <NoteTree
               term={term}
               style={style}
+              treeHeight={170}
               treeRef={treeRef}
               onDoubleClick={noteOnClick}
               hoveredNodeId={hoveredNodeId}
@@ -157,11 +167,9 @@ function Component() {
             />
             <ContextMenu
               setSelectedNodeId={setSelectedNodeId}
-              currentNodeProps={currentNodeProps}
-              onNewDocument={handleNewDocument}
               selectedNodeId={selectedNodeId}
-              onNewFolder={handleNewFolder}
               data={contextMenuEvent}
+              menuItems={menuItems}
               treeRef={treeRef}
               style={style}
             />
