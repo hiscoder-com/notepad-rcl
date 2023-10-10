@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tree } from 'react-arborist';
 
-function NoteTree({
+function TreeView({
   handleTreeEventDelete,
   visualHierarchyData,
   getCurrentNodeProps,
@@ -149,4 +149,4 @@ function NoteTree({
   );
 }
 
-export default NoteTree;
+export default TreeView;

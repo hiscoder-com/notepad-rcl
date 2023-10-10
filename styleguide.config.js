@@ -23,7 +23,7 @@ let sections = [
     name: 'Getting a list of notes Block',
     components: [
       'src/components/ListOfNotes/ListOfNotes.js',
-      'src/components/NoteTree/NoteTree.js',
+      'src/components/TreeView/TreeView.js',
     ],
   },
 ];

@@ -2,7 +2,7 @@
 
 ```jsx
 import React, { useState, useEffect, useRef } from 'react';
-import { NoteTree, ContextMenu } from '@texttree/notepad-rcl';
+import { TreeView, ContextMenu } from '@texttree/notepad-rcl';
 import { initialData, style } from './data';
 
 function Component() {
@@ -149,7 +149,7 @@ function Component() {
               </label>
             </div>
 
-            <NoteTree
+            <TreeView
               term={term}
               style={style}
               treeHeight={170}
