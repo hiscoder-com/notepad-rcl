@@ -11,6 +11,7 @@ function NoteTree({
   handleRenameNode,
   handleDragDrop,
   hoveredNodeId,
+  onDoubleClick,
   onClick,
   treeRef,
   style,
@@ -44,7 +45,7 @@ function NoteTree({
               style={{
                 ...style.nodeStyle,
                 paddingLeft: `${nodeProps.node.level * indent}px`,
-                backgroundColor: nodeProps.node.state.isSelected // isSelected Returns true if node is selected
+                backgroundColor: nodeProps.node.state.isSelected
                   ? style.nodeStyle.selectedColor
                   : nodeProps.node.id === hoveredNodeId
                   ? style.nodeStyle.hoveredColor
@@ -53,11 +54,13 @@ function NoteTree({
               onClick={() => {
                 setSelectedNodeId(nodeProps.node.id);
                 // isInternal Returns true if the children property is an array
-                if (!nodeProps.node.isInternal) {
-                  // onClick();
-                }
+                !nodeProps.node.isInternal && onClick && onClick();
               }}
-              onDoubleClick={() => nodeProps.node.isInternal && nodeProps.node.toggle()}
+              onDoubleClick={() =>
+                nodeProps.node.isInternal
+                  ? nodeProps.node.toggle()
+                  : onDoubleClick && onDoubleClick()
+              }
               onContextMenu={(event) => {
                 event.preventDefault();
                 nodeProps.node.select();

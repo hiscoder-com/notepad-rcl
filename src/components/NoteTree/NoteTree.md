@@ -3,7 +3,7 @@
 ```jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { NoteTree, ContextMenu } from '@texttree/notepad-rcl';
-import { initialData, style, initialData_2 } from './data';
+import { initialData, style } from './data';
 
 function Component() {
   const treeRef = useRef(null);
@@ -58,55 +58,56 @@ function Component() {
     moveNode({ dragIds, parentId, index });
   };
 
-  useEffect(() => {
-    console.log(databaseNotes);
-  }, [databaseNotes]);
-
   const moveNode = ({ dragIds, parentId, index }) => {
     const draggedNode = databaseNotes.find((node) => node.id === dragIds[0]);
 
-    if (index < 0) {
+    if (!draggedNode || index < 0) {
       return;
     }
-    if (draggedNode) {
-      const newSorting = index;
-      const oldSorting = draggedNode.sorting;
-      const newParentId = parentId;
-      const oldParentId = draggedNode.parent_id;
-      const filtered = databaseNotes.filter((note) => note.id !== dragIds[0]);
-      if (parentId === draggedNode.parent_id) {
-        if (newSorting === oldSorting || index < 0) {
-          return;
-        }
-        const sorted = filtered.map((note) => {
-          const isIncreasing = newSorting > oldSorting;
-          const isInRange = isIncreasing
-            ? note.sorting < newSorting &&
-              note.sorting > oldSorting &&
-              note.parent_id === parentId
-            : note.sorting >= newSorting &&
-              note.sorting < oldSorting &&
-              note.parent_id === parentId;
-          draggedNode.sorting = isIncreasing ? index - 1 : index;
 
-          return isInRange
-            ? { ...note, sorting: isIncreasing ? note.sorting - 1 : note.sorting + 1 }
-            : note;
-        });
-        setDatabaseNotes(sorted.concat(draggedNode));
-      } else {
-        draggedNode.parent_id = parentId;
-        draggedNode.sorting = index;
-        const sorted = filtered.map((note) => {
-          if (note.parent_id === oldParentId && note.sorting > oldSorting) {
-            return { ...note, sorting: note.sorting - 1 };
-          } else if (note.parent_id === newParentId && note.sorting >= newSorting) {
-            return { ...note, sorting: note.sorting + 1 };
-          }
-          return note;
-        });
-        setDatabaseNotes(sorted.concat(draggedNode));
+    const newSorting = index;
+    const oldSorting = draggedNode.sorting;
+    const newParentId = parentId;
+    const oldParentId = draggedNode.parent_id;
+    const filtered = databaseNotes.filter((note) => note.id !== dragIds[0]);
+
+    if (parentId === oldParentId) {
+      if (newSorting === oldSorting || index < 0) {
+        return;
       }
+
+      const sorted = filtered.map((note) => {
+        const isIncreasing = newSorting > oldSorting;
+        const isInRange = isIncreasing
+          ? note.sorting < newSorting &&
+            note.sorting > oldSorting &&
+            note.parent_id === parentId
+          : note.sorting >= newSorting &&
+            note.sorting < oldSorting &&
+            note.parent_id === parentId;
+
+        draggedNode.sorting = isIncreasing ? index - 1 : index;
+
+        return isInRange
+          ? { ...note, sorting: isIncreasing ? note.sorting - 1 : note.sorting + 1 }
+          : note;
+      });
+
+      setDatabaseNotes(sorted.concat(draggedNode));
+    } else {
+      draggedNode.parent_id = parentId;
+      draggedNode.sorting = index;
+
+      const sorted = filtered.map((note) => {
+        if (note.parent_id === oldParentId && note.sorting > oldSorting) {
+          return { ...note, sorting: note.sorting - 1 };
+        } else if (note.parent_id === newParentId && note.sorting >= newSorting) {
+          return { ...note, sorting: note.sorting + 1 };
+        }
+        return note;
+      });
+
+      setDatabaseNotes(sorted.concat(draggedNode));
     }
   };
 
@@ -143,7 +144,8 @@ function Component() {
               term={term}
               style={style}
               treeRef={treeRef}
-              onClick={noteOnClick}
+              // onClick={noteOnClick}
+              onDoubleClick={noteOnClick}
               hoveredNodeId={hoveredNodeId}
               handleDragDrop={handleDragDrop}
               handleRenameNode={handleRenameNode}
