@@ -24,6 +24,7 @@ let sections = [
     components: [
       'src/components/ListOfNotes/ListOfNotes.js',
       'src/components/TreeView/TreeView.js',
+      'src/components/TreeView/ContextMenu.js',
     ],
   },
 ];

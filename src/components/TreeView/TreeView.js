@@ -8,6 +8,7 @@ function TreeView({
   getCurrentNodeProps,
   handleContextMenu,
   setSelectedNodeId,
+  customContextMenu,
   setHoveredNodeId,
   handleRenameNode,
   showDeleteButton,
@@ -48,8 +49,8 @@ function TreeView({
         }
       >
         {(nodeProps) => {
-          const isFile = nodeProps.node.isLeaf; // Returns true if the children property is not an array
-          const isFolderOpen = nodeProps.node.isOpen; // Returns true if node is internal and in an open state
+          const isFile = nodeProps.node.isLeaf;
+          const isFolderOpen = nodeProps.node.isOpen;
 
           return (
             <div
@@ -65,7 +66,6 @@ function TreeView({
               }}
               onClick={() => {
                 setSelectedNodeId(nodeProps.node.id);
-                // isInternal Returns true if the children property is an array
                 !nodeProps.node.isInternal && onClick && onClick();
               }}
               onDoubleClick={() =>
@@ -74,7 +74,7 @@ function TreeView({
                   : onDoubleClick && onDoubleClick()
               }
               onContextMenu={(event) => {
-                event.preventDefault();
+                customContextMenu && event.preventDefault();
                 nodeProps.node.select();
                 nodeProps.node.tree.props.onContextMenu(event);
                 getCurrentNodeProps(nodeProps);
@@ -151,6 +151,7 @@ function TreeView({
 }
 
 TreeView.defaultProps = {
+  customContextMenu: false,
   handleTreeEventDelete: () => {},
   visualHierarchyData: [],
   getCurrentNodeProps: () => {},
@@ -160,7 +161,7 @@ TreeView.defaultProps = {
   handleRenameNode: () => {},
   handleDragDrop: () => {},
   hoveredNodeId: null,
-  onDoubleClick: null,
+  onDoubleClick: () => {},
   onClick: () => {},
   treeRef: null,
   style: {},
@@ -178,6 +179,8 @@ TreeView.defaultProps = {
 TreeView.propTypes = {
   /** Tree element deletion event handler function */
   handleTreeEventDelete: PropTypes.func,
+  /** responsible for disabling the standard context menu */
+  customContextMenu: PropTypes.bool,
   /** Data for visual representation of hierarchy */
   visualHierarchyData: PropTypes.array,
   /** Function to get properties of the current node */

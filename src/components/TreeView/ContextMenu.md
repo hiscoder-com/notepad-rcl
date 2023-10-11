@@ -1,14 +1,13 @@
-### **Save in Database**
+### **Using a custom context menu**
 
 ```jsx
 import React, { useState, useEffect, useRef } from 'react';
-import { TreeView } from '@texttree/notepad-rcl';
+import { TreeView, ContextMenu } from '@texttree/notepad-rcl';
 import { initialData, style } from './data';
 
 function Component() {
   const treeRef = useRef(null);
-  const [term, setTerm] = useState('');
-  const [activeNote, setActiveNote] = useState(false);
+  const [activeNote, setActiveNote] = useState(null);
   const [hoveredNodeId, setHoveredNodeId] = useState(null);
   const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [contextMenuEvent, setContextMenuEvent] = useState(null);
@@ -38,7 +37,7 @@ function Component() {
   const handleTreeEventDelete = ({ ids }) => {
     const updatedNote = databaseNotes.filter((el) => el.id !== ids[0]);
 
-    setDatabaseNotes(updatedNote);
+    setDatabaseNotes(updatedNote); // идёт обновление БД
   };
 
   const handleRenameNode = (newName, nodeId) => {
@@ -46,7 +45,7 @@ function Component() {
       const updatedNote = databaseNotes.map((node) =>
         node.id === nodeId ? { ...node, title: newName } : node
       );
-      setDatabaseNotes(updatedNote);
+      setDatabaseNotes(updatedNote); // идёт обновление БД
     }
   };
 
@@ -134,26 +133,11 @@ function Component() {
       <div>
         {!activeNote ? (
           <>
-            <div style={style.searchContainer}>
-              <input
-                type="text"
-                value={term}
-                onChange={(event) => setTerm(event.target.value)}
-                style={style.searchInput}
-                onClick={() => {
-                  currentNodeProps && currentNodeProps.tree.deselect(selectedNodeId);
-                }}
-              />
-              <label htmlFor="search" style={style.searchLabel}>
-                Search
-              </label>
-            </div>
-
             <TreeView
-              term={term}
               style={style}
               treeHeight={170}
               treeRef={treeRef}
+              customContextMenu={true}
               onDoubleClick={noteOnClick}
               hoveredNodeId={hoveredNodeId}
               handleDragDrop={handleDragDrop}
@@ -164,6 +148,14 @@ function Component() {
               visualHierarchyData={visualHierarchyData}
               getCurrentNodeProps={setCurrentNodeProps}
               handleTreeEventDelete={handleTreeEventDelete}
+            />
+            <ContextMenu
+              setSelectedNodeId={setSelectedNodeId}
+              selectedNodeId={selectedNodeId}
+              data={contextMenuEvent}
+              menuItems={menuItems}
+              treeRef={treeRef}
+              style={style}
             />
           </>
         ) : (

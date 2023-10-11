@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 function ContextMenu({
   setSelectedNodeId,
@@ -79,7 +80,7 @@ function ContextMenu({
 
   return (
     <>
-      {visible && (
+      {visible && treeRef && style && (
         <div
           style={{
             ...style.contextMenuWrapper,
@@ -88,16 +89,44 @@ function ContextMenu({
           }}
         >
           <div style={style.contextMenuContainer}>
-            {menuItems.map((item) => (
-              <MenuItem key={item.id} itemId={item.id} onClick={item.action}>
-                <span>{item.label}</span>
-              </MenuItem>
-            ))}
+            {menuItems.length > 0 ? (
+              menuItems.map((item) => (
+                <MenuItem key={item.id} itemId={item.id} onClick={item.action}>
+                  <span>{item.label}</span>
+                </MenuItem>
+              ))
+            ) : (
+              <div style={style.emptyMenu}>No menu items provided.</div>
+            )}
           </div>
         </div>
       )}
     </>
   );
 }
+
+ContextMenu.defaultProps = {
+  selectedNodeId: null,
+  setSelectedNodeId: () => {},
+  menuItems: [],
+  treeRef: null,
+  style: null,
+  data: null,
+};
+
+ContextMenu.propTypes = {
+  /** ID of the selected node in the tree structure */
+  selectedNodeId: PropTypes.string,
+  /** Function to set the selected node */
+  setSelectedNodeId: PropTypes.func,
+  /** Array of context menu items */
+  menuItems: PropTypes.array,
+  /** Tree component reference */
+  treeRef: PropTypes.object,
+  /** Component styles */
+  style: PropTypes.object,
+  /** An object that contains information about the event that triggers the context menu */
+  data: PropTypes.object,
+};
 
 export default ContextMenu;

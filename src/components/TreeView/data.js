@@ -91,6 +91,7 @@ export const style = {
     hoveredColor: '#EDEDED',
     backgroundColor: 'transparent',
   },
+  emptyMenu: { padding: '10px', cursor: 'pointer', color: '#B5B8B1' },
   contextMenuWrapper: { position: 'fixed', zIndex: 50 },
   renameButton: { paddingLeft: '30px' },
   removeButton: { paddingLeft: '5px' },
