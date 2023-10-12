@@ -59,6 +59,7 @@ function ContextMenu({
 
     return (
       <div
+        onContextMenu={(e) => e.preventDefault()}
         style={{
           ...style.contextMenuItem,
           backgroundColor: isHovered

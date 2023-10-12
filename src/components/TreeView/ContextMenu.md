@@ -37,7 +37,7 @@ function Component() {
   const handleTreeEventDelete = ({ ids }) => {
     const updatedNote = databaseNotes.filter((el) => el.id !== ids[0]);
 
-    setDatabaseNotes(updatedNote); // идёт обновление БД
+    setDatabaseNotes(updatedNote);
   };
 
   const handleRenameNode = (newName, nodeId) => {
@@ -45,7 +45,7 @@ function Component() {
       const updatedNote = databaseNotes.map((node) =>
         node.id === nodeId ? { ...node, title: newName } : node
       );
-      setDatabaseNotes(updatedNote); // идёт обновление БД
+      setDatabaseNotes(updatedNote);
     }
   };
 
@@ -107,7 +107,7 @@ function Component() {
   };
 
   const handleContextMenu = (event) => {
-    setSelectedNodeId(hoveredNodeId);
+    setSelectedNodeId((prevSelectedNodeId) => hoveredNodeId);
     setContextMenuEvent({ event });
   };
 

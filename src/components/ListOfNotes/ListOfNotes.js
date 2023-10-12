@@ -54,8 +54,8 @@ function ListOfNotes({
 }
 
 ListOfNotes.defaultProps = {
-  notes: [],
-  classes: {},
+  notes: null,
+  classes: null,
   dateOptions: {},
   isShowDate: false,
   isShowText: false,
@@ -91,10 +91,10 @@ ListOfNotes.propTypes = {
   /** an array of existing notes. Required to display a list of notes */
   notes: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number,
+      id: PropTypes.string,
       title: PropTypes.string,
       data: PropTypes.object,
-      created_at: PropTypes.string,
+      created_at: PropTypes.instanceOf(Date),
     })
   ),
   /** function to remove a note */
