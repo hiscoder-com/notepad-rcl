@@ -11,10 +11,8 @@ function Component() {
   const [activeNote, setActiveNote] = useState(false);
   const [hoveredNodeId, setHoveredNodeId] = useState(null);
   const [selectedNodeId, setSelectedNodeId] = useState(null);
-  const [contextMenuEvent, setContextMenuEvent] = useState(null);
-  const [currentNodeProps, setCurrentNodeProps] = useState(null);
   const [databaseNotes, setDatabaseNotes] = useState(initialData);
-  const [visualHierarchyData, setVisualHierarchyData] = useState(
+  const [dataForTreeView, setDataForTreeView] = useState(
     convertNotesToTree(databaseNotes)
   );
 
@@ -32,7 +30,7 @@ function Component() {
   }
 
   useEffect(() => {
-    setVisualHierarchyData(convertNotesToTree(databaseNotes));
+    setDataForTreeView(convertNotesToTree(databaseNotes));
   }, [databaseNotes]);
 
   const handleTreeEventDelete = ({ ids }) => {
@@ -107,27 +105,9 @@ function Component() {
     }
   };
 
-  const handleContextMenu = (event) => {
-    setSelectedNodeId(hoveredNodeId);
-    setContextMenuEvent({ event });
-  };
-
-  const noteOnClick = () => {
+  const nodeOnDoubleClick = () => {
     setActiveNote(true);
   };
-
-  const handleRename = () => {
-    currentNodeProps.node.edit();
-  };
-
-  const handleDelete = () => {
-    currentNodeProps.tree.delete(currentNodeProps.node.id);
-  };
-
-  const menuItems = [
-    { id: 'rename', label: '✏️ Rename', action: handleRename },
-    { id: 'delete', label: '🗑️ Delete', action: handleDelete },
-  ];
 
   return (
     <div>
@@ -141,7 +121,7 @@ function Component() {
                 onChange={(event) => setTerm(event.target.value)}
                 style={style.searchInput}
                 onClick={() => {
-                  currentNodeProps && currentNodeProps.tree.deselect(selectedNodeId);
+                  setSelectedNodeId(null);
                 }}
               />
               <label htmlFor="search" style={style.searchLabel}>
@@ -154,15 +134,14 @@ function Component() {
               style={style}
               treeHeight={170}
               treeRef={treeRef}
-              onDoubleClick={noteOnClick}
+              data={dataForTreeView}
               hoveredNodeId={hoveredNodeId}
+              selectedNodeId={selectedNodeId}
               handleDragDrop={handleDragDrop}
+              onDoubleClick={nodeOnDoubleClick}
               handleRenameNode={handleRenameNode}
               setHoveredNodeId={setHoveredNodeId}
               setSelectedNodeId={setSelectedNodeId}
-              handleContextMenu={handleContextMenu}
-              visualHierarchyData={visualHierarchyData}
-              getCurrentNodeProps={setCurrentNodeProps}
               handleTreeEventDelete={handleTreeEventDelete}
             />
           </>

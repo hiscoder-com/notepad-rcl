@@ -13,7 +13,7 @@ function Component() {
   const [contextMenuEvent, setContextMenuEvent] = useState(null);
   const [currentNodeProps, setCurrentNodeProps] = useState(null);
   const [databaseNotes, setDatabaseNotes] = useState(initialData);
-  const [visualHierarchyData, setVisualHierarchyData] = useState(
+  const [dataForTreeView, setDataForTreeView] = useState(
     convertNotesToTree(databaseNotes)
   );
 
@@ -31,7 +31,7 @@ function Component() {
   }
 
   useEffect(() => {
-    setVisualHierarchyData(convertNotesToTree(databaseNotes));
+    setDataForTreeView(convertNotesToTree(databaseNotes));
   }, [databaseNotes]);
 
   const handleTreeEventDelete = ({ ids }) => {
@@ -137,15 +137,16 @@ function Component() {
               style={style}
               treeHeight={170}
               treeRef={treeRef}
+              data={dataForTreeView}
               customContextMenu={true}
               onDoubleClick={noteOnClick}
               hoveredNodeId={hoveredNodeId}
+              selectedNodeId={selectedNodeId}
               handleDragDrop={handleDragDrop}
               handleRenameNode={handleRenameNode}
               setHoveredNodeId={setHoveredNodeId}
               setSelectedNodeId={setSelectedNodeId}
               handleContextMenu={handleContextMenu}
-              visualHierarchyData={visualHierarchyData}
               getCurrentNodeProps={setCurrentNodeProps}
               handleTreeEventDelete={handleTreeEventDelete}
             />

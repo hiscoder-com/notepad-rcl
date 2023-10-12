@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 function TreeView({
   handleTreeEventDelete,
-  visualHierarchyData,
   getCurrentNodeProps,
   handleContextMenu,
   setSelectedNodeId,
@@ -14,6 +13,7 @@ function TreeView({
   showDeleteButton,
   showRenameButton,
   closeFolderIcon,
+  selectedNodeId,
   handleDragDrop,
   openFolderIcon,
   hoveredNodeId,
@@ -27,6 +27,7 @@ function TreeView({
   treeRef,
   indent,
   style,
+  data,
   term,
 }) {
   return (
@@ -37,13 +38,13 @@ function TreeView({
       }}
     >
       <Tree
+        data={data}
+        searchTerm={term}
+        width={treeWidth}
+        height={treeHeight}
+        onMove={handleDragDrop}
         onContextMenu={handleContextMenu}
         onDelete={handleTreeEventDelete}
-        data={visualHierarchyData}
-        onMove={handleDragDrop}
-        height={treeHeight}
-        width={treeWidth}
-        searchTerm={term}
         searchMatch={(node, term) =>
           node.data.name.toLowerCase().includes(term.toLowerCase())
         }
@@ -58,11 +59,13 @@ function TreeView({
               style={{
                 ...style.nodeStyle,
                 paddingLeft: `${nodeProps.node.level * indent}px`,
-                backgroundColor: nodeProps.node.state.isSelected
-                  ? style.nodeStyle.selectedColor
-                  : nodeProps.node.id === hoveredNodeId
-                  ? style.nodeStyle.hoveredColor
-                  : style.nodeStyle.backgroundColor,
+                backgroundColor: style?.nodeStyle
+                  ? nodeProps.node.id === selectedNodeId
+                    ? style.nodeStyle.selectedColor
+                    : nodeProps.node.id === hoveredNodeId
+                    ? style.nodeStyle.hoveredColor
+                    : style.nodeStyle.backgroundColor
+                  : null,
               }}
               onClick={() => {
                 setSelectedNodeId(nodeProps.node.id);
@@ -153,7 +156,6 @@ function TreeView({
 TreeView.defaultProps = {
   customContextMenu: false,
   handleTreeEventDelete: () => {},
-  visualHierarchyData: [],
   getCurrentNodeProps: () => {},
   handleContextMenu: () => {},
   setSelectedNodeId: () => {},
@@ -165,6 +167,7 @@ TreeView.defaultProps = {
   onClick: () => {},
   treeRef: null,
   style: {},
+  data: [],
   term: '',
   indent: 20,
   fileIcon: '🗎 ',
@@ -182,7 +185,7 @@ TreeView.propTypes = {
   /** responsible for disabling the standard context menu */
   customContextMenu: PropTypes.bool,
   /** Data for visual representation of hierarchy */
-  visualHierarchyData: PropTypes.array,
+  data: PropTypes.array,
   /** Function to get properties of the current node */
   getCurrentNodeProps: PropTypes.func,
   /** Context menu handler function */
