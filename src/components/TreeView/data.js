@@ -49,7 +49,7 @@ export const style = {
     marginBottom: '10px',
     maxWidth: '300px',
   },
-  nodeStyle: {
+  nodeWrapper: {
     cursor: 'pointer',
     borderRadius: '5px',
     userSelect: 'none',
@@ -76,7 +76,7 @@ export const style = {
     color: '#555',
     transition: 'all 0.5s ease-in-out',
   },
-  contextMenuContainer: {
+  menuContainer: {
     position: 'absolute',
     backgroundColor: 'white',
     border: '1px solid #ccc',
@@ -85,14 +85,14 @@ export const style = {
     zIndex: '100',
     whiteSpace: 'nowrap',
   },
-  contextMenuItem: {
+  menuItem: {
     padding: '4px 30px 4px 10px',
     cursor: 'pointer',
     hoveredColor: '#EDEDED',
     backgroundColor: 'transparent',
   },
   emptyMenu: { padding: '10px', cursor: 'pointer', color: '#B5B8B1' },
-  contextMenuWrapper: { position: 'fixed', zIndex: 50 },
+  menuWrapper: { position: 'fixed', zIndex: 50 },
   renameButton: { paddingLeft: '30px' },
   removeButton: { paddingLeft: '5px' },
   renameInput: { width: '120px' },

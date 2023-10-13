@@ -23,6 +23,7 @@ function TreeView({
   treeHeight,
   treeWidth,
   fileIcon,
+  classes,
   onClick,
   treeRef,
   indent,
@@ -36,6 +37,8 @@ function TreeView({
       onClick={(e) => {
         e.stopPropagation();
       }}
+      className={classes?.treeContainer}
+      style={style?.treeContainer}
     >
       <Tree
         data={data}
@@ -56,15 +59,16 @@ function TreeView({
           return (
             <div
               ref={nodeProps.dragHandle}
+              className={classes?.nodeWrapper}
               style={{
-                ...style.nodeStyle,
+                ...style?.nodeWrapper,
                 paddingLeft: `${nodeProps.node.level * indent}px`,
-                backgroundColor: style?.nodeStyle
+                backgroundColor: style?.nodeWrapper
                   ? nodeProps.node.id === selectedNodeId
-                    ? style.nodeStyle.selectedColor
+                    ? style?.nodeWrapper.selectedColor
                     : nodeProps.node.id === hoveredNodeId
-                    ? style.nodeStyle.hoveredColor
-                    : style.nodeStyle.backgroundColor
+                    ? style?.nodeWrapper.hoveredColor
+                    : style?.nodeWrapper.backgroundColor
                   : null,
               }}
               onClick={() => {
@@ -89,7 +93,7 @@ function TreeView({
                 setHoveredNodeId(null);
               }}
             >
-              <span className="node-text">
+              <span className={classes?.nodeTextBlock} style={style?.nodeTextBlock}>
                 {!isFile
                   ? nodeProps.node.children.length > 0
                     ? isFolderOpen
@@ -113,13 +117,16 @@ function TreeView({
                       }
                     }}
                     autoFocus
-                    style={style.renameInput}
+                    style={style?.renameInput}
+                    className={classes?.renameInput}
                   />
                 ) : (
-                  <span>{nodeProps.node.data.name}</span>
+                  <span className={classes?.nodeText} style={style?.nodeText}>
+                    {nodeProps.node.data.name}
+                  </span>
                 )}
               </span>
-              <span>
+              <span className={classes?.nodeButtonBlock} style={style?.nodeButtonBlock}>
                 {showRenameButton && (
                   <button
                     onClick={(e) => {
@@ -127,7 +134,8 @@ function TreeView({
                       nodeProps.node.edit();
                     }}
                     title={renameButton.title}
-                    style={style.renameButton}
+                    style={style?.renameButton}
+                    className={classes?.renameButton}
                   >
                     {renameButton.content}
                   </button>
@@ -139,7 +147,8 @@ function TreeView({
                       nodeProps.tree.delete(nodeProps.node.id);
                     }}
                     title={removeButton.title}
-                    style={style.removeButton}
+                    style={style?.removeButton}
+                    className={classes?.removeButton}
                   >
                     {removeButton.content}
                   </button>
@@ -166,8 +175,9 @@ TreeView.defaultProps = {
   onDoubleClick: () => {},
   onClick: () => {},
   treeRef: null,
-  style: {},
-  data: [],
+  classes: null,
+  style: null,
+  data: null,
   term: '',
   indent: 20,
   fileIcon: '🗎 ',
@@ -210,11 +220,42 @@ TreeView.propTypes = {
   onClick: PropTypes.func,
   /** Tree component reference */
   treeRef: PropTypes.object,
+  /** Class names for various elements */
+  classes: PropTypes.shape({
+    /** Class for the container of the tree */
+    treeContainer: PropTypes.string,
+    /** Class for a node in a tree */
+    nodeWrapper: PropTypes.string,
+    /** Class for the text block of a node */
+    nodeTextBlock: PropTypes.string,
+    /** Class for the input field when renaming */
+    renameInput: PropTypes.string,
+    /** Class for the text of a node */
+    nodeText: PropTypes.string,
+    /** Class for the button block of a node */
+    nodeButtonBlock: PropTypes.string,
+    /** Class for the rename button */
+    renameButton: PropTypes.string,
+    /** Class for the remove button */
+    removeButton: PropTypes.string,
+  }),
   /** Component styles */
   style: PropTypes.shape({
-    nodeStyle: PropTypes.object,
+    /** Styles for the container of the tree */
+    treeContainer: PropTypes.object,
+    /** Style for a single node item with background colors for normal (backgroundColor), hover (hoveredColor), and selected (selectedColor) states. */
+    nodeWrapper: PropTypes.object,
+    /** Styles for the text block of a node */
+    nodeTextBlock: PropTypes.object,
+    /** Style for the input field when renaming */
     renameInput: PropTypes.object,
+    /** Styles for the text of a node */
+    nodeText: PropTypes.object,
+    /** Styles for the button block of a node */
+    nodeButtonBlock: PropTypes.object,
+    /** Style for the rename button */
     renameButton: PropTypes.object,
+    /** Style for the delete button */
     removeButton: PropTypes.object,
   }),
   /** Search query */

@@ -6,6 +6,7 @@ function ContextMenu({
   selectedNodeId,
   menuItems,
   treeRef,
+  classes,
   style,
   data,
 }) {
@@ -60,11 +61,12 @@ function ContextMenu({
     return (
       <div
         onContextMenu={(e) => e.preventDefault()}
+        className={classes?.menuItem}
         style={{
-          ...style.contextMenuItem,
+          ...style.menuItem,
           backgroundColor: isHovered
-            ? style.contextMenuItem.hoveredColor
-            : style.contextMenuItem.backgroundColor,
+            ? style.menuItem.hoveredColor
+            : style.menuItem.backgroundColor,
         }}
         onClick={onClick}
         onMouseEnter={() => handleMouseEnter(itemId)}
@@ -83,13 +85,14 @@ function ContextMenu({
     <>
       {visible && treeRef && style && (
         <div
+          className={classes?.menuWrapper}
           style={{
-            ...style.contextMenuWrapper,
-            top: style.contextMenuWrapper.top || position.top + 'px',
-            left: style.contextMenuWrapper.left || position.left + 'px',
+            ...style.menuWrapper,
+            top: style.menuWrapper.top || position.top + 'px',
+            left: style.menuWrapper.left || position.left + 'px',
           }}
         >
-          <div style={style.contextMenuContainer}>
+          <div className={classes?.menuContainer} style={style.menuContainer}>
             {menuItems.length > 0 ? (
               menuItems.map((item) => (
                 <MenuItem key={item.id} itemId={item.id} onClick={item.action}>
@@ -97,7 +100,9 @@ function ContextMenu({
                 </MenuItem>
               ))
             ) : (
-              <div style={style.emptyMenu}>No menu items provided.</div>
+              <div className={classes?.emptyMenu} style={style.emptyMenu}>
+                No menu items provided.
+              </div>
             )}
           </div>
         </div>
@@ -111,6 +116,7 @@ ContextMenu.defaultProps = {
   setSelectedNodeId: () => {},
   menuItems: [],
   treeRef: null,
+  classes: null,
   style: null,
   data: null,
 };
@@ -124,8 +130,30 @@ ContextMenu.propTypes = {
   menuItems: PropTypes.array,
   /** Tree component reference */
   treeRef: PropTypes.object,
+  /** Class names for various elements */
+  classes: PropTypes.shape({
+    /** Class for a single menu item */
+    menuItem: PropTypes.string,
+    /** Class to wrap the entire context menu */
+    menuWrapper: PropTypes.string,
+    /** Class for the menu item container */
+    menuContainer: PropTypes.string,
+    /** Class for the message "No menu items" */
+    emptyMenu: PropTypes.string,
+  }),
+
   /** Component styles */
-  style: PropTypes.object,
+  style: PropTypes.shape({
+    /** Style for a single menu item with background colors for normal (backgroundColor) and hover states (hoveredColor). */
+    menuItem: PropTypes.object,
+    /** Style to wrap the entire context menu */
+    menuWrapper: PropTypes.object,
+    /** Style for the menu item container */
+    menuContainer: PropTypes.object,
+    /** Style for the message "No menu items" */
+    emptyMenu: PropTypes.object,
+  }),
+
   /** An object that contains information about the event that triggers the context menu */
   data: PropTypes.object,
 };

@@ -23,19 +23,19 @@ function ListOfNotes({
   };
 
   return (
-    <div className={classes.wrapper}>
+    <div className={classes?.wrapper}>
       {notes.map((el) => (
-        <div key={el.id} className={classes.item} onClick={() => handleClick(el.id)}>
-          <div className={classes.title}>{el.title}</div>
+        <div key={el.id} className={classes?.item} onClick={() => handleClick(el.id)}>
+          <div className={classes?.title}>{el.title}</div>
           {isShowText && (
-            <div className={classes.text}>
+            <div className={classes?.text}>
               <Blocks data={el.data} />
             </div>
           )}
 
           {isShowDelBtn && (
             <button
-              className={classes.delBtn}
+              className={classes?.delBtn}
               onClick={(e) => handleRemoveNote(e, el.id)}
             >
               {delBtnChildren}
@@ -43,7 +43,7 @@ function ListOfNotes({
           )}
 
           {isShowDate && el.created_at && (
-            <div className={classes.date}>
+            <div className={classes?.date}>
               {new Date(el.created_at).toLocaleString('ru', dateOptions)}
             </div>
           )}
