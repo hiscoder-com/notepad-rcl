@@ -21,25 +21,25 @@ export const initialData = [
     sorting: 2,
   },
   {
+    id: '1_fol',
+    title: 'folder1',
+    isFolder: true,
+    parent_id: null,
+    sorting: 3,
+  },
+  {
     id: '4_n',
     title: 'note4',
     isFolder: false,
-    parent_id: null,
-    sorting: 3,
+    parent_id: '1_fol',
+    sorting: 0,
   },
   {
     id: '5_n',
     title: 'note5',
     isFolder: false,
-    parent_id: null,
-    sorting: 4,
-  },
-  {
-    id: '1_fol',
-    title: 'folder1',
-    isFolder: true,
-    parent_id: null,
-    sorting: 5,
+    parent_id: '1_fol',
+    sorting: 1,
   },
 ];
 
@@ -96,4 +96,10 @@ export const style = {
   renameButton: { paddingLeft: '30px' },
   removeButton: { paddingLeft: '5px' },
   renameInput: { width: '120px' },
+  nodeTextBlock: {
+    whiteSpace: 'nowrap',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px',
+  },
 };
