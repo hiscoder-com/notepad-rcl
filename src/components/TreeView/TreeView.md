@@ -1,4 +1,4 @@
-### **Save in Database**
+### **Saving to the database and using Drag and drop sorting**
 
 ```jsx
 import React, { useState, useEffect, useRef } from 'react';
@@ -7,7 +7,6 @@ import { initialData, style } from './data';
 
 function Component() {
   const treeRef = useRef(null);
-  const [activeNote, setActiveNote] = useState(false);
   const [hoveredNodeId, setHoveredNodeId] = useState(null);
   const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [databaseNotes, setDatabaseNotes] = useState(initialData);
@@ -104,39 +103,22 @@ function Component() {
     }
   };
 
-  const nodeOnDoubleClick = () => {
-    setActiveNote(true);
-  };
-
   return (
     <div>
       <div>
-        {!activeNote ? (
-          <TreeView
-            style={style}
-            treeHeight={170}
-            treeRef={treeRef}
-            data={dataForTreeView}
-            hoveredNodeId={hoveredNodeId}
-            selectedNodeId={selectedNodeId}
-            handleDragDrop={handleDragDrop}
-            onDoubleClick={nodeOnDoubleClick}
-            handleRenameNode={handleRenameNode}
-            setHoveredNodeId={setHoveredNodeId}
-            setSelectedNodeId={setSelectedNodeId}
-            handleTreeEventDelete={handleTreeEventDelete}
-          />
-        ) : (
-          <>
-            <button
-              onClick={() => setActiveNote(!activeNote)}
-              style={{ color: 'red', paddingRight: '30px' }}
-            >
-              Go Back
-            </button>
-            The note is ready to reveal its secrets!
-          </>
-        )}
+        <TreeView
+          style={style}
+          treeHeight={170}
+          treeRef={treeRef}
+          data={dataForTreeView}
+          hoveredNodeId={hoveredNodeId}
+          selectedNodeId={selectedNodeId}
+          handleDragDrop={handleDragDrop}
+          handleRenameNode={handleRenameNode}
+          setHoveredNodeId={setHoveredNodeId}
+          setSelectedNodeId={setSelectedNodeId}
+          handleTreeEventDelete={handleTreeEventDelete}
+        />
       </div>
     </div>
   );
@@ -147,8 +129,6 @@ function Component() {
 
 ### **Custom SVG icons for files, folders and arrows and use Search**
 
-// подключить компонент РЕДАКТОР!!!
-
 ```jsx
 import React, { useState, useEffect } from 'react';
 import { TreeView } from '@texttree/notepad-rcl';
@@ -156,7 +136,6 @@ import { initialData, style } from './data';
 
 function Component() {
   const [term, setTerm] = useState('');
-  const [activeNote, setActiveNote] = useState(false);
   const [hoveredNodeId, setHoveredNodeId] = useState(null);
   const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [databaseNotes, setDatabaseNotes] = useState(initialData);
@@ -176,6 +155,24 @@ function Component() {
       }),
     }));
   }
+
+  useEffect(() => {
+    setDataForTreeView(convertNotesToTree(databaseNotes));
+  }, [databaseNotes]);
+
+  const handleTreeEventDelete = ({ ids }) => {
+    const updatedNote = databaseNotes.filter((el) => el.id !== ids[0]);
+    setDatabaseNotes(updatedNote);
+  };
+
+  const handleRenameNode = (newName, nodeId) => {
+    if (nodeId) {
+      const updatedNote = databaseNotes.map((node) =>
+        node.id === nodeId ? { ...node, title: newName } : node
+      );
+      setDatabaseNotes(updatedNote);
+    }
+  };
 
   const fileIcon = (
     <svg
@@ -223,26 +220,26 @@ function Component() {
       <path
         d="M23.4605 15.093L23.0065 20.7678C22.8363 22.5043 22.7001 23.8322 19.6243 23.8322H5.34658C2.27084 23.8322 2.13464 22.5043 1.9644 20.7678L1.51041 15.093C1.41962 14.151 1.71471 13.2771 2.24814 12.6075C2.25949 12.5961 2.25949 12.5961 2.27084 12.5848C2.89506 11.8243 3.83708 11.3477 4.89259 11.3477H20.0783C21.1338 11.3477 22.0645 11.8243 22.6774 12.5621C22.6887 12.5734 22.7001 12.5848 22.7001 12.5961C23.2562 13.2657 23.5626 14.1397 23.4605 15.093Z"
         stroke="#292D32"
-        stroke-width="1.70244"
-        stroke-miterlimit="10"
+        strokeWidth="1.70244"
+        strokeMiterlimit="10"
       />
       <path
         opacity="0.4"
         d="M2.83789 11.8366V5.99155C2.83789 2.13268 3.80261 1.16797 7.66147 1.16797H9.10287C10.5443 1.16797 10.8734 1.59925 11.4182 2.32563L12.8596 4.25506C13.2228 4.73174 13.4384 5.02683 14.4031 5.02683H17.2973C21.1561 5.02683 22.1209 5.99155 22.1209 9.85041V11.882"
         stroke="#292D32"
-        stroke-width="1.70244"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.70244"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         opacity="0.4"
         d="M9.56836 18.1582H15.4021"
         stroke="#292D32"
-        stroke-width="1.70244"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.70244"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -259,16 +256,16 @@ function Component() {
         opacity="0.4"
         d="M15.6318 15.3926H9.95703"
         stroke="#292D32"
-        stroke-width="1.70244"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.70244"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M24.2226 11.365V18.1748C24.2226 22.7146 23.0877 23.8496 18.5478 23.8496H7.19824C2.6584 23.8496 1.52344 22.7146 1.52344 18.1748V6.82519C1.52344 2.28535 2.6584 1.15039 7.19824 1.15039H8.90068C10.6031 1.15039 10.9777 1.64977 11.6246 2.51234L13.327 4.78226C13.7583 5.34974 14.008 5.69023 15.143 5.69023H18.5478C23.0877 5.69023 24.2226 6.82519 24.2226 11.365Z"
         stroke="#292D32"
-        stroke-width="1.70244"
-        stroke-miterlimit="10"
+        strokeWidth="1.70244"
+        strokeMiterlimit="10"
       />
     </svg>
   );
@@ -284,8 +281,8 @@ function Component() {
       <path
         d="M1.25391 9.74805L5.52295 5.5078L1.26828 1.25313"
         stroke="#353535"
-        stroke-width="2"
-        stroke-linecap="round"
+        strokeWidth="2"
+        strokeLinecap="round"
       />
     </svg>
   );
@@ -301,11 +298,50 @@ function Component() {
       <path
         d="M1 1.5L5.24747 5.76186L9.49493 1.5"
         stroke="#353535"
-        stroke-width="2"
-        stroke-linecap="round"
+        strokeWidth="2"
+        strokeLinecap="round"
       />
     </svg>
   );
+
+  const removeIcon = (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      x="0px"
+      y="0px"
+      width="18"
+      height="18"
+      viewBox="0 0 48 48"
+    >
+      <path d="M 24 4 C 20.491685 4 17.570396 6.6214322 17.080078 10 L 10.238281 10 A 1.50015 1.50015 0 0 0 9.9804688 9.9785156 A 1.50015 1.50015 0 0 0 9.7578125 10 L 6.5 10 A 1.50015 1.50015 0 1 0 6.5 13 L 8.6386719 13 L 11.15625 39.029297 C 11.427329 41.835926 13.811782 44 16.630859 44 L 31.367188 44 C 34.186411 44 36.570826 41.836168 36.841797 39.029297 L 39.361328 13 L 41.5 13 A 1.50015 1.50015 0 1 0 41.5 10 L 38.244141 10 A 1.50015 1.50015 0 0 0 37.763672 10 L 30.919922 10 C 30.429604 6.6214322 27.508315 4 24 4 z M 24 7 C 25.879156 7 27.420767 8.2681608 27.861328 10 L 20.138672 10 C 20.579233 8.2681608 22.120844 7 24 7 z M 11.650391 13 L 36.347656 13 L 33.855469 38.740234 C 33.730439 40.035363 32.667963 41 31.367188 41 L 16.630859 41 C 15.331937 41 14.267499 40.033606 14.142578 38.740234 L 11.650391 13 z M 20.476562 17.978516 A 1.50015 1.50015 0 0 0 19 19.5 L 19 34.5 A 1.50015 1.50015 0 1 0 22 34.5 L 22 19.5 A 1.50015 1.50015 0 0 0 20.476562 17.978516 z M 27.476562 17.978516 A 1.50015 1.50015 0 0 0 26 19.5 L 26 34.5 A 1.50015 1.50015 0 1 0 29 34.5 L 29 19.5 A 1.50015 1.50015 0 0 0 27.476562 17.978516 z"></path>
+    </svg>
+  );
+
+  const renameIcon = (
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 28 28"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M11.75 2C11.3358 2 11 2.33579 11 2.75C11 3.16421 11.3358 3.5 11.75 3.5H13.25V24.5H11.75C11.3358 24.5 11 24.8358 11 25.25C11 25.6642 11.3358 26 11.75 26H16.25C16.6642 26 17 25.6642 17 25.25C17 24.8358 16.6642 24.5 16.25 24.5H14.75V3.5H16.25C16.6642 3.5 17 3.16421 17 2.75C17 2.33579 16.6642 2 16.25 2H11.75Z"
+        fill="#212121"
+      />
+      <path
+        d="M6.25 6.01958H12.25V7.51958H6.25C5.2835 7.51958 4.5 8.30308 4.5 9.26958V18.7696C4.5 19.7361 5.2835 20.5196 6.25 20.5196H12.25V22.0196H6.25C4.45507 22.0196 3 20.5645 3 18.7696V9.26958C3 7.47465 4.45507 6.01958 6.25 6.01958Z"
+        fill="#212121"
+      />
+      <path
+        d="M21.75 20.5196H15.75V22.0196H21.75C23.5449 22.0196 25 20.5645 25 18.7696V9.26958C25 7.47465 23.5449 6.01958 21.75 6.01958H15.75V7.51958H21.75C22.7165 7.51958 23.5 8.30308 23.5 9.26958V18.7696C23.5 19.7361 22.7165 20.5196 21.75 20.5196Z"
+        fill="#212121"
+      />
+    </svg>
+  );
+
+  const removeButton = { content: removeIcon, title: 'Remove node' };
+  const renameButton = { content: renameIcon, title: 'Rename node' };
 
   return (
     <div>
@@ -326,19 +362,26 @@ function Component() {
         </div>
 
         <TreeView
-          term={term}
           style={style}
-          treeHeight={170}
           fileIcon={fileIcon}
-          arrowDown={arrowDown}
           data={dataForTreeView}
           arrowRight={arrowRight}
-          hoveredNodeId={hoveredNodeId}
+          showDeleteButton={true}
+          removeButton={removeButton}
           selectedNodeId={selectedNodeId}
-          openFolderIcon={openFolderIcon}
           closeFolderIcon={closeFolderIcon}
-          setHoveredNodeId={setHoveredNodeId}
+          handleRenameNode={handleRenameNode}
+          handleTreeEventDelete={handleTreeEventDelete}
           setSelectedNodeId={setSelectedNodeId}
+          setHoveredNodeId={setHoveredNodeId}
+          openFolderIcon={openFolderIcon}
+          hoveredNodeId={hoveredNodeId}
+          renameButton={renameButton}
+          showRenameButton={true}
+          removeIcon={removeIcon}
+          arrowDown={arrowDown}
+          treeHeight={170}
+          term={term}
         />
       </div>
     </div>

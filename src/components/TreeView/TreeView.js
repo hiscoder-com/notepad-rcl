@@ -10,6 +10,8 @@ function TreeView({
   customContextMenu,
   setHoveredNodeId,
   handleRenameNode,
+  showDeleteButton,
+  showRenameButton,
   closeFolderIcon,
   selectedNodeId,
   handleDragDrop,
@@ -93,7 +95,10 @@ function TreeView({
                 setHoveredNodeId(null);
               }}
             >
-              <div className={classes?.nodeTextBlock} style={style?.nodeTextBlock}>
+              <div
+                className={classes?.nodeTextBlock}
+                style={{ ...style?.nodeTextBlock, display: 'flex' }}
+              >
                 {!isFile ? (
                   nodeProps.node.children.length > 0 ? (
                     isFolderOpen ? (
@@ -137,7 +142,7 @@ function TreeView({
                 )}
               </div>
               <div className={classes?.nodeButtonBlock} style={style?.nodeButtonBlock}>
-                {handleRenameNode && (
+                {showRenameButton && (
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -150,7 +155,7 @@ function TreeView({
                     {renameButton.content}
                   </button>
                 )}
-                {handleTreeEventDelete && (
+                {showDeleteButton && (
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -174,12 +179,12 @@ function TreeView({
 
 TreeView.defaultProps = {
   customContextMenu: false,
-  handleTreeEventDelete: null,
+  handleTreeEventDelete: () => {},
   getCurrentNodeProps: () => {},
   handleContextMenu: () => {},
   setSelectedNodeId: () => {},
   setHoveredNodeId: () => {},
-  handleRenameNode: null,
+  handleRenameNode: () => {},
   handleDragDrop: () => {},
   hoveredNodeId: null,
   onDoubleClick: () => {},
@@ -195,6 +200,8 @@ TreeView.defaultProps = {
   arrowDown: '⏷',
   arrowRight: '⏵',
   closeFolderIcon: '🗀',
+  showDeleteButton: false,
+  showRenameButton: false,
   removeButton: { content: '🗑️', title: 'Delete' },
   renameButton: { content: '✏️', title: 'Rename...' },
 };
@@ -282,6 +289,10 @@ TreeView.propTypes = {
   arrowRight: PropTypes.node,
   /** Closed folder icon */
   closeFolderIcon: PropTypes.node,
+  /** Show delete button */
+  showDeleteButton: PropTypes.bool,
+  /** Show rename button */
+  showRenameButton: PropTypes.bool,
   /** Delete button with content and title */
   removeButton: PropTypes.shape({
     content: PropTypes.string,

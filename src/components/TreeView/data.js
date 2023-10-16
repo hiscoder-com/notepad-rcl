@@ -97,8 +97,6 @@ export const style = {
   removeButton: { paddingLeft: '5px' },
   renameInput: { width: '120px' },
   nodeTextBlock: {
-    whiteSpace: 'nowrap',
-    display: 'flex',
     alignItems: 'center',
     gap: '6px',
   },
