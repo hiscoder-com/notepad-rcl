@@ -295,12 +295,12 @@ TreeView.propTypes = {
   showRenameButton: PropTypes.bool,
   /** Delete button with content and title */
   removeButton: PropTypes.shape({
-    content: PropTypes.string,
+    content: PropTypes.node,
     title: PropTypes.string,
   }),
   /** Rename button with content and title */
   renameButton: PropTypes.shape({
-    content: PropTypes.string,
+    content: PropTypes.node,
     title: PropTypes.string,
   }),
 };
