@@ -70,7 +70,8 @@ function Component() {
       <div>
         <TreeView
           style={style}
-          treeHeight={170}
+          treeHeight={450}
+          treeWidth={500}
           treeRef={treeRef}
           data={dataForTreeView}
           customContextMenu={true}
