@@ -51,7 +51,7 @@ export const initialData = [
 ];
 
 export const style = {
-  nodeMainBlock: {
+  nodeWrapper: {
     lineHeight: '47px',
     fontSize: '18px',
     cursor: 'pointer',
@@ -65,11 +65,20 @@ export const style = {
     hoveredColor: '#D5D5D5',
     selectedColor: '#bdbdbd',
   },
+  nodeMainBlock: {
+    lineHeight: '47px',
+    fontSize: '18px',
+    cursor: 'pointer',
+    width: 'full',
+    borderRadius: '10px',
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
   nodeTextBlock: { alignItems: 'center' },
   searchContainer: {
     position: 'relative',
-    marginBottom: '10px',
-    maxWidth: '300px',
+    marginBottom: '20px',
+    maxWidth: '500px',
   },
   searchInput: {
     border: '0',

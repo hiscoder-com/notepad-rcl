@@ -21,6 +21,7 @@ function TreeView({
   removeButton,
   renameButton,
   treeHeight,
+  nodeHeight,
   arrowRight,
   arrowDown,
   treeWidth,
@@ -44,13 +45,13 @@ function TreeView({
     >
       <Tree
         data={data}
-        rowHeight={57}
-        searchTerm={term}
         width={treeWidth}
+        searchTerm={term}
         height={treeHeight}
+        rowHeight={nodeHeight}
         onMove={handleDragDrop}
-        onContextMenu={handleContextMenu}
         onDelete={handleTreeEventDelete}
+        onContextMenu={handleContextMenu}
         searchMatch={(node, term) =>
           node.data.name.toLowerCase().includes(term.toLowerCase())
         }
@@ -65,7 +66,14 @@ function TreeView({
               className={classes?.nodeWrapper}
               style={{
                 ...style?.nodeWrapper,
-                paddingLeft: `${nodeProps.node.level * indent}px`,
+                marginLeft: `${nodeProps.node.level * indent}px`,
+                backgroundColor: style?.nodeWrapper
+                  ? nodeProps.node.id === selectedNodeId
+                    ? style?.nodeWrapper.selectedColor
+                    : nodeProps.node.id === hoveredNodeId
+                    ? style?.nodeWrapper.hoveredColor
+                    : style?.nodeWrapper.backgroundColor
+                  : null,
               }}
               onClick={() => {
                 setSelectedNodeId(nodeProps.node.id);
@@ -90,92 +98,79 @@ function TreeView({
               }}
             >
               <div
-                style={{
-                  ...style?.nodeMainBlock,
-                  backgroundColor: style?.nodeMainBlock
-                    ? nodeProps.node.id === selectedNodeId
-                      ? style?.nodeMainBlock.selectedColor
-                      : nodeProps.node.id === hoveredNodeId
-                      ? style?.nodeMainBlock.hoveredColor
-                      : style?.nodeMainBlock.backgroundColor
-                    : null,
-                }}
+                className={classes?.nodeTextBlock}
+                style={{ ...style?.nodeTextBlock, display: 'flex', gap: '7px' }}
               >
-                <div
-                  className={classes?.nodeTextBlock}
-                  style={{ ...style?.nodeTextBlock, display: 'flex', gap: '7px' }}
-                >
-                  {!isFile ? (
-                    nodeProps.node.children.length > 0 ? (
-                      isFolderOpen ? (
-                        <>
-                          {arrowDown} {openFolderIcon}
-                        </>
-                      ) : (
-                        <>
-                          {arrowRight} {closeFolderIcon}
-                        </>
-                      )
-                    ) : isFolderOpen ? (
-                      openFolderIcon
+                {!isFile ? (
+                  nodeProps.node.children.length > 0 ? (
+                    isFolderOpen ? (
+                      <>
+                        {arrowDown} {openFolderIcon}
+                      </>
                     ) : (
-                      closeFolderIcon
+                      <>
+                        {arrowRight} {closeFolderIcon}
+                      </>
                     )
+                  ) : isFolderOpen ? (
+                    openFolderIcon
                   ) : (
-                    fileIcon
-                  )}
-                  {nodeProps.node.isEditing ? (
-                    <input
-                      type="text"
-                      defaultValue={nodeProps.node.data.name}
-                      onFocus={(e) => e.currentTarget.select()}
-                      onBlur={() => nodeProps.node.reset()}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Escape') nodeProps.node.reset();
-                        if (e.key === 'Enter') {
-                          nodeProps.node.submit(e.currentTarget.value);
-                          handleRenameNode(e.currentTarget.value, nodeProps.node.id);
-                        }
-                      }}
-                      autoFocus
-                      style={style?.renameInput}
-                      className={classes?.renameInput}
-                    />
-                  ) : (
-                    <div className={classes?.nodeText} style={style?.nodeText}>
-                      {nodeProps.node.data.name}
-                    </div>
-                  )}
-                </div>
-                <div className={classes?.nodeButtonBlock} style={style?.nodeButtonBlock}>
-                  {showRenameButton && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        nodeProps.node.edit();
-                      }}
-                      title={renameButton.title}
-                      style={style?.renameButton}
-                      className={classes?.renameButton}
-                    >
-                      {renameButton.content}
-                    </button>
-                  )}
-                  {showDeleteButton && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        nodeProps.tree.delete(nodeProps.node.id);
-                      }}
-                      title={removeButton.title}
-                      style={style?.removeButton}
-                      className={classes?.removeButton}
-                    >
-                      {removeButton.content}
-                    </button>
-                  )}
-                </div>
-              </div>{' '}
+                    closeFolderIcon
+                  )
+                ) : (
+                  fileIcon
+                )}
+                {nodeProps.node.isEditing ? (
+                  <input
+                    type="text"
+                    defaultValue={nodeProps.node.data.name}
+                    onFocus={(e) => e.currentTarget.select()}
+                    onBlur={() => nodeProps.node.reset()}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Escape') nodeProps.node.reset();
+                      if (e.key === 'Enter') {
+                        nodeProps.node.submit(e.currentTarget.value);
+                        handleRenameNode(e.currentTarget.value, nodeProps.node.id);
+                      }
+                    }}
+                    autoFocus
+                    style={style?.renameInput}
+                    className={classes?.renameInput}
+                  />
+                ) : (
+                  <div className={classes?.nodeText} style={style?.nodeText}>
+                    {nodeProps.node.data.name}
+                  </div>
+                )}
+              </div>
+              <div className={classes?.nodeButtonBlock} style={style?.nodeButtonBlock}>
+                {showRenameButton && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      nodeProps.node.edit();
+                    }}
+                    title={renameButton.title}
+                    style={style?.renameButton}
+                    className={classes?.renameButton}
+                  >
+                    {renameButton.content}
+                  </button>
+                )}
+                {showDeleteButton && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      nodeProps.tree.delete(nodeProps.node.id);
+                    }}
+                    title={removeButton.title}
+                    style={style?.removeButton}
+                    className={classes?.removeButton}
+                  >
+                    {removeButton.content}
+                  </button>
+                )}
+              </div>
             </div>
           );
         }}
