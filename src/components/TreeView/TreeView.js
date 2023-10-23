@@ -73,7 +73,7 @@ function TreeView({
             activeRowIndex !== null &&
             displayText &&
             nodeProps.node.rowIndex > activeRowIndex &&
-            `calc(${noteHeight} + 10px)`;
+            `calc(${noteHeight} + 15px)`;
 
           return (
             <div>
@@ -93,7 +93,7 @@ function TreeView({
                     : null,
                   borderRadius:
                     displayText && nodeProps.node.id === selectedNodeId
-                      ? '10px 10px 0px 0px'
+                      ? `${style?.nodeWrapper.borderRadius} ${style?.nodeWrapper.borderRadius} 0px 0px`
                       : style?.nodeWrapper?.borderRadius,
                 }}
                 onClick={() => {
@@ -198,31 +198,23 @@ function TreeView({
               </div>
               {displayText && nodeProps.node.id === selectedNodeId && (
                 <div
+                  className={classes?.nodeContentWrapper}
                   style={{
-                    height: '67px',
+                    ...style?.nodeContentWrapper,
                     width:
                       nodeProps.style.paddingLeft === 0
                         ? `calc(100% - ${nodeProps.style.paddingLeft}px)`
                         : `calc(100% - ${nodeProps.style.paddingLeft}px + ${
                             nodeProps.style.paddingLeft / 6
                           }px)`,
-                    backgroundColor: '#bdbdbd',
-                    borderRadius: '0px 0px 10px 10px',
-                    display: 'flex',
                     position: nodeProps.style.paddingLeft && 'relative',
-                    float: 'right',
-                    justifyContent: 'center',
                   }}
                 >
                   <div
+                    className={classes?.nodeContent}
                     style={{
-                      position: 'absolute',
+                      ...style?.nodeContent,
                       height: noteHeight,
-                      width: `calc(100% - ${nodeProps.style.paddingLeft}px - 20px)`,
-                      backgroundColor: 'white',
-                      borderRadius: '10px',
-                      padding: '15px',
-                      marginTop: '0px',
                     }}
                   >
                     {nodeProps.node.data.name}

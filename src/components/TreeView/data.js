@@ -117,4 +117,20 @@ export const style = {
   renameButton: { paddingLeft: '30px' },
   removeButton: { paddingLeft: '5px' },
   renameInput: { width: '120px' },
+  nodeContentWrapper: {
+    height: '72px',
+    backgroundColor: '#bdbdbd',
+    borderRadius: '0px 0px 10px 10px',
+    display: 'flex',
+    float: 'right',
+    justifyContent: 'center',
+  },
+  nodeContent: {
+    position: 'absolute',
+    width: `calc(100% - 30px)`,
+    backgroundColor: 'white',
+    borderRadius: '10px',
+    padding: '15px',
+    marginTop: '0px',
+  },
 };
