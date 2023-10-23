@@ -110,7 +110,7 @@ function Component() {
           style={style}
           treeWidth={500}
           nodeHeight={57}
-          treeHeight={450}
+          treeHeight={550}
           treeRef={treeRef}
           data={dataForTreeView}
           hoveredNodeId={hoveredNodeId}

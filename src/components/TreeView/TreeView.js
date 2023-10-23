@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Tree } from 'react-arborist';
 import PropTypes from 'prop-types';
 
@@ -33,7 +33,15 @@ function TreeView({
   style,
   data,
   term,
+  noteHeight = '57px',
 }) {
+  const [activeRowIndex, setActiveRowIndex] = useState(null);
+  const [displayText, setDisplayText] = useState(false);
+
+  const handleFileDoubleClick = () => {
+    setDisplayText((prev) => !prev);
+  };
+
   return (
     <div
       ref={treeRef}
@@ -49,6 +57,7 @@ function TreeView({
         searchTerm={term}
         height={treeHeight}
         rowHeight={nodeHeight}
+        disableDrag={handleDragDrop.toString().replace(/\s/g, '').length === 26}
         onMove={handleDragDrop}
         onDelete={handleTreeEventDelete}
         onContextMenu={handleContextMenu}
@@ -60,117 +69,166 @@ function TreeView({
           const isFile = nodeProps.node.isLeaf;
           const isFolderOpen = nodeProps.node.isOpen;
 
+          const nodeMarginTopUnderOpenNote =
+            activeRowIndex !== null &&
+            displayText &&
+            nodeProps.node.rowIndex > activeRowIndex &&
+            `calc(${noteHeight} + 10px)`;
+
           return (
-            <div
-              ref={nodeProps.dragHandle}
-              className={classes?.nodeWrapper}
-              style={{
-                ...style?.nodeWrapper,
-                marginLeft: `${nodeProps.node.level * indent}px`,
-                backgroundColor: style?.nodeWrapper
-                  ? nodeProps.node.id === selectedNodeId
-                    ? style?.nodeWrapper.selectedColor
-                    : nodeProps.node.id === hoveredNodeId
-                    ? style?.nodeWrapper.hoveredColor
-                    : style?.nodeWrapper.backgroundColor
-                  : null,
-              }}
-              onClick={() => {
-                setSelectedNodeId(nodeProps.node.id);
-                !nodeProps.node.isInternal && onClick && onClick();
-              }}
-              onDoubleClick={() =>
-                nodeProps.node.isInternal
-                  ? nodeProps.node.toggle()
-                  : onDoubleClick && onDoubleClick()
-              }
-              onContextMenu={(event) => {
-                customContextMenu && event.preventDefault();
-                nodeProps.node.select();
-                nodeProps.node.tree.props.onContextMenu(event);
-                getCurrentNodeProps(nodeProps);
-              }}
-              onMouseOver={() => {
-                setHoveredNodeId(nodeProps.node.id);
-              }}
-              onMouseLeave={() => {
-                setHoveredNodeId(null);
-              }}
-            >
+            <div>
               <div
-                className={classes?.nodeTextBlock}
-                style={{ ...style?.nodeTextBlock, display: 'flex', gap: '7px' }}
+                ref={nodeProps.dragHandle}
+                className={classes?.nodeWrapper}
+                style={{
+                  ...style?.nodeWrapper,
+                  marginTop: nodeMarginTopUnderOpenNote,
+                  marginLeft: `${nodeProps.node.level * indent}px`,
+                  backgroundColor: style?.nodeWrapper
+                    ? nodeProps.node.id === selectedNodeId
+                      ? style?.nodeWrapper.selectedColor
+                      : nodeProps.node.id === hoveredNodeId
+                      ? style?.nodeWrapper.hoveredColor
+                      : style?.nodeWrapper.backgroundColor
+                    : null,
+                  borderRadius:
+                    displayText && nodeProps.node.id === selectedNodeId
+                      ? '10px 10px 0px 0px'
+                      : style?.nodeWrapper?.borderRadius,
+                }}
+                onClick={() => {
+                  setSelectedNodeId(nodeProps.node.id);
+                  setActiveRowIndex(nodeProps.node.rowIndex);
+                  !nodeProps.node.isInternal && onClick && onClick();
+                }}
+                onDoubleClick={
+                  () =>
+                    nodeProps.node.isInternal
+                      ? nodeProps.node.toggle()
+                      : onDoubleClick && handleFileDoubleClick()
+                  // : onDoubleClick && onDoubleClick()
+                }
+                onContextMenu={(event) => {
+                  customContextMenu && event.preventDefault();
+                  nodeProps.node.select();
+                  nodeProps.node.tree.props.onContextMenu(event);
+                  getCurrentNodeProps(nodeProps);
+                }}
+                onMouseOver={() => {
+                  setHoveredNodeId(nodeProps.node.id);
+                }}
+                onMouseLeave={() => {
+                  setHoveredNodeId(null);
+                }}
               >
-                {!isFile ? (
-                  nodeProps.node.children.length > 0 ? (
-                    isFolderOpen ? (
-                      <>
-                        {arrowDown} {openFolderIcon}
-                      </>
+                <div
+                  className={classes?.nodeTextBlock}
+                  style={{ ...style?.nodeTextBlock, display: 'flex', gap: '7px' }}
+                >
+                  {!isFile ? (
+                    nodeProps.node.children.length > 0 ? (
+                      isFolderOpen ? (
+                        <>
+                          {arrowDown} {openFolderIcon}
+                        </>
+                      ) : (
+                        <>
+                          {arrowRight} {closeFolderIcon}
+                        </>
+                      )
+                    ) : isFolderOpen ? (
+                      openFolderIcon
                     ) : (
-                      <>
-                        {arrowRight} {closeFolderIcon}
-                      </>
+                      closeFolderIcon
                     )
-                  ) : isFolderOpen ? (
-                    openFolderIcon
                   ) : (
-                    closeFolderIcon
-                  )
-                ) : (
-                  fileIcon
-                )}
-                {nodeProps.node.isEditing ? (
-                  <input
-                    type="text"
-                    defaultValue={nodeProps.node.data.name}
-                    onFocus={(e) => e.currentTarget.select()}
-                    onBlur={() => nodeProps.node.reset()}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Escape') nodeProps.node.reset();
-                      if (e.key === 'Enter') {
-                        nodeProps.node.submit(e.currentTarget.value);
-                        handleRenameNode(e.currentTarget.value, nodeProps.node.id);
-                      }
+                    fileIcon
+                  )}
+                  {nodeProps.node.isEditing ? (
+                    <input
+                      type="text"
+                      defaultValue={nodeProps.node.data.name}
+                      onFocus={(e) => e.currentTarget.select()}
+                      onBlur={() => nodeProps.node.reset()}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Escape') nodeProps.node.reset();
+                        if (e.key === 'Enter') {
+                          nodeProps.node.submit(e.currentTarget.value);
+                          handleRenameNode(e.currentTarget.value, nodeProps.node.id);
+                        }
+                      }}
+                      autoFocus
+                      style={style?.renameInput}
+                      className={classes?.renameInput}
+                    />
+                  ) : (
+                    <div className={classes?.nodeText} style={style?.nodeText}>
+                      {nodeProps.node.data.name}
+                    </div>
+                  )}
+                </div>
+                <div className={classes?.nodeButtonBlock} style={style?.nodeButtonBlock}>
+                  {showRenameButton && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        nodeProps.node.edit();
+                      }}
+                      title={renameButton.title}
+                      style={style?.renameButton}
+                      className={classes?.renameButton}
+                    >
+                      {renameButton.content}
+                    </button>
+                  )}
+                  {showDeleteButton && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        nodeProps.tree.delete(nodeProps.node.id);
+                      }}
+                      title={removeButton.title}
+                      style={style?.removeButton}
+                      className={classes?.removeButton}
+                    >
+                      {removeButton.content}
+                    </button>
+                  )}
+                </div>
+              </div>
+              {displayText && nodeProps.node.id === selectedNodeId && (
+                <div
+                  style={{
+                    height: '67px',
+                    width:
+                      nodeProps.style.paddingLeft === 0
+                        ? `calc(100% - ${nodeProps.style.paddingLeft}px)`
+                        : `calc(100% - ${nodeProps.style.paddingLeft}px + ${
+                            nodeProps.style.paddingLeft / 6
+                          }px)`,
+                    backgroundColor: '#bdbdbd',
+                    borderRadius: '0px 0px 10px 10px',
+                    display: 'flex',
+                    position: nodeProps.style.paddingLeft && 'relative',
+                    float: 'right',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <div
+                    style={{
+                      position: 'absolute',
+                      height: noteHeight,
+                      width: `calc(100% - ${nodeProps.style.paddingLeft}px - 20px)`,
+                      backgroundColor: 'white',
+                      borderRadius: '10px',
+                      padding: '15px',
+                      marginTop: '0px',
                     }}
-                    autoFocus
-                    style={style?.renameInput}
-                    className={classes?.renameInput}
-                  />
-                ) : (
-                  <div className={classes?.nodeText} style={style?.nodeText}>
+                  >
                     {nodeProps.node.data.name}
                   </div>
-                )}
-              </div>
-              <div className={classes?.nodeButtonBlock} style={style?.nodeButtonBlock}>
-                {showRenameButton && (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      nodeProps.node.edit();
-                    }}
-                    title={renameButton.title}
-                    style={style?.renameButton}
-                    className={classes?.renameButton}
-                  >
-                    {renameButton.content}
-                  </button>
-                )}
-                {showDeleteButton && (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      nodeProps.tree.delete(nodeProps.node.id);
-                    }}
-                    title={removeButton.title}
-                    style={style?.removeButton}
-                    className={classes?.removeButton}
-                  >
-                    {removeButton.content}
-                  </button>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           );
         }}
