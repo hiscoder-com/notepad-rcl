@@ -33,14 +33,11 @@ function TreeView({
   style,
   data,
   term,
-  noteHeight = '57px',
+  displayNodeContent,
+  nodeContent,
+  noteHeight = '228px',
 }) {
   const [activeRowIndex, setActiveRowIndex] = useState(null);
-  const [displayText, setDisplayText] = useState(false);
-
-  const handleFileDoubleClick = () => {
-    setDisplayText((prev) => !prev);
-  };
 
   return (
     <div
@@ -71,12 +68,12 @@ function TreeView({
 
           const nodeMarginTopUnderOpenNote =
             activeRowIndex !== null &&
-            displayText &&
+            displayNodeContent &&
             nodeProps.node.rowIndex > activeRowIndex &&
             `calc(${noteHeight} + 15px)`;
 
           return (
-            <div>
+            <div className={classes?.nodeContainer} style={style?.nodeContainer}>
               <div
                 ref={nodeProps.dragHandle}
                 className={classes?.nodeWrapper}
@@ -92,21 +89,19 @@ function TreeView({
                       : style?.nodeWrapper.backgroundColor
                     : null,
                   borderRadius:
-                    displayText && nodeProps.node.id === selectedNodeId
+                    displayNodeContent && nodeProps.node.id === selectedNodeId
                       ? `${style?.nodeWrapper.borderRadius} ${style?.nodeWrapper.borderRadius} 0px 0px`
                       : style?.nodeWrapper?.borderRadius,
                 }}
                 onClick={() => {
                   setSelectedNodeId(nodeProps.node.id);
                   setActiveRowIndex(nodeProps.node.rowIndex);
-                  !nodeProps.node.isInternal && onClick && onClick();
+                  !nodeProps.node.isInternal && onClick && onClick(nodeProps);
                 }}
-                onDoubleClick={
-                  () =>
-                    nodeProps.node.isInternal
-                      ? nodeProps.node.toggle()
-                      : onDoubleClick && handleFileDoubleClick()
-                  // : onDoubleClick && onDoubleClick()
+                onDoubleClick={() =>
+                  nodeProps.node.isInternal
+                    ? nodeProps.node.toggle()
+                    : onDoubleClick && onDoubleClick(nodeProps)
                 }
                 onContextMenu={(event) => {
                   customContextMenu && event.preventDefault();
@@ -123,7 +118,12 @@ function TreeView({
               >
                 <div
                   className={classes?.nodeTextBlock}
-                  style={{ ...style?.nodeTextBlock, display: 'flex', gap: '7px' }}
+                  style={{
+                    ...style?.nodeTextBlock,
+                    display: 'flex',
+                    gap: '7px',
+                    zIndex: '10',
+                  }}
                 >
                   {!isFile ? (
                     nodeProps.node.children.length > 0 ? (
@@ -196,7 +196,7 @@ function TreeView({
                   )}
                 </div>
               </div>
-              {displayText && nodeProps.node.id === selectedNodeId && (
+              {displayNodeContent && nodeProps.node.id === selectedNodeId && (
                 <div
                   className={classes?.nodeContentWrapper}
                   style={{
@@ -217,7 +217,7 @@ function TreeView({
                       height: noteHeight,
                     }}
                   >
-                    {nodeProps.node.data.name}
+                    {nodeContent}
                   </div>
                 </div>
               )}

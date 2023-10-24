@@ -51,6 +51,7 @@ export const initialData = [
 ];
 
 export const style = {
+  nodeContainer: {},
   nodeWrapper: {
     lineHeight: '47px',
     fontSize: '18px',
@@ -118,7 +119,7 @@ export const style = {
   removeButton: { paddingLeft: '5px' },
   renameInput: { width: '120px' },
   nodeContentWrapper: {
-    height: '72px',
+    height: '243px',
     backgroundColor: '#bdbdbd',
     borderRadius: '0px 0px 10px 10px',
     display: 'flex',
