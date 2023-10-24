@@ -9,6 +9,7 @@ function Redactor({
   editorTools,
   placeholder,
   setActiveNote,
+  disableTitle,
   activeNote,
   readOnly,
   initId,
@@ -37,16 +38,18 @@ function Redactor({
   return (
     <div className={classes.wrapper}>
       <div className={classes.parentBC}>{activeNote?.parentBC}</div>
-      <div
-        className={classes.title}
-        placeholder="Title"
-        maxLength="256"
-        contentEditable={!readOnly}
-        suppressContentEditableWarning={true}
-        onBlur={handleTitleChange}
-      >
-        {title}
-      </div>
+      {!disableTitle && (
+        <div
+          className={classes.title}
+          placeholder="Title"
+          maxLength="256"
+          contentEditable={!readOnly}
+          suppressContentEditableWarning={true}
+          onBlur={handleTitleChange}
+        >
+          {title}
+        </div>
+      )}
       <div className={classes.redactor}>
         <ReactEditorJS
           onChange={handleEditorChange}
@@ -72,27 +75,32 @@ Redactor.defaultProps = {
   setActiveNote: () => {},
   classes: {},
   readOnly: false,
+  disableTitle: false,
 };
 
 Redactor.propTypes = {
   classes: PropTypes.shape({
-    /** class for wrapper */
+    /** Class for wrapper */
     wrapper: PropTypes.string,
-    /** class for redactor */
+    /** Class for redactor */
     redactor: PropTypes.string,
-    /** class for title */
+    /** Class for title */
     title: PropTypes.string,
   }),
   /** Write a new property for the Tools object and pass it to the Editor via the addTools variable */
   editorTools: PropTypes.object,
-  /** note ID. To run Redactor, you need to assign an ID to the note */
+  /** Note ID. To run Redactor, you need to assign an ID to the note */
   initId: PropTypes.string,
-  /** note Placeholder */
+  /** Note Placeholder */
   placeholder: PropTypes.string,
-  /** an object that contains all the properties of the note */
+  /** An object that contains all the properties of the note */
   activeNote: PropTypes.object,
-  /** pass a new note object to the setter */
+  /** Pass a new note object to the setter */
   setActiveNote: PropTypes.func,
+  /** If true, then the content is read-only */
+  readOnly: PropTypes.bool,
+  /** If true, then the title is not displayed */
+  disableTitle: PropTypes.bool,
 };
 
 export default Redactor;
