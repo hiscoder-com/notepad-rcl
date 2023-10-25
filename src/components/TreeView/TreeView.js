@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Tree } from 'react-arborist';
 import PropTypes from 'prop-types';
 
@@ -33,12 +33,7 @@ function TreeView({
   style,
   data,
   term,
-  displayNodeContent,
-  nodeContent,
-  noteHeight = '228px',
 }) {
-  const [activeRowIndex, setActiveRowIndex] = useState(null);
-
   return (
     <div
       ref={treeRef}
@@ -66,12 +61,6 @@ function TreeView({
           const isFile = nodeProps.node.isLeaf;
           const isFolderOpen = nodeProps.node.isOpen;
 
-          const nodeMarginTopUnderOpenNote =
-            activeRowIndex !== null &&
-            displayNodeContent &&
-            nodeProps.node.rowIndex > activeRowIndex &&
-            `calc(${noteHeight} + 15px)`;
-
           return (
             <div className={classes?.nodeContainer} style={style?.nodeContainer}>
               <div
@@ -79,7 +68,6 @@ function TreeView({
                 className={classes?.nodeWrapper}
                 style={{
                   ...style?.nodeWrapper,
-                  marginTop: nodeMarginTopUnderOpenNote,
                   marginLeft: `${nodeProps.node.level * indent}px`,
                   backgroundColor: style?.nodeWrapper
                     ? nodeProps.node.id === selectedNodeId
@@ -88,14 +76,10 @@ function TreeView({
                       ? style?.nodeWrapper.hoveredColor
                       : style?.nodeWrapper.backgroundColor
                     : null,
-                  borderRadius:
-                    displayNodeContent && nodeProps.node.id === selectedNodeId
-                      ? `${style?.nodeWrapper.borderRadius} ${style?.nodeWrapper.borderRadius} 0px 0px`
-                      : style?.nodeWrapper?.borderRadius,
+                  borderRadius: style?.nodeWrapper?.borderRadius,
                 }}
                 onClick={() => {
                   setSelectedNodeId(nodeProps.node.id);
-                  setActiveRowIndex(nodeProps.node.rowIndex);
                   !nodeProps.node.isInternal && onClick && onClick(nodeProps);
                 }}
                 onDoubleClick={() =>
@@ -196,31 +180,6 @@ function TreeView({
                   )}
                 </div>
               </div>
-              {displayNodeContent && nodeProps.node.id === selectedNodeId && (
-                <div
-                  className={classes?.nodeContentWrapper}
-                  style={{
-                    ...style?.nodeContentWrapper,
-                    width:
-                      nodeProps.style.paddingLeft === 0
-                        ? `calc(100% - ${nodeProps.style.paddingLeft}px)`
-                        : `calc(100% - ${nodeProps.style.paddingLeft}px + ${
-                            nodeProps.style.paddingLeft / 6
-                          }px)`,
-                    position: nodeProps.style.paddingLeft && 'relative',
-                  }}
-                >
-                  <div
-                    className={classes?.nodeContent}
-                    style={{
-                      ...style?.nodeContent,
-                      height: noteHeight,
-                    }}
-                  >
-                    {nodeContent}
-                  </div>
-                </div>
-              )}
             </div>
           );
         }}

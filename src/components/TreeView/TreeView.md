@@ -7,7 +7,6 @@ import { initialData, style } from './data';
 
 function Component() {
   const treeRef = useRef(null);
-  const [displayNodeContent, setDisplayNodeContent] = useState(false);
   const [hoveredNodeId, setHoveredNodeId] = useState(null);
   const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [activeNote, setActiveNote] = useState(null);
@@ -32,12 +31,6 @@ function Component() {
   useEffect(() => {
     setDataForTreeView(convertNotesToTree(databaseNotes));
   }, [databaseNotes]);
-
-  useEffect(() => {
-    displayNodeContent && setDisplayNodeContent(false);
-    const note = databaseNotes.find((el) => el.id === selectedNodeId);
-    setActiveNote(note);
-  }, [selectedNodeId]);
 
   const handleTreeEventDelete = ({ ids }) => {
     const updatedNote = databaseNotes.filter((el) => el.id !== ids[0]);
@@ -111,53 +104,69 @@ function Component() {
     }
   };
 
-  const onDoubleClick = (nodeProps) => setDisplayNodeContent((prev) => !prev);
+  const onDoubleClick = (nodeProps) => {
+    const note = databaseNotes.find((el) => el.id === selectedNodeId);
+    setActiveNote(note);
+  };
 
   return (
-    <div>
-      <div>
-        <TreeView
-          style={style}
-          treeWidth={500}
-          nodeHeight={57}
-          treeHeight={721}
-          treeRef={treeRef}
-          data={dataForTreeView}
-          displayNodeContent={displayNodeContent}
-          onDoubleClick={onDoubleClick}
-          // hoveredNodeId={hoveredNodeId}
-          nodeContent={
-            <div>
-              <Redactor
-                disableTitle={true}
-                activeNote={activeNote}
-                setActiveNote={setActiveNote}
-                initId={'first'}
-                classes={{ redactor: 'break-words' }}
-              />
-              <button
-                className={'bg-gray-200 px-4 py-2 rounded-lg z-10 absolute'}
-                onClick={() =>
-                  setDatabaseNotes((prev) => {
-                    const array = prev.filter((el) => el.id !== activeNote.id);
-                    array.unshift(activeNote);
-                    return array;
-                  })
-                }
-              >
-                save
-              </button>
-            </div>
-          }
-          selectedNodeId={selectedNodeId}
-          handleDragDrop={handleDragDrop}
-          handleRenameNode={handleRenameNode}
-          // setHoveredNodeId={setHoveredNodeId}
-          setSelectedNodeId={setSelectedNodeId}
-          handleTreeEventDelete={handleTreeEventDelete}
-        />
-      </div>
-    </div>
+    <>
+      {!activeNote ? (
+        <>
+          <TreeView
+            style={style}
+            treeWidth={500}
+            nodeHeight={57}
+            treeHeight={450}
+            treeRef={treeRef}
+            data={dataForTreeView}
+            onDoubleClick={onDoubleClick}
+            hoveredNodeId={hoveredNodeId}
+            selectedNodeId={selectedNodeId}
+            handleDragDrop={handleDragDrop}
+            handleRenameNode={handleRenameNode}
+            setHoveredNodeId={setHoveredNodeId}
+            setSelectedNodeId={setSelectedNodeId}
+            handleTreeEventDelete={handleTreeEventDelete}
+          />
+        </>
+      ) : (
+        <div className={'bg-gray-200 p-6 rounded-lg relative'}>
+          <Redactor
+            activeNote={activeNote}
+            setActiveNote={setActiveNote}
+            initId={'first'}
+            classes={{
+              title: 'bg-inherit font-bold',
+              redactor: 'px-4 pt-4 pb-20 break-words rounded-lg bg-white m-4',
+            }}
+          />
+          <button
+            className={'bg-amber-500 px-4 py-2 rounded-lg text-white'}
+            onClick={() =>
+              setDatabaseNotes((prev) => {
+                const array = prev.filter((el) => el.id !== activeNote.id);
+                array.unshift(activeNote);
+                return array;
+              })
+            }
+          >
+            save
+          </button>
+          <button
+            className={
+              'bg-amber-500 px-4 py-[6px] text-lg rounded-full absolute right-3 top-3 text-white'
+            }
+            onClick={() => {
+              setActiveNote(null);
+              setSelectedNodeId(null);
+            }}
+          >
+            x
+          </button>
+        </div>
+      )}
+    </>
   );
 }
 
