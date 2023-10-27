@@ -23,7 +23,7 @@ function Component() {
     return filteredNotes.map((note) => ({
       id: note.id,
       name: note.title,
-      ...(note.isFolder && {
+      ...(note.is_folder && {
         children: convertNotesToTree(notes, note.id),
       }),
     }));
@@ -48,7 +48,7 @@ function Component() {
   };
 
   const handleContextMenu = (event) => {
-    setSelectedNodeId((prevSelectedNodeId) => hoveredNodeId);
+    setSelectedNodeId(hoveredNodeId);
     setContextMenuEvent({ event });
   };
 
@@ -82,7 +82,7 @@ function Component() {
           setHoveredNodeId={setHoveredNodeId}
           setSelectedNodeId={setSelectedNodeId}
           handleContextMenu={handleContextMenu}
-          getCurrentNodeProps={setCurrentNodeProps}
+          getCurrentNodeProps={setCurrentNodeProps} //
           handleTreeEventDelete={handleTreeEventDelete}
         />
         <ContextMenu
@@ -91,7 +91,22 @@ function Component() {
           data={contextMenuEvent}
           menuItems={menuItems}
           treeRef={treeRef}
-          style={style}
+          style={{
+            // menuWrapper: { position: 'fixed', zIndex: 50 },
+            menuItem: {
+              padding: '4px 30px 4px 10px',
+              cursor: 'pointer',
+              hoveredColor: '#EDEDED',
+              backgroundColor: 'transparent',
+            },
+          }}
+          classes={{
+            // menuItem: 'py-1 pr-7 pl-2.5 cursor-pointer bg-gray-100 hover:bg-gray-200',
+            menuWrapper: 'fixed z-50',
+            menuContainer:
+              'absolute border rounded z-[100] whitespace-nowrap bg-white shadow',
+            emptyMenu: 'p-2.5 cursor-pointer text-gray-300',
+          }}
         />
       </div>
     </div>

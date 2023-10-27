@@ -26,7 +26,7 @@ function Component() {
         version: '2.27.2',
       },
       created_at: new Date('2022-10-15 07:59:58.3642'),
-      isFolder: false,
+      is_folder: false,
       parent_id: null,
     },
     {
@@ -46,7 +46,7 @@ function Component() {
         version: '2.27.2',
       },
       created_at: new Date('2022-10-15 07:59:58.3642'),
-      isFolder: false,
+      is_folder: false,
       parent_id: null,
     },
   ]);

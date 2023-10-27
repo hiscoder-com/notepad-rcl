@@ -76,7 +76,6 @@ function TreeView({
                       ? style?.nodeWrapper.hoveredColor
                       : style?.nodeWrapper.backgroundColor
                     : null,
-                  borderRadius: style?.nodeWrapper?.borderRadius,
                 }}
                 onClick={() => {
                   setSelectedNodeId(nodeProps.node.id);

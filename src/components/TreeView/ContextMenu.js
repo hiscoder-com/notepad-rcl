@@ -65,8 +65,8 @@ function ContextMenu({
         style={{
           ...style.menuItem,
           backgroundColor: isHovered
-            ? style.menuItem.hoveredColor
-            : style.menuItem.backgroundColor,
+            ? style?.menuItem?.hoveredColor
+            : style?.menuItem?.backgroundColor,
         }}
         onClick={onClick}
         onMouseEnter={() => handleMouseEnter(itemId)}
@@ -88,8 +88,8 @@ function ContextMenu({
           className={classes?.menuWrapper}
           style={{
             ...style.menuWrapper,
-            top: style.menuWrapper.top || position.top + 'px',
-            left: style.menuWrapper.left || position.left + 'px',
+            top: style?.menuWrapper?.top || position?.top + 'px',
+            left: style?.menuWrapper?.left || position?.left + 'px',
           }}
         >
           <div className={classes?.menuContainer} style={style.menuContainer}>
