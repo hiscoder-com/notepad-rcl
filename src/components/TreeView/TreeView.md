@@ -22,7 +22,7 @@ function Component() {
     return filteredNotes.map((note) => ({
       id: note.id,
       name: note.title,
-      ...(note.isFolder && {
+      ...(note.is_folder && {
         children: convertNotesToTree(notes, note.id),
       }),
     }));
@@ -196,7 +196,7 @@ function Component() {
     return filteredNotes.map((note) => ({
       id: note.id,
       name: note.title,
-      ...(note.isFolder && {
+      ...(note.is_folder && {
         children: convertNotesToTree(notes, note.id),
       }),
     }));

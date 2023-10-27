@@ -69,7 +69,11 @@ function Component() {
     <div>
       <div>
         <TreeView
-          style={style}
+          classes={{
+            nodeWrapper:
+              'flex px-5 leading-[47px] cursor-pointer rounded-lg bg-gray-100 hover:bg-gray-200',
+            nodeTextBlock: 'items-center',
+          }}
           nodeHeight={57}
           treeWidth={500}
           treeHeight={450}
@@ -91,17 +95,8 @@ function Component() {
           data={contextMenuEvent}
           menuItems={menuItems}
           treeRef={treeRef}
-          style={{
-            // menuWrapper: { position: 'fixed', zIndex: 50 },
-            menuItem: {
-              padding: '4px 30px 4px 10px',
-              cursor: 'pointer',
-              hoveredColor: '#EDEDED',
-              backgroundColor: 'transparent',
-            },
-          }}
           classes={{
-            // menuItem: 'py-1 pr-7 pl-2.5 cursor-pointer bg-gray-100 hover:bg-gray-200',
+            menuItem: 'py-1 pr-7 pl-2.5 cursor-pointer bg-gray-100 hover:bg-gray-200',
             menuWrapper: 'fixed z-50',
             menuContainer:
               'absolute border rounded z-[100] whitespace-nowrap bg-white shadow',
