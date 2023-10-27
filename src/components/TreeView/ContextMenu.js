@@ -63,7 +63,7 @@ function ContextMenu({
         onContextMenu={(e) => e.preventDefault()}
         className={classes?.menuItem}
         style={{
-          ...style.menuItem,
+          ...style?.menuItem,
           backgroundColor: isHovered
             ? style?.menuItem?.hoveredColor
             : style?.menuItem?.backgroundColor,
@@ -83,16 +83,18 @@ function ContextMenu({
 
   return (
     <>
-      {visible && treeRef && style && (
+      {visible && treeRef && (style || classes) && (
         <div
-          className={classes?.menuWrapper}
+          className={`${classes?.menuWrapper} top-[${position.top + 'px'}] left-[${
+            position.left + 'px'
+          }]`}
           style={{
-            ...style.menuWrapper,
-            top: style?.menuWrapper?.top || position?.top + 'px',
-            left: style?.menuWrapper?.left || position?.left + 'px',
+            ...style?.menuWrapper,
+            top: style?.menuWrapper?.top || position.top + 'px',
+            left: style?.menuWrapper?.left || position.left + 'px',
           }}
         >
-          <div className={classes?.menuContainer} style={style.menuContainer}>
+          <div className={classes?.menuContainer} style={style?.menuContainer}>
             {menuItems.length > 0 ? (
               menuItems.map((item) => (
                 <MenuItem key={item.id} itemId={item.id} onClick={item.action}>
@@ -100,7 +102,7 @@ function ContextMenu({
                 </MenuItem>
               ))
             ) : (
-              <div className={classes?.emptyMenu} style={style.emptyMenu}>
+              <div className={classes?.emptyMenu} style={style?.emptyMenu}>
                 No menu items provided.
               </div>
             )}
