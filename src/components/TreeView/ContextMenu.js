@@ -55,7 +55,7 @@ function ContextMenu({
     setHoveredItemId(itemId);
   };
 
-  function MenuItem({ onClick, itemId, children }) {
+  function MenuItem({ onClick, itemId, icon, children }) {
     const isHovered = itemId === hoveredItemId;
 
     return (
@@ -64,6 +64,8 @@ function ContextMenu({
         className={classes?.menuItem}
         style={{
           ...style?.menuItem,
+          display: 'flex',
+          alignItems: 'center',
           backgroundColor: isHovered
             ? style?.menuItem?.hoveredColor
             : style?.menuItem?.backgroundColor,
@@ -72,7 +74,7 @@ function ContextMenu({
         onMouseEnter={() => handleMouseEnter(itemId)}
         onMouseLeave={() => handleMouseEnter(null)}
       >
-        {children}
+        {icon} <span>{children}</span>
       </div>
     );
   }
@@ -97,7 +99,12 @@ function ContextMenu({
           <div className={classes?.menuContainer} style={style?.menuContainer}>
             {menuItems.length > 0 ? (
               menuItems.map((item) => (
-                <MenuItem key={item.id} itemId={item.id} onClick={item.action}>
+                <MenuItem
+                  key={item.id}
+                  itemId={item.id}
+                  onClick={item.action}
+                  icon={item.icon}
+                >
                   <span>{item.label}</span>
                 </MenuItem>
               ))
@@ -129,7 +136,14 @@ ContextMenu.propTypes = {
   /** Function to set the selected node */
   setSelectedNodeId: PropTypes.func,
   /** Array of context menu items */
-  menuItems: PropTypes.array,
+  menuItems: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      icon: PropTypes.element,
+      label: PropTypes.string,
+      action: PropTypes.func,
+    })
+  ),
   /** Tree component reference */
   treeRef: PropTypes.object,
   /** Class names for various elements */

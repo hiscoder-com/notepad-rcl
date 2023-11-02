@@ -120,12 +120,12 @@ function TreeView({
                         </>
                       )
                     ) : isFolderOpen ? (
-                      openFolderIcon
+                      <>{openFolderIcon}</>
                     ) : (
-                      closeFolderIcon
+                      <>{closeFolderIcon}</>
                     )
                   ) : (
-                    fileIcon
+                    <>{fileIcon}</>
                   )}
                   {nodeProps.node.isEditing ? (
                     <input
