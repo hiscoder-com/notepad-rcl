@@ -42,6 +42,9 @@ function TreeView({
       }}
       className={classes?.treeContainer}
       style={style?.treeContainer}
+      onContextMenu={(event) => {
+        customContextMenu && event.preventDefault();
+      }}
     >
       <Tree
         data={data}

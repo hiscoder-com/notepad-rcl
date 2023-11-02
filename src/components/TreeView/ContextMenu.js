@@ -23,19 +23,10 @@ function ContextMenu({
       hideContextMenu();
     };
 
-    const handleOutsideClick = (event) => {
-      if (treeRef.current && !treeRef.current.contains(event.target)) {
-        setSelectedNodeId(null);
-        hideContextMenu();
-      }
-    };
-
     window.addEventListener('scroll', handleScroll);
-    document.addEventListener('click', handleOutsideClick);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      document.removeEventListener('click', handleOutsideClick);
     };
   }, [selectedNodeId]);
 
@@ -87,32 +78,45 @@ function ContextMenu({
     <>
       {visible && treeRef && (style || classes) && (
         <div
-          className={`${classes?.menuWrapper} top-[${position.top + 'px'}] left-[${
-            position.left + 'px'
-          }]`}
-          style={{
-            ...style?.menuWrapper,
-            top: style?.menuWrapper?.top || position.top + 'px',
-            left: style?.menuWrapper?.left || position.left + 'px',
+          style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 100 }}
+          onClick={() => {
+            hideContextMenu();
+            setSelectedNodeId(null);
+          }}
+          onContextMenu={(e) => {
+            e.preventDefault();
+            hideContextMenu();
+            setSelectedNodeId(null);
           }}
         >
-          <div className={classes?.menuContainer} style={style?.menuContainer}>
-            {menuItems.length > 0 ? (
-              menuItems.map((item) => (
-                <MenuItem
-                  key={item.id}
-                  itemId={item.id}
-                  onClick={item.action}
-                  icon={item.icon}
-                >
-                  <span>{item.label}</span>
-                </MenuItem>
-              ))
-            ) : (
-              <div className={classes?.emptyMenu} style={style?.emptyMenu}>
-                No menu items provided.
-              </div>
-            )}
+          <div
+            className={`${classes?.menuWrapper} top-[${position.top + 'px'}] left-[${
+              position.left + 'px'
+            }]`}
+            style={{
+              ...style?.menuWrapper,
+              top: style?.menuWrapper?.top || position.top + 'px',
+              left: style?.menuWrapper?.left || position.left + 'px',
+            }}
+          >
+            <div className={classes?.menuContainer} style={style?.menuContainer}>
+              {menuItems.length > 0 ? (
+                menuItems.map((item) => (
+                  <MenuItem
+                    key={item.id}
+                    itemId={item.id}
+                    onClick={item.action}
+                    icon={item.icon}
+                  >
+                    <span>{item.label}</span>
+                  </MenuItem>
+                ))
+              ) : (
+                <div className={classes?.emptyMenu} style={style?.emptyMenu}>
+                  No menu items provided.
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
