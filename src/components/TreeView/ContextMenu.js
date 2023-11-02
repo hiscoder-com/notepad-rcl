@@ -5,7 +5,7 @@ function ContextMenu({
   setSelectedNodeId,
   selectedNodeId,
   menuItems,
-  treeRef,
+  nodeProps,
   classes,
   style,
   data,
@@ -31,14 +31,11 @@ function ContextMenu({
   }, [selectedNodeId]);
 
   useEffect(() => {
-    if (data) {
+    if (nodeProps?.tree.props.data.length > 0) {
       const { event } = data;
-      if (selectedNodeId) {
-        setVisible(true);
-        setPosition({ top: event.clientY, left: event.clientX });
-      }
-    } else {
-      setVisible(false);
+
+      setVisible(true);
+      setPosition({ top: event.clientY, left: event.clientX });
     }
   }, [data]);
 
@@ -71,22 +68,20 @@ function ContextMenu({
   }
 
   const hideContextMenu = () => {
-    setVisible(false);
+    setSelectedNodeId(null);
   };
 
   return (
     <>
-      {visible && treeRef && (style || classes) && (
+      {visible && nodeProps.tree.props.data.length > 0 && (style || classes) && (
         <div
           style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 100 }}
           onClick={() => {
             hideContextMenu();
-            setSelectedNodeId(null);
           }}
           onContextMenu={(e) => {
             e.preventDefault();
             hideContextMenu();
-            setSelectedNodeId(null);
           }}
         >
           <div
@@ -128,13 +123,15 @@ ContextMenu.defaultProps = {
   selectedNodeId: null,
   setSelectedNodeId: () => {},
   menuItems: [],
-  treeRef: null,
   classes: null,
+  nodeProps: {},
   style: null,
   data: null,
 };
 
 ContextMenu.propTypes = {
+  /** Properties of the current node */
+  nodeProps: PropTypes.object,
   /** ID of the selected node in the tree structure */
   selectedNodeId: PropTypes.string,
   /** Function to set the selected node */
@@ -148,8 +145,6 @@ ContextMenu.propTypes = {
       action: PropTypes.func,
     })
   ),
-  /** Tree component reference */
-  treeRef: PropTypes.object,
   /** Class names for various elements */
   classes: PropTypes.shape({
     /** Class for a single menu item */

@@ -109,9 +109,9 @@ function Component() {
         <ContextMenu
           setSelectedNodeId={setSelectedNodeId}
           selectedNodeId={selectedNodeId}
+          nodeProps={currentNodeProps}
           data={contextMenuEvent}
           menuItems={menuItems}
-          treeRef={treeRef}
           classes={{
             menuItem:
               'gap-2.5 py-1 pr-7 pl-2.5 cursor-pointer bg-gray-100 hover:bg-gray-200',
