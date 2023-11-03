@@ -220,7 +220,7 @@ function Component() {
     }
   };
 
-  const fileIcon = (
+  const file = (
     <svg
       width="15"
       height="15"
@@ -255,7 +255,7 @@ function Component() {
     </svg>
   );
 
-  const openFolderIcon = (
+  const openFolder = (
     <svg
       width="15"
       height="15"
@@ -290,7 +290,7 @@ function Component() {
     </svg>
   );
 
-  const closeFolderIcon = (
+  const closeFolder = (
     <svg
       width="15"
       height="15"
@@ -389,6 +389,14 @@ function Component() {
   const removeButton = { content: removeIcon, title: 'Remove node' };
   const renameButton = { content: renameIcon, title: 'Rename node' };
 
+  const icons = {
+    file,
+    arrowDown,
+    arrowRight,
+    openFolder,
+    closeFolder,
+  };
+
   return (
     <div>
       <div>
@@ -411,24 +419,19 @@ function Component() {
           handleTreeEventDelete={handleTreeEventDelete}
           style={style}
           nodeHeight={57}
-          fileIcon={fileIcon}
           data={dataForTreeView}
-          arrowRight={arrowRight}
           showDeleteButton={true}
           removeButton={removeButton}
           selectedNodeId={selectedNodeId}
-          closeFolderIcon={closeFolderIcon}
           handleRenameNode={handleRenameNode}
           setSelectedNodeId={setSelectedNodeId}
           setHoveredNodeId={setHoveredNodeId}
-          openFolderIcon={openFolderIcon}
           hoveredNodeId={hoveredNodeId}
           renameButton={renameButton}
           showRenameButton={true}
-          removeIcon={removeIcon}
-          arrowDown={arrowDown}
           treeHeight={450}
           treeWidth={500}
+          icons={icons}
           term={term}
         />
       </div>

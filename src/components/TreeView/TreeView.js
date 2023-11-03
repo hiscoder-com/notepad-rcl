@@ -9,27 +9,23 @@ function TreeView({
   handleRenameNode,
   showRenameButton,
   selectedNodeId,
-  openFolderIcon,
-  hoveredNodeId,
   minTreeHeight,
+  hoveredNodeId,
   renameButton,
-  arrowRight,
   treeWidth,
   classes,
   treeRef,
   style,
   term,
   data,
+  icons,
   indent,
   onClick,
-  fileIcon,
-  arrowDown,
   nodeHeight,
   removeButton,
   onDoubleClick,
   openByDefault,
   handleDragDrop,
-  closeFolderIcon,
   showDeleteButton,
   setHoveredNodeId,
   setSelectedNodeId,
@@ -128,20 +124,20 @@ function TreeView({
                     nodeProps.node.children.length > 0 ? (
                       isFolderOpen ? (
                         <>
-                          {arrowDown} {openFolderIcon}
+                          {icons.arrowDown} {icons.openFolder}
                         </>
                       ) : (
                         <>
-                          {arrowRight} {closeFolderIcon}
+                          {icons.arrowRight} {icons.closeFolder}
                         </>
                       )
                     ) : isFolderOpen ? (
-                      <>{openFolderIcon}</>
+                      <>{icons.openFolder}</>
                     ) : (
-                      <>{closeFolderIcon}</>
+                      <>{icons.closeFolder}</>
                     )
                   ) : (
-                    <>{fileIcon}</>
+                    <>{icons.file}</>
                   )}
                   {nodeProps.node.isEditing ? (
                     <input
@@ -223,11 +219,13 @@ TreeView.defaultProps = {
   data: null,
   term: '',
   indent: 20,
-  fileIcon: '🗎',
-  openFolderIcon: '🗁',
-  arrowDown: '⏷',
-  arrowRight: '⏵',
-  closeFolderIcon: '🗀',
+  icons: {
+    file: '🗎',
+    openFolder: '🗁',
+    arrowDown: '⏷',
+    arrowRight: '⏵',
+    closeFolder: '🗀',
+  },
   showDeleteButton: false,
   showRenameButton: false,
   removeButton: { content: '🗑️', title: 'Delete' },
@@ -235,6 +233,14 @@ TreeView.defaultProps = {
 };
 
 TreeView.propTypes = {
+  /** An object with icons/symbols to display the node type */
+  icons: PropTypes.shape({
+    file: PropTypes.node,
+    closeFolder: PropTypes.node,
+    openFolder: PropTypes.node,
+    arrowDown: PropTypes.node,
+    arrowRight: PropTypes.node,
+  }),
   /** Minimum tree window height */
   minTreeHeight: PropTypes.number,
   /** If true, then all folders are open by default */
@@ -315,16 +321,6 @@ TreeView.propTypes = {
   term: PropTypes.string,
   /** Indentation between nesting levels */
   indent: PropTypes.number,
-  /** File icon */
-  fileIcon: PropTypes.node,
-  /** Open folder icon */
-  openFolderIcon: PropTypes.node,
-  /** Arrow icon for expanding tree nodes */
-  arrowDown: PropTypes.node,
-  /** Arrow icon for collapsing tree nodes */
-  arrowRight: PropTypes.node,
-  /** Closed folder icon */
-  closeFolderIcon: PropTypes.node,
   /** Show delete button */
   showDeleteButton: PropTypes.bool,
   /** Show rename button */

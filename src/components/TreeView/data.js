@@ -74,7 +74,6 @@ export const style = {
     cursor: 'pointer',
     paddingLeft: '20px',
     paddingRight: '20px',
-    // width: 'full', // не нужно?!
     borderRadius: '10px',
     display: 'flex',
     justifyContent: 'space-between',
