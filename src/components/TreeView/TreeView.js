@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tree } from 'react-arborist';
 import PropTypes from 'prop-types';
 
@@ -7,6 +7,7 @@ function TreeView({
   getCurrentNodeProps,
   handleContextMenu,
   setSelectedNodeId,
+  openByDefault,
   customContextMenu,
   setHoveredNodeId,
   handleRenameNode,
@@ -20,7 +21,7 @@ function TreeView({
   onDoubleClick,
   removeButton,
   renameButton,
-  treeHeight,
+  minTreeHeight,
   nodeHeight,
   arrowRight,
   arrowDown,
@@ -34,6 +35,13 @@ function TreeView({
   data,
   term,
 }) {
+  const [calcTreeHeight, setCalcTreeHeight] = useState(0);
+  const [visibleNodesCount, setVisibleNodesCount] = useState(0);
+
+  useEffect(() => {
+    setCalcTreeHeight(visibleNodesCount * nodeHeight);
+  }, [visibleNodesCount]);
+
   return (
     <div
       ref={treeRef}
@@ -50,7 +58,8 @@ function TreeView({
         data={data}
         width={treeWidth}
         searchTerm={term}
-        height={treeHeight}
+        height={calcTreeHeight > minTreeHeight ? calcTreeHeight : minTreeHeight}
+        openByDefault={openByDefault}
         rowHeight={nodeHeight}
         disableDrag={handleDragDrop.toString().replace(/\s/g, '').length === 26}
         onMove={handleDragDrop}
@@ -63,6 +72,10 @@ function TreeView({
         {(nodeProps) => {
           const isFile = nodeProps.node.isLeaf;
           const isFolderOpen = nodeProps.node.isOpen;
+
+          useEffect(() => {
+            setVisibleNodesCount(nodeProps.tree.visibleNodes.length);
+          }, [nodeProps.tree.visibleNodes.length]);
 
           return (
             <div className={classes?.nodeContainer} style={style?.nodeContainer}>
@@ -191,6 +204,7 @@ function TreeView({
 }
 
 TreeView.defaultProps = {
+  minTreeHeight: 400,
   customContextMenu: false,
   handleTreeEventDelete: () => {},
   getCurrentNodeProps: () => {},
@@ -204,6 +218,7 @@ TreeView.defaultProps = {
   onClick: () => {},
   treeRef: null,
   classes: null,
+  openByDefault: true,
   style: null,
   data: null,
   term: '',
@@ -220,6 +235,10 @@ TreeView.defaultProps = {
 };
 
 TreeView.propTypes = {
+  /** Minimum tree window height */
+  minTreeHeight: PropTypes.number,
+  /** If true, then all folders are open by default */
+  openByDefault: PropTypes.bool,
   /** Tree element deletion event handler function */
   handleTreeEventDelete: PropTypes.func,
   /** responsible for disabling the standard context menu */
@@ -242,8 +261,6 @@ TreeView.propTypes = {
   hoveredNodeId: PropTypes.string,
   /** Double click handler function */
   onDoubleClick: PropTypes.func,
-  /** Tree height */
-  treeHeight: PropTypes.number,
   /** Tree width */
   treeWidth: PropTypes.number,
   /** Click handler function */

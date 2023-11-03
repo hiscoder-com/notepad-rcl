@@ -31,9 +31,8 @@ function ContextMenu({
   }, [selectedNodeId]);
 
   useEffect(() => {
-    if (nodeProps?.tree.props.data.length > 0) {
+    if (selectedNodeId && nodeProps?.tree.props.data.length > 0) {
       const { event } = data;
-
       setVisible(true);
       setPosition({ top: event.clientY, left: event.clientX });
     }
