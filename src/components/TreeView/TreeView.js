@@ -4,36 +4,36 @@ import PropTypes from 'prop-types';
 
 function TreeView({
   handleTreeEventDelete,
-  getCurrentNodeProps,
   handleContextMenu,
-  setSelectedNodeId,
-  openByDefault,
   customContextMenu,
-  setHoveredNodeId,
   handleRenameNode,
-  showDeleteButton,
   showRenameButton,
-  closeFolderIcon,
   selectedNodeId,
-  handleDragDrop,
   openFolderIcon,
   hoveredNodeId,
-  onDoubleClick,
-  removeButton,
-  renameButton,
   minTreeHeight,
-  nodeHeight,
+  renameButton,
   arrowRight,
-  arrowDown,
   treeWidth,
-  fileIcon,
   classes,
-  onClick,
   treeRef,
-  indent,
   style,
-  data,
   term,
+  data,
+  indent,
+  onClick,
+  fileIcon,
+  arrowDown,
+  nodeHeight,
+  removeButton,
+  onDoubleClick,
+  openByDefault,
+  handleDragDrop,
+  closeFolderIcon,
+  showDeleteButton,
+  setHoveredNodeId,
+  setSelectedNodeId,
+  getCurrentNodeProps,
 }) {
   const [calcTreeHeight, setCalcTreeHeight] = useState(0);
   const [visibleNodesCount, setVisibleNodesCount] = useState(0);
@@ -244,7 +244,13 @@ TreeView.propTypes = {
   /** responsible for disabling the standard context menu */
   customContextMenu: PropTypes.bool,
   /** Data for visual representation of hierarchy */
-  data: PropTypes.array,
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      name: PropTypes.string,
+      children: PropTypes.array,
+    })
+  ),
   /** Function to get properties of the current node */
   getCurrentNodeProps: PropTypes.func,
   /** Context menu handler function */

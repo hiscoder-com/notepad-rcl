@@ -408,6 +408,7 @@ function Component() {
         </div>
 
         <TreeView
+          handleTreeEventDelete={handleTreeEventDelete}
           style={style}
           nodeHeight={57}
           fileIcon={fileIcon}
@@ -418,7 +419,6 @@ function Component() {
           selectedNodeId={selectedNodeId}
           closeFolderIcon={closeFolderIcon}
           handleRenameNode={handleRenameNode}
-          handleTreeEventDelete={handleTreeEventDelete}
           setSelectedNodeId={setSelectedNodeId}
           setHoveredNodeId={setHoveredNodeId}
           openFolderIcon={openFolderIcon}
