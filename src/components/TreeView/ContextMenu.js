@@ -38,19 +38,17 @@ function ContextMenu({
     }
   }, [clickMenuEvent]);
 
-  function MenuItem({ onClick, icon, children }) {
+  function MenuItem({ onClick, children }) {
     return (
       <div
         onContextMenu={(e) => e.preventDefault()}
         className={classes?.menuItem}
         style={{
           ...styles?.menuItem,
-          display: 'flex',
-          alignItems: 'center',
         }}
         onClick={onClick}
       >
-        {icon} <span>{children}</span>
+        {children}
       </div>
     );
   }
@@ -81,8 +79,8 @@ function ContextMenu({
             <div className={classes?.menuContainer} style={styles?.menuContainer}>
               {menuItems.length > 0 ? (
                 menuItems.map((item) => (
-                  <MenuItem key={item.id} onClick={item.action} icon={item.icon}>
-                    <span>{item.label}</span>
+                  <MenuItem key={item.id} onClick={item.action}>
+                    {item.buttonContent}
                   </MenuItem>
                 ))
               ) : (
@@ -122,8 +120,7 @@ ContextMenu.propTypes = {
   menuItems: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string,
-      icon: PropTypes.element,
-      label: PropTypes.string,
+      buttonContent: PropTypes.node,
       action: PropTypes.func,
     })
   ),
