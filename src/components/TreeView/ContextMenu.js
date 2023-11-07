@@ -43,9 +43,7 @@ function ContextMenu({
       <div
         onContextMenu={(e) => e.preventDefault()}
         className={classes?.menuItem}
-        style={{
-          ...styles?.menuItem,
-        }}
+        style={styles?.menuItem}
         onClick={onClick}
       >
         {children}
@@ -59,7 +57,7 @@ function ContextMenu({
 
   return (
     <>
-      {visible && nodeProps.tree.props.data.length > 0 && (styles || classes) && (
+      {visible && nodeProps.tree.props.data.length > 0 && (
         <div
           style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 100 }}
           onClick={hideContextMenu}
