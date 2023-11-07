@@ -33,7 +33,7 @@ function Component() {
     setDataForTreeView(convertNotesToTree(databaseNotes));
   }, [databaseNotes]);
 
-  const handleTreeEventDelete = ({ ids }) => {
+  const handleDeleteNode = ({ ids }) => {
     const updatedNote = databaseNotes.filter((el) => el.id !== ids[0]);
     setDatabaseNotes(updatedNote);
   };
@@ -103,7 +103,7 @@ function Component() {
           setSelectedNodeId={setSelectedNodeId}
           handleContextMenu={handleContextMenu}
           getCurrentNodeProps={setCurrentNodeProps}
-          handleTreeEventDelete={handleTreeEventDelete}
+          handleDeleteNode={handleDeleteNode}
         />
         <ContextMenu
           setSelectedNodeId={setSelectedNodeId}

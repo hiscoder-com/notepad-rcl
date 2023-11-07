@@ -3,7 +3,7 @@ import { Tree } from 'react-arborist';
 import PropTypes from 'prop-types';
 
 function TreeView({
-  handleTreeEventDelete, // actions
+  handleDeleteNode, // actions
   handleContextMenu, // actions
   handleRenameNode, // actions
   showRenameButton, // displayOptions
@@ -19,10 +19,10 @@ function TreeView({
   data, // state
   icons,
   indent,
-  onClick, // actions
+  handleOnClick, // actions
   nodeHeight,
   removeButton,
-  onDoubleClick, // actions
+  handleDoubleClick, // actions
   openByDefault, // displayOptions
   handleDragDrop, // actions
   showRemoveButton, // displayOptions
@@ -58,7 +58,7 @@ function TreeView({
         rowHeight={nodeHeight}
         disableDrag={handleDragDrop.toString().replace(/\s/g, '').length === 26}
         onMove={handleDragDrop}
-        onDelete={handleTreeEventDelete}
+        onDelete={handleDeleteNode}
         onContextMenu={handleContextMenu}
         searchMatch={(node, term) =>
           node.data.name.toLowerCase().includes(term.toLowerCase())
@@ -90,12 +90,12 @@ function TreeView({
                 }}
                 onClick={() => {
                   setSelectedNodeId(nodeProps.node.id);
-                  !nodeProps.node.isInternal && onClick && onClick(nodeProps);
+                  !nodeProps.node.isInternal && handleOnClick && handleOnClick(nodeProps);
                 }}
                 onDoubleClick={() =>
                   nodeProps.node.isInternal
                     ? nodeProps.node.toggle()
-                    : onDoubleClick && onDoubleClick(nodeProps)
+                    : handleDoubleClick && handleDoubleClick(nodeProps)
                 }
                 onContextMenu={(event) => {
                   handleContextMenu && event.preventDefault();
@@ -200,7 +200,7 @@ function TreeView({
 
 TreeView.defaultProps = {
   minTreeHeight: 400,
-  handleTreeEventDelete: () => {},
+  handleDeleteNode: () => {},
   getCurrentNodeProps: () => {},
   handleContextMenu: () => {},
   setSelectedNodeId: () => {},
@@ -208,8 +208,8 @@ TreeView.defaultProps = {
   handleRenameNode: () => {},
   handleDragDrop: () => {},
   hoveredNodeId: null,
-  onDoubleClick: () => {},
-  onClick: () => {},
+  handleDoubleClick: () => {},
+  handleOnClick: () => {},
   treeRef: null,
   classes: null,
   openByDefault: true,
@@ -244,7 +244,7 @@ TreeView.propTypes = {
   /** If true, then all folders are open by default */
   openByDefault: PropTypes.bool,
   /** Tree element deletion event handler function */
-  handleTreeEventDelete: PropTypes.func,
+  handleDeleteNode: PropTypes.func,
   /** Data for visual representation of hierarchy */
   data: PropTypes.arrayOf(
     PropTypes.shape({
@@ -268,11 +268,11 @@ TreeView.propTypes = {
   /** Hover node ID */
   hoveredNodeId: PropTypes.string,
   /** Double click handler function */
-  onDoubleClick: PropTypes.func,
+  handleDoubleClick: PropTypes.func,
   /** Tree width */
   treeWidth: PropTypes.number,
   /** Click handler function */
-  onClick: PropTypes.func,
+  handleOnClick: PropTypes.func,
   /** Tree component reference */
   treeRef: PropTypes.object,
   /** Class names for various elements */

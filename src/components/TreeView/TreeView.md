@@ -32,7 +32,7 @@ function Component() {
     setDataForTreeView(convertNotesToTree(databaseNotes));
   }, [databaseNotes]);
 
-  const handleTreeEventDelete = ({ ids }) => {
+  const handleDeleteNode = ({ ids }) => {
     const updatedNote = databaseNotes.filter((el) => el.id !== ids[0]);
 
     setDatabaseNotes(updatedNote);
@@ -104,7 +104,7 @@ function Component() {
     }
   };
 
-  const onDoubleClick = (nodeProps) => {
+  const handleDoubleClick = (nodeProps) => {
     const note = databaseNotes.find((el) => el.id === selectedNodeId);
     setActiveNote(note);
   };
@@ -120,14 +120,14 @@ function Component() {
             treeHeight={450}
             treeRef={treeRef}
             data={dataForTreeView}
-            onDoubleClick={onDoubleClick}
+            handleDoubleClick={handleDoubleClick}
             hoveredNodeId={hoveredNodeId}
             selectedNodeId={selectedNodeId}
             handleDragDrop={handleDragDrop}
             handleRenameNode={handleRenameNode}
             setHoveredNodeId={setHoveredNodeId}
             setSelectedNodeId={setSelectedNodeId}
-            handleTreeEventDelete={handleTreeEventDelete}
+            handleDeleteNode={handleDeleteNode}
           />
         </>
       ) : (
@@ -206,7 +206,7 @@ function Component() {
     setDataForTreeView(convertNotesToTree(databaseNotes));
   }, [databaseNotes]);
 
-  const handleTreeEventDelete = ({ ids }) => {
+  const handleDeleteNode = ({ ids }) => {
     const updatedNote = databaseNotes.filter((el) => el.id !== ids[0]);
     setDatabaseNotes(updatedNote);
   };
@@ -416,7 +416,7 @@ function Component() {
         </div>
 
         <TreeView
-          handleTreeEventDelete={handleTreeEventDelete}
+          handleDeleteNode={handleDeleteNode}
           style={style}
           nodeHeight={57}
           data={dataForTreeView}
