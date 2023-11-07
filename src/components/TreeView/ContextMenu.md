@@ -110,10 +110,10 @@ function Component() {
           nodeProps={currentNodeProps}
           data={contextMenuEvent}
           menuItems={menuItems}
+          styles={{ menuWrapper: { zIndex: 50 } }}
           classes={{
             menuItem:
               'gap-2.5 py-1 pr-7 pl-2.5 cursor-pointer bg-gray-100 hover:bg-gray-200',
-            menuWrapper: 'fixed z-50',
             menuContainer:
               'absolute border rounded z-[100] whitespace-nowrap bg-white shadow',
             emptyMenu: 'p-2.5 cursor-pointer text-gray-300',

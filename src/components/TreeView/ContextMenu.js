@@ -7,10 +7,9 @@ function ContextMenu({
   menuItems,
   nodeProps,
   classes,
-  style,
+  styles,
   data,
 }) {
-  const [hoveredItemId, setHoveredItemId] = useState(null);
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: 0 });
 
@@ -38,26 +37,17 @@ function ContextMenu({
     }
   }, [data]);
 
-  const handleMouseEnter = (itemId) => {
-    setHoveredItemId(itemId);
-  };
-
-  function MenuItem({ onClick, itemId, icon, children, isHovered }) {
+  function MenuItem({ onClick, icon, children }) {
     return (
       <div
         onContextMenu={(e) => e.preventDefault()}
         className={classes?.menuItem}
         style={{
-          ...style?.menuItem,
+          ...styles?.menuItem,
           display: 'flex',
           alignItems: 'center',
-          backgroundColor: isHovered
-            ? style?.menuItem?.hoveredColor
-            : style?.menuItem?.backgroundColor,
         }}
         onClick={onClick}
-        onMouseEnter={() => handleMouseEnter(itemId)}
-        onMouseLeave={() => handleMouseEnter(null)}
       >
         {icon} <span>{children}</span>
       </div>
@@ -70,7 +60,7 @@ function ContextMenu({
 
   return (
     <>
-      {visible && nodeProps.tree.props.data.length > 0 && (style || classes) && (
+      {visible && nodeProps.tree.props.data.length > 0 && (styles || classes) && (
         <div
           style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 100 }}
           onClick={hideContextMenu}
@@ -80,30 +70,22 @@ function ContextMenu({
           }}
         >
           <div
-            className={`${classes?.menuWrapper} top-[${position.top + 'px'}] left-[${
-              position.left + 'px'
-            }]`}
             style={{
-              ...style?.menuWrapper,
-              top: style?.menuWrapper?.top || position.top + 'px',
-              left: style?.menuWrapper?.left || position.left + 'px',
+              ...styles?.menuWrapper,
+              position: 'fixed',
+              top: styles?.menuWrapper?.top || position.top + 'px',
+              left: styles?.menuWrapper?.left || position.left + 'px',
             }}
           >
-            <div className={classes?.menuContainer} style={style?.menuContainer}>
+            <div className={classes?.menuContainer} style={styles?.menuContainer}>
               {menuItems.length > 0 ? (
                 menuItems.map((item) => (
-                  <MenuItem
-                    key={item.id}
-                    itemId={item.id}
-                    onClick={item.action}
-                    icon={item.icon}
-                    isHovered={item.id === hoveredItemId}
-                  >
+                  <MenuItem key={item.id} onClick={item.action} icon={item.icon}>
                     <span>{item.label}</span>
                   </MenuItem>
                 ))
               ) : (
-                <div className={classes?.emptyMenu} style={style?.emptyMenu}>
+                <div className={classes?.emptyMenu} style={styles?.emptyMenu}>
                   No menu items provided.
                 </div>
               )}
@@ -121,7 +103,7 @@ ContextMenu.defaultProps = {
   menuItems: [],
   classes: null,
   nodeProps: {},
-  style: null,
+  styles: null,
   data: null,
 };
 
@@ -154,7 +136,7 @@ ContextMenu.propTypes = {
   }),
 
   /** Component styles */
-  style: PropTypes.shape({
+  styles: PropTypes.shape({
     /** Style for a single menu item with background colors for normal (backgroundColor) and hover states (hoveredColor). */
     menuItem: PropTypes.object,
     /** Style to wrap the entire context menu */
