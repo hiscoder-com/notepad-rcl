@@ -3,32 +3,32 @@ import { Tree } from 'react-arborist';
 import PropTypes from 'prop-types';
 
 function TreeView({
-  handleDeleteNode, // actions
-  handleContextMenu, // actions
-  handleRenameNode, // actions
-  showRenameButton, // displayOptions
-  selectedNodeId, // state
+  handleDeleteNode,
+  handleContextMenu,
+  handleRenameNode,
+  handleDoubleClick,
+  handleOnClick,
+  handleDragDrop,
+  showRenameButton,
+  showRemoveButton,
   minTreeHeight,
-  hoveredNodeId, // state
-  renameButton,
   treeWidth,
-  classes,
-  treeRef,
-  style,
-  term, // state
-  data, // state
-  icons,
-  indent,
-  handleOnClick, // actions
   nodeHeight,
+  treeRef,
+  indent,
+  classes,
+  style,
+  term,
+  data,
+  icons,
+  renameButton,
   removeButton,
-  handleDoubleClick, // actions
-  openByDefault, // displayOptions
-  handleDragDrop, // actions
-  showRemoveButton, // displayOptions
-  setHoveredNodeId, // state
-  setSelectedNodeId, // state
-  getCurrentNodeProps, // state
+  openByDefault,
+  hoveredNodeId,
+  setHoveredNodeId,
+  selectedNodeId,
+  setSelectedNodeId,
+  getCurrentNodeProps,
 }) {
   const [calcTreeHeight, setCalcTreeHeight] = useState(0);
   const [visibleNodesCount, setVisibleNodesCount] = useState(0);
@@ -199,7 +199,10 @@ function TreeView({
 }
 
 TreeView.defaultProps = {
+  selectedNodeId: '',
+  nodeHeight: 57,
   minTreeHeight: 400,
+  treeWidth: 300,
   handleDeleteNode: () => {},
   getCurrentNodeProps: () => {},
   handleContextMenu: () => {},
@@ -207,14 +210,14 @@ TreeView.defaultProps = {
   setHoveredNodeId: () => {},
   handleRenameNode: () => {},
   handleDragDrop: () => {},
-  hoveredNodeId: null,
+  hoveredNodeId: '',
   handleDoubleClick: () => {},
   handleOnClick: () => {},
   treeRef: null,
-  classes: null,
+  classes: {},
   openByDefault: true,
-  style: null,
-  data: null,
+  style: {},
+  data: [],
   term: '',
   indent: 20,
   icons: {
@@ -239,6 +242,10 @@ TreeView.propTypes = {
     arrowDown: PropTypes.node,
     arrowRight: PropTypes.node,
   }),
+  /** ID of the selected node */
+  selectedNodeId: PropTypes.string,
+  /** Height of each node */
+  nodeHeight: PropTypes.number,
   /** Minimum tree window height */
   minTreeHeight: PropTypes.number,
   /** If true, then all folders are open by default */

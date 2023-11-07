@@ -42,9 +42,7 @@ function ContextMenu({
     setHoveredItemId(itemId);
   };
 
-  function MenuItem({ onClick, itemId, icon, children }) {
-    const isHovered = itemId === hoveredItemId;
-
+  function MenuItem({ onClick, itemId, icon, children, isHovered }) {
     return (
       <div
         onContextMenu={(e) => e.preventDefault()}
@@ -75,9 +73,7 @@ function ContextMenu({
       {visible && nodeProps.tree.props.data.length > 0 && (style || classes) && (
         <div
           style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 100 }}
-          onClick={() => {
-            hideContextMenu();
-          }}
+          onClick={hideContextMenu}
           onContextMenu={(e) => {
             e.preventDefault();
             hideContextMenu();
@@ -101,6 +97,7 @@ function ContextMenu({
                     itemId={item.id}
                     onClick={item.action}
                     icon={item.icon}
+                    isHovered={item.id === hoveredItemId}
                   >
                     <span>{item.label}</span>
                   </MenuItem>

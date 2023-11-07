@@ -116,7 +116,6 @@ function Component() {
           <TreeView
             style={style}
             treeWidth={500}
-            nodeHeight={57}
             treeHeight={450}
             treeRef={treeRef}
             data={dataForTreeView}
@@ -418,7 +417,6 @@ function Component() {
         <TreeView
           handleDeleteNode={handleDeleteNode}
           style={style}
-          nodeHeight={57}
           data={dataForTreeView}
           showRemoveButton={true}
           removeButton={removeButton}

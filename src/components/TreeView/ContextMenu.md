@@ -91,7 +91,6 @@ function Component() {
               'flex px-5 leading-[47px] cursor-pointer rounded-lg bg-gray-100 hover:bg-gray-200',
             nodeTextBlock: 'items-center',
           }}
-          nodeHeight={57}
           treeWidth={500}
           treeHeight={450}
           treeRef={treeRef}
