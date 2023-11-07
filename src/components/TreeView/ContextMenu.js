@@ -9,6 +9,7 @@ function ContextMenu({
   classes,
   styles,
   clickMenuEvent,
+  emptyMenuText,
 }) {
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: 0 });
@@ -86,7 +87,7 @@ function ContextMenu({
                 ))
               ) : (
                 <div className={classes?.emptyMenu} style={styles?.emptyMenu}>
-                  No menu items provided.
+                  {emptyMenuText}
                 </div>
               )}
             </div>
@@ -105,11 +106,14 @@ ContextMenu.defaultProps = {
   nodeProps: {},
   styles: null,
   clickMenuEvent: null,
+  emptyMenuText: 'No menu items provided.',
 };
 
 ContextMenu.propTypes = {
   /** Properties of the current node */
   nodeProps: PropTypes.object,
+  /** If there is no menuItems, then we will see this text */
+  emptyMenuText: PropTypes.string,
   /** ID of the selected node in the tree structure */
   selectedNodeId: PropTypes.string,
   /** Function to set the selected node */
