@@ -82,6 +82,7 @@ export const style = {
     selectedColor: '#bdbdbd',
   },
   nodeTextBlock: { alignItems: 'center' },
+  nodeButtonBlock: { display: 'flex', alignItems: 'center', gap: '7px' },
   searchContainer: {
     position: 'relative',
     marginBottom: '20px',
