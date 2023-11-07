@@ -8,7 +8,7 @@ function ContextMenu({
   nodeProps,
   classes,
   styles,
-  data,
+  clickMenuEvent,
 }) {
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: 0 });
@@ -31,11 +31,11 @@ function ContextMenu({
 
   useEffect(() => {
     if (selectedNodeId && nodeProps?.tree.props.data.length > 0) {
-      const { event } = data;
+      const { event } = clickMenuEvent;
       setVisible(true);
       setPosition({ top: event.clientY, left: event.clientX });
     }
-  }, [data]);
+  }, [clickMenuEvent]);
 
   function MenuItem({ onClick, icon, children }) {
     return (
@@ -104,7 +104,7 @@ ContextMenu.defaultProps = {
   classes: null,
   nodeProps: {},
   styles: null,
-  data: null,
+  clickMenuEvent: null,
 };
 
 ContextMenu.propTypes = {
@@ -148,7 +148,7 @@ ContextMenu.propTypes = {
   }),
 
   /** An object that contains information about the event that triggers the context menu */
-  data: PropTypes.object,
+  clickMenuEvent: PropTypes.object,
 };
 
 export default ContextMenu;

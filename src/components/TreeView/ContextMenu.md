@@ -108,7 +108,7 @@ function Component() {
           setSelectedNodeId={setSelectedNodeId}
           selectedNodeId={selectedNodeId}
           nodeProps={currentNodeProps}
-          data={contextMenuEvent}
+          clickMenuEvent={contextMenuEvent}
           menuItems={menuItems}
           styles={{ menuWrapper: { zIndex: 50 } }}
           classes={{
