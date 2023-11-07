@@ -37,7 +37,6 @@ function Redactor({
 
   return (
     <div className={classes.wrapper}>
-      <div className={classes.parentBC}>{activeNote?.parentBC}</div>
       {!disableTitle && (
         <div
           className={classes.title}
