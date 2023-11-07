@@ -56,6 +56,7 @@ function TreeView({
         height={calcTreeHeight > minTreeHeight ? calcTreeHeight : minTreeHeight}
         openByDefault={openByDefault}
         rowHeight={nodeHeight}
+        rowClassName={'focus:outline-none'}
         disableDrag={handleDragDrop.toString().replace(/\s/g, '').length === 26}
         onMove={handleDragDrop}
         onDelete={handleDeleteNode}
