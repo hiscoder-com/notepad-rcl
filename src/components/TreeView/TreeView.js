@@ -3,33 +3,32 @@ import { Tree } from 'react-arborist';
 import PropTypes from 'prop-types';
 
 function TreeView({
-  handleTreeEventDelete,
-  handleContextMenu,
-  customContextMenu,
-  handleRenameNode,
-  showRenameButton,
-  selectedNodeId,
+  handleTreeEventDelete, // actions
+  handleContextMenu, // actions
+  handleRenameNode, // actions
+  showRenameButton, // displayOptions
+  selectedNodeId, // state
   minTreeHeight,
-  hoveredNodeId,
+  hoveredNodeId, // state
   renameButton,
   treeWidth,
   classes,
   treeRef,
   style,
-  term,
-  data,
+  term, // state
+  data, // state
   icons,
   indent,
-  onClick,
+  onClick, // actions
   nodeHeight,
   removeButton,
-  onDoubleClick,
-  openByDefault,
-  handleDragDrop,
-  showDeleteButton,
-  setHoveredNodeId,
-  setSelectedNodeId,
-  getCurrentNodeProps,
+  onDoubleClick, // actions
+  openByDefault, // displayOptions
+  handleDragDrop, // actions
+  showRemoveButton, // displayOptions
+  setHoveredNodeId, // state
+  setSelectedNodeId, // state
+  getCurrentNodeProps, // state
 }) {
   const [calcTreeHeight, setCalcTreeHeight] = useState(0);
   const [visibleNodesCount, setVisibleNodesCount] = useState(0);
@@ -47,7 +46,7 @@ function TreeView({
       className={classes?.treeContainer}
       style={style?.treeContainer}
       onContextMenu={(event) => {
-        customContextMenu && event.preventDefault();
+        handleContextMenu && event.preventDefault();
       }}
     >
       <Tree
@@ -99,7 +98,7 @@ function TreeView({
                     : onDoubleClick && onDoubleClick(nodeProps)
                 }
                 onContextMenu={(event) => {
-                  customContextMenu && event.preventDefault();
+                  handleContextMenu && event.preventDefault();
                   nodeProps.node.select();
                   nodeProps.node.tree.props.onContextMenu(event);
                   getCurrentNodeProps(nodeProps);
@@ -176,7 +175,7 @@ function TreeView({
                       {renameButton.content}
                     </button>
                   )}
-                  {showDeleteButton && (
+                  {showRemoveButton && (
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -201,7 +200,6 @@ function TreeView({
 
 TreeView.defaultProps = {
   minTreeHeight: 400,
-  customContextMenu: false,
   handleTreeEventDelete: () => {},
   getCurrentNodeProps: () => {},
   handleContextMenu: () => {},
@@ -226,7 +224,7 @@ TreeView.defaultProps = {
     arrowRight: '⏵',
     closeFolder: '🗀',
   },
-  showDeleteButton: false,
+  showRemoveButton: false,
   showRenameButton: false,
   removeButton: { content: '🗑️', title: 'Delete' },
   renameButton: { content: '✏️', title: 'Rename...' },
@@ -247,8 +245,6 @@ TreeView.propTypes = {
   openByDefault: PropTypes.bool,
   /** Tree element deletion event handler function */
   handleTreeEventDelete: PropTypes.func,
-  /** responsible for disabling the standard context menu */
-  customContextMenu: PropTypes.bool,
   /** Data for visual representation of hierarchy */
   data: PropTypes.arrayOf(
     PropTypes.shape({
@@ -322,7 +318,7 @@ TreeView.propTypes = {
   /** Indentation between nesting levels */
   indent: PropTypes.number,
   /** Show delete button */
-  showDeleteButton: PropTypes.bool,
+  showRemoveButton: PropTypes.bool,
   /** Show rename button */
   showRenameButton: PropTypes.bool,
   /** Delete button with content and title */

@@ -96,7 +96,6 @@ function Component() {
           treeHeight={450}
           treeRef={treeRef}
           data={dataForTreeView}
-          customContextMenu={true}
           hoveredNodeId={hoveredNodeId}
           selectedNodeId={selectedNodeId}
           handleRenameNode={handleRenameNode}

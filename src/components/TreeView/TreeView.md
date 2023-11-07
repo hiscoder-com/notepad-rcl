@@ -420,7 +420,7 @@ function Component() {
           style={style}
           nodeHeight={57}
           data={dataForTreeView}
-          showDeleteButton={true}
+          showRemoveButton={true}
           removeButton={removeButton}
           selectedNodeId={selectedNodeId}
           handleRenameNode={handleRenameNode}
