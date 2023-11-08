@@ -14,7 +14,6 @@ function TreeView({
   minTreeHeight,
   treeWidth,
   nodeHeight,
-  treeRef,
   indent,
   classes,
   style,
@@ -39,7 +38,6 @@ function TreeView({
 
   return (
     <div
-      ref={treeRef}
       onClick={(e) => {
         e.stopPropagation();
       }}
@@ -214,7 +212,6 @@ TreeView.defaultProps = {
   hoveredNodeId: '',
   handleDoubleClick: () => {},
   handleOnClick: () => {},
-  treeRef: null,
   classes: {},
   openByDefault: true,
   style: {},
@@ -281,8 +278,6 @@ TreeView.propTypes = {
   treeWidth: PropTypes.number,
   /** Click handler function */
   handleOnClick: PropTypes.func,
-  /** Tree component reference */
-  treeRef: PropTypes.object,
   /** Class names for various elements */
   classes: PropTypes.shape({
     /** Class for the container of the tree */

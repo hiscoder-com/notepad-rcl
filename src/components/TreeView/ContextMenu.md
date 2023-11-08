@@ -1,7 +1,7 @@
 ### **Using a custom context menu**
 
 ```jsx
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TreeView, ContextMenu } from '@texttree/notepad-rcl';
 import { initialData } from './data';
 
@@ -23,7 +23,6 @@ const renameIcon = (
 );
 
 function Component() {
-  const treeRef = useRef(null);
   const [hoveredNodeId, setHoveredNodeId] = useState(null);
   const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [contextMenuEvent, setContextMenuEvent] = useState(null);
@@ -98,8 +97,6 @@ function Component() {
             nodeTextBlock: 'items-center',
           }}
           treeWidth={500}
-          treeHeight={450}
-          treeRef={treeRef}
           data={dataForTreeView}
           hoveredNodeId={hoveredNodeId}
           selectedNodeId={selectedNodeId}

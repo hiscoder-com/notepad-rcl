@@ -1,12 +1,11 @@
 ### **Saving to the database and using Drag and drop sorting**
 
 ```jsx
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TreeView, Redactor } from '@texttree/notepad-rcl';
 import { initialData, style } from './data';
 
 function Component() {
-  const treeRef = useRef(null);
   const [hoveredNodeId, setHoveredNodeId] = useState(null);
   const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [activeNote, setActiveNote] = useState(null);
@@ -116,8 +115,6 @@ function Component() {
           <TreeView
             style={style}
             treeWidth={500}
-            treeHeight={450}
-            treeRef={treeRef}
             data={dataForTreeView}
             handleDoubleClick={handleDoubleClick}
             hoveredNodeId={hoveredNodeId}
@@ -376,7 +373,6 @@ function Component() {
           hoveredNodeId={hoveredNodeId}
           renameButton={renameButton}
           showRenameButton={true}
-          treeHeight={450}
           treeWidth={500}
           icons={icons}
           term={term}
