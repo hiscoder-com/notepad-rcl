@@ -33,7 +33,7 @@ function TreeView({
   const [visibleNodesCount, setVisibleNodesCount] = useState(0);
 
   useEffect(() => {
-    setCalcTreeHeight(visibleNodesCount * nodeHeight);
+    setCalcTreeHeight((visibleNodesCount + 1) * nodeHeight);
   }, [visibleNodesCount]);
 
   return (
