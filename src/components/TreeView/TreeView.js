@@ -275,7 +275,7 @@ TreeView.propTypes = {
   /** Double click handler function */
   handleDoubleClick: PropTypes.func,
   /** Tree width */
-  treeWidth: PropTypes.number,
+  treeWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   /** Click handler function */
   handleOnClick: PropTypes.func,
   /** Class names for various elements */
