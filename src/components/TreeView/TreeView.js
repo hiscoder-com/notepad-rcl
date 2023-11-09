@@ -55,7 +55,7 @@ function TreeView({
         openByDefault={openByDefault}
         rowHeight={nodeHeight}
         rowClassName={'focus:outline-none'}
-        disableDrag={handleDragDrop.toString().replace(/\s/g, '').length === 26}
+        disableDrag={handleDragDrop !== null ? false : true}
         onMove={handleDragDrop}
         onDelete={handleDeleteNode}
         onContextMenu={handleContextMenu}
@@ -208,7 +208,7 @@ TreeView.defaultProps = {
   setSelectedNodeId: () => {},
   setHoveredNodeId: () => {},
   handleRenameNode: () => {},
-  handleDragDrop: () => {},
+  handleDragDrop: null,
   hoveredNodeId: '',
   handleDoubleClick: () => {},
   handleOnClick: () => {},
