@@ -28,6 +28,7 @@ function TreeView({
   selectedNodeId,
   setSelectedNodeId,
   getCurrentNodeProps,
+  selection,
 }) {
   const [calcTreeHeight, setCalcTreeHeight] = useState(0);
   const [visibleNodesCount, setVisibleNodesCount] = useState(0);
@@ -48,6 +49,7 @@ function TreeView({
       }}
     >
       <Tree
+        selection={selection}
         data={data}
         width={treeWidth}
         searchTerm={term}
@@ -199,6 +201,7 @@ function TreeView({
 
 TreeView.defaultProps = {
   selectedNodeId: '',
+  selection: '',
   nodeHeight: 57,
   minTreeHeight: 400,
   treeWidth: 300,
@@ -242,6 +245,8 @@ TreeView.propTypes = {
   }),
   /** ID of the selected node */
   selectedNodeId: PropTypes.string,
+  /** Passing an id to the selection prop will select and scroll to that node whenever that id changes */
+  selection: PropTypes.string,
   /** Height of each node */
   nodeHeight: PropTypes.number,
   /** Minimum tree window height */
