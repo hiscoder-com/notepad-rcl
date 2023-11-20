@@ -13,10 +13,11 @@ function Redactor({
   activeNote,
   readOnly,
   initId,
+  emptyTitle,
 }) {
   const ReactEditorJS = createReactEditorJS();
 
-  const [title, setTitle] = useState(activeNote?.title || '');
+  const [title, setTitle] = useState(activeNote?.title || emptyTitle);
 
   useEffect(() => {
     if (activeNote?.title) {
@@ -25,9 +26,10 @@ function Redactor({
   }, [activeNote]);
 
   const handleTitleChange = (e) => {
-    const newTitle = e.target.innerText;
-    setActiveNote((prev) => ({ ...prev, title: newTitle }));
-    setTitle(newTitle);
+    const newTitle = e.target.innerText.trim();
+    const updatedTitle = newTitle || emptyTitle;
+    setActiveNote((prev) => ({ ...prev, title: updatedTitle }));
+    setTitle(updatedTitle);
   };
 
   const handleEditorChange = async (e) => {
@@ -69,6 +71,7 @@ function Redactor({
 Redactor.defaultProps = {
   editorTools: {},
   initId: 'default_id',
+  emptyTitle: 'Empty Title',
   placeholder: 'Let`s write an awesome note!',
   activeNote: {},
   setActiveNote: () => {},
@@ -100,6 +103,8 @@ Redactor.propTypes = {
   readOnly: PropTypes.bool,
   /** If true, then the title is not displayed */
   disableTitle: PropTypes.bool,
+  /** Sets the title value if the title is empty */
+  emptyTitle: PropTypes.string,
 };
 
 export default Redactor;
