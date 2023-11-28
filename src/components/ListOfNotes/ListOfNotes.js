@@ -23,28 +23,28 @@ function ListOfNotes({
   };
 
   return (
-    <div className={classes.wrapper}>
-      {notes.map((el) => (
-        <div key={el.id} className={classes.item} onClick={() => handleClick(el.id)}>
-          <div className={classes.title}>{el.title}</div>
+    <div className={classes?.wrapper}>
+      {notes?.map((note) => (
+        <div key={note.id} className={classes?.item} onClick={() => handleClick(note.id)}>
+          <div className={classes?.title}>{note.title}</div>
           {isShowText && (
-            <div className={classes.text}>
-              <Blocks data={el.data} />
+            <div className={classes?.text}>
+              <Blocks data={note.data} />
             </div>
           )}
 
           {isShowDelBtn && (
             <button
-              className={classes.delBtn}
-              onClick={(e) => handleRemoveNote(e, el.id)}
+              className={classes?.delBtn}
+              onClick={(e) => handleRemoveNote(e, note.id)}
             >
               {delBtnChildren}
             </button>
           )}
 
-          {isShowDate && el.created_at && (
-            <div className={classes.date}>
-              {new Date(el.created_at).toLocaleString('ru', dateOptions)}
+          {isShowDate && note.created_at && (
+            <div className={classes?.date}>
+              {new Date(note.created_at).toLocaleString('ru', dateOptions)}
             </div>
           )}
         </div>
@@ -91,10 +91,10 @@ ListOfNotes.propTypes = {
   /** an array of existing notes. Required to display a list of notes */
   notes: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number,
+      id: PropTypes.string,
       title: PropTypes.string,
       data: PropTypes.object,
-      created_at: PropTypes.string,
+      created_at: PropTypes.instanceOf(Date),
     })
   ),
   /** function to remove a note */

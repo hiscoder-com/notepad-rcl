@@ -55,7 +55,7 @@ function useData() {
         data,
         created_at: new Date(),
         parent_id: null,
-        isFolder: false,
+        is_folder: false,
       });
     }
 
@@ -88,7 +88,7 @@ function useData() {
       },
       created_at: new Date(),
       parent_id: null,
-      isFolder: false,
+      is_folder: false,
     };
     await localforage.setItem(id, newNote);
     setNotes((prev) => [...prev, newNote]);

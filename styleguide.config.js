@@ -21,7 +21,11 @@ let sections = [
   },
   {
     name: 'Getting a list of notes Block',
-    components: ['src/components/ListOfNotes/ListOfNotes.js'],
+    components: [
+      'src/components/ListOfNotes/ListOfNotes.js',
+      'src/components/TreeView/TreeView.js',
+      'src/components/TreeView/ContextMenu.js',
+    ],
   },
 ];
 
@@ -78,8 +82,8 @@ module.exports = {
       base: '"Fira Sans", sans-serif',
     },
   },
-  exampleMode: 'expand',
-  usageMode: 'expand',
+  exampleMode: 'collapse', // is responsible for displaying the code
+  usageMode: 'collapse', // responsible for displaying PROPS & METHODS
   pagePerSection: true,
   getComponentPathLine(componentPath) {
     const componentName = path.basename(componentPath, '.js').split('.')[0];
