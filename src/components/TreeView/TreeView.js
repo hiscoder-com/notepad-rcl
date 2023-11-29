@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Tree } from 'react-arborist';
 import PropTypes from 'prop-types';
 
@@ -32,10 +32,55 @@ function TreeView({
 }) {
   const [calcTreeHeight, setCalcTreeHeight] = useState(0);
   const [visibleNodesCount, setVisibleNodesCount] = useState(0);
-
+  const clickCountRef = useRef(0);
+  const clickTimer = useRef(null);
   useEffect(() => {
     setCalcTreeHeight((visibleNodesCount + 1) * nodeHeight);
   }, [visibleNodesCount]);
+
+  const handleClick = (nodeProps) => {
+    const isSameNode = nodeProps.node.id === selectedNodeId;
+    clickCountRef.current += 1;
+
+    const handleAction = () => {
+      if (handleDoubleClick === 'openAll') {
+        toggleInternalNodes(nodeProps, nodeProps.node.isOpen ? 'close' : 'open');
+      } else {
+        nodeProps.node.toggle();
+        handleDoubleClick && handleDoubleClick(nodeProps);
+      }
+    };
+
+    const resetClickCount = () => {
+      clickCountRef.current = 0;
+    };
+
+    if (clickCountRef.current === (isSameNode ? 2 : 3)) {
+      clickTimer.current = setTimeout(() => {
+        handleAction();
+        resetClickCount();
+      }, 300);
+    }
+
+    if (clickCountRef.current === (isSameNode ? 3 : 4)) {
+      clearTimeout(clickTimer.current);
+      nodeProps.node.edit();
+      resetClickCount();
+    }
+
+    setTimeout(resetClickCount, 500);
+  };
+
+  const toggleInternalNodes = (nodeProps, action) => {
+    nodeProps.node.isInternal &&
+      (action === 'open' ? nodeProps.node.open() : nodeProps.node.close());
+
+    if (nodeProps.node.children !== null) {
+      nodeProps.node.children.forEach((child) => {
+        toggleInternalNodes({ node: child, tree: nodeProps.tree }, action);
+      });
+    }
+  };
 
   return (
     <div
@@ -70,16 +115,6 @@ function TreeView({
           // isLeaf true, если свойство Children не является массивом
           const isFile = nodeProps.node.isLeaf;
           const isFolderOpen = nodeProps.node.isOpen;
-          const toggleInternalNodes = (nodeProps, action) => {
-            nodeProps.node.isInternal &&
-              (action === 'open' ? nodeProps.node.open() : nodeProps.node.close());
-
-            if (nodeProps.node.children !== null) {
-              nodeProps.node.children.forEach((child) => {
-                toggleInternalNodes({ node: child, tree: nodeProps.tree }, action);
-              });
-            }
-          };
 
           useEffect(() => {
             setVisibleNodesCount(nodeProps.tree.visibleNodes.length);
@@ -102,18 +137,9 @@ function TreeView({
                     : null,
                 }}
                 onClick={() => {
+                  handleClick(nodeProps);
                   setSelectedNodeId(nodeProps.node.id);
                   !nodeProps.node.isInternal && handleOnClick && handleOnClick(nodeProps);
-                }}
-                onDoubleClick={() => {
-                  if (handleDoubleClick === 'openAll') {
-                    isFolderOpen
-                      ? toggleInternalNodes(nodeProps, 'close')
-                      : toggleInternalNodes(nodeProps, 'open');
-                  } else {
-                    nodeProps.node.toggle();
-                    handleDoubleClick && handleDoubleClick(nodeProps);
-                  }
                 }}
                 onContextMenu={(event) => {
                   handleContextMenu && event.preventDefault();
