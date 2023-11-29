@@ -66,8 +66,20 @@ function TreeView({
         }
       >
         {(nodeProps) => {
+          // nodeProps.node.isInternal true, если свойство Children является массивом
+          // isLeaf true, если свойство Children не является массивом
           const isFile = nodeProps.node.isLeaf;
           const isFolderOpen = nodeProps.node.isOpen;
+          const toggleInternalNodes = (nodeProps, action) => {
+            nodeProps.node.isInternal &&
+              (action === 'open' ? nodeProps.node.open() : nodeProps.node.close());
+
+            if (nodeProps.node.children !== null) {
+              nodeProps.node.children.forEach((child) => {
+                toggleInternalNodes({ node: child, tree: nodeProps.tree }, action);
+              });
+            }
+          };
 
           useEffect(() => {
             setVisibleNodesCount(nodeProps.tree.visibleNodes.length);
@@ -93,11 +105,16 @@ function TreeView({
                   setSelectedNodeId(nodeProps.node.id);
                   !nodeProps.node.isInternal && handleOnClick && handleOnClick(nodeProps);
                 }}
-                onDoubleClick={() =>
-                  nodeProps.node.isInternal
-                    ? nodeProps.node.toggle()
-                    : handleDoubleClick && handleDoubleClick(nodeProps)
-                }
+                onDoubleClick={() => {
+                  if (handleDoubleClick === 'openAll') {
+                    isFolderOpen
+                      ? toggleInternalNodes(nodeProps, 'close')
+                      : toggleInternalNodes(nodeProps, 'open');
+                  } else {
+                    nodeProps.node.toggle();
+                    handleDoubleClick && handleDoubleClick(nodeProps);
+                  }
+                }}
                 onContextMenu={(event) => {
                   handleContextMenu && event.preventDefault();
                   nodeProps.node.select();
@@ -124,11 +141,21 @@ function TreeView({
                     nodeProps.node.children.length > 0 ? (
                       isFolderOpen ? (
                         <>
-                          {icons.arrowDown} {icons.openFolder}
+                          <span onClick={() => nodeProps.node.toggle()}>
+                            {icons.arrowDown}
+                          </span>
+                          <span onClick={() => nodeProps.node.toggle()}>
+                            {icons.openFolder}
+                          </span>
                         </>
                       ) : (
                         <>
-                          {icons.arrowRight} {icons.closeFolder}
+                          <span onClick={() => nodeProps.node.toggle()}>
+                            {icons.arrowRight}
+                          </span>
+                          <span onClick={() => nodeProps.node.toggle()}>
+                            {icons.closeFolder}
+                          </span>
                         </>
                       )
                     ) : isFolderOpen ? (
@@ -278,7 +305,7 @@ TreeView.propTypes = {
   /** Hover node ID */
   hoveredNodeId: PropTypes.string,
   /** Double click handler function */
-  handleDoubleClick: PropTypes.func,
+  handleDoubleClick: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   /** Tree width */
   treeWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   /** Click handler function */
