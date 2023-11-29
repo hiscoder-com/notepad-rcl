@@ -111,8 +111,6 @@ function TreeView({
         }
       >
         {(nodeProps) => {
-          // nodeProps.node.isInternal true, если свойство Children является массивом
-          // isLeaf true, если свойство Children не является массивом
           const isFile = nodeProps.node.isLeaf;
           const isFolderOpen = nodeProps.node.isOpen;
 
@@ -139,7 +137,7 @@ function TreeView({
                 onClick={() => {
                   handleClick(nodeProps);
                   setSelectedNodeId(nodeProps.node.id);
-                  !nodeProps.node.isInternal && handleOnClick && handleOnClick(nodeProps);
+                  isFile && handleOnClick && handleOnClick(nodeProps);
                 }}
                 onContextMenu={(event) => {
                   handleContextMenu && event.preventDefault();
@@ -176,10 +174,20 @@ function TreeView({
                         </>
                       ) : (
                         <>
-                          <span onClick={() => nodeProps.node.toggle()}>
+                          <span
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              nodeProps.node.toggle();
+                            }}
+                          >
                             {icons.arrowRight}
                           </span>
-                          <span onClick={() => nodeProps.node.toggle()}>
+                          <span
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              nodeProps.node.toggle();
+                            }}
+                          >
                             {icons.closeFolder}
                           </span>
                         </>
