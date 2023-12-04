@@ -103,8 +103,8 @@ function Component() {
     }
   };
 
-  const handleDoubleClick = (nodeProps) => {
-    const note = databaseNotes.find((el) => el.id === selectedNodeId);
+  const handleOnClick = () => {
+    const note = databaseNotes.find((el) => el.id === hoveredNodeId);
     setActiveNote(note);
   };
 
@@ -116,11 +116,11 @@ function Component() {
             style={style}
             treeWidth={500}
             data={dataForTreeView}
-            handleDoubleClick={handleDoubleClick}
+            handleOnClick={handleOnClick}
+            handleRenameNode={handleRenameNode}
             hoveredNodeId={hoveredNodeId}
             selectedNodeId={selectedNodeId}
             handleDragDrop={handleDragDrop}
-            handleRenameNode={handleRenameNode}
             setHoveredNodeId={setHoveredNodeId}
             setSelectedNodeId={setSelectedNodeId}
             handleDeleteNode={handleDeleteNode}

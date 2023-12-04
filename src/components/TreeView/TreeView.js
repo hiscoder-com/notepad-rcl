@@ -29,6 +29,7 @@ function TreeView({
   setSelectedNodeId,
   getCurrentNodeProps,
   selection,
+  handleTripleClick,
 }) {
   const [calcTreeHeight, setCalcTreeHeight] = useState(0);
   const [visibleNodesCount, setVisibleNodesCount] = useState(0);
@@ -42,12 +43,22 @@ function TreeView({
     const isSameNode = nodeProps.node.id === selectedNodeId;
     clickCountRef.current += 1;
 
-    const handleAction = () => {
-      if (handleDoubleClick === 'openAll') {
+    const handleAction = (action, mode) => {
+      const handleBranch = () =>
         toggleInternalNodes(nodeProps, nodeProps.node.isOpen ? 'close' : 'open');
+
+      if (action === 'openAll') {
+        handleBranch();
+      } else if (action === 'rename') {
+        nodeProps.node.edit();
+      } else if (action) {
+        nodeProps.node.isInternal ? nodeProps.node.toggle() : action(nodeProps);
+      } else if (mode === 'edit') {
+        nodeProps.node.edit();
+      } else if (mode === 'openAll') {
+        handleBranch();
       } else {
         nodeProps.node.toggle();
-        handleDoubleClick && handleDoubleClick(nodeProps);
       }
     };
 
@@ -57,15 +68,24 @@ function TreeView({
 
     if (clickCountRef.current === (isSameNode ? 2 : 3)) {
       clickTimer.current = setTimeout(() => {
-        handleAction();
+        handleAction(handleDoubleClick, 'openAll');
         resetClickCount();
       }, 300);
     }
 
-    if (clickCountRef.current === (isSameNode ? 3 : 4)) {
+    if (clickCountRef.current === (isSameNode ? 3 : 4) && handleRenameNode) {
       clearTimeout(clickTimer.current);
-      nodeProps.node.edit();
+      handleAction(handleTripleClick, 'edit');
       resetClickCount();
+    }
+
+    if (clickCountRef.current === 1) {
+      setTimeout(() => {
+        if (clickCountRef.current === 1) {
+          handleAction(handleOnClick);
+        }
+        resetClickCount();
+      }, 400);
     }
 
     setTimeout(resetClickCount, 500);
@@ -137,7 +157,6 @@ function TreeView({
                 onClick={() => {
                   handleClick(nodeProps);
                   setSelectedNodeId(nodeProps.node.id);
-                  isFile && handleOnClick && handleOnClick(nodeProps);
                 }}
                 onContextMenu={(event) => {
                   handleContextMenu && event.preventDefault();
@@ -163,39 +182,12 @@ function TreeView({
                 >
                   {!isFile ? (
                     nodeProps.node.children.length > 0 ? (
-                      isFolderOpen ? (
-                        <>
-                          <span onClick={() => nodeProps.node.toggle()}>
-                            {icons.arrowDown}
-                          </span>
-                          <span onClick={() => nodeProps.node.toggle()}>
-                            {icons.openFolder}
-                          </span>
-                        </>
-                      ) : (
-                        <>
-                          <span
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              nodeProps.node.toggle();
-                            }}
-                          >
-                            {icons.arrowRight}
-                          </span>
-                          <span
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              nodeProps.node.toggle();
-                            }}
-                          >
-                            {icons.closeFolder}
-                          </span>
-                        </>
-                      )
-                    ) : isFolderOpen ? (
-                      <>{icons.openFolder}</>
+                      <>
+                        <span>{isFolderOpen ? icons.arrowDown : icons.arrowRight}</span>
+                        <span>{isFolderOpen ? icons.openFolder : icons.closeFolder}</span>
+                      </>
                     ) : (
-                      <>{icons.closeFolder}</>
+                      <>{isFolderOpen ? icons.openFolder : icons.closeFolder}</>
                     )
                   ) : (
                     <>{icons.file}</>
@@ -271,11 +263,12 @@ TreeView.defaultProps = {
   handleContextMenu: () => {},
   setSelectedNodeId: () => {},
   setHoveredNodeId: () => {},
-  handleRenameNode: () => {},
+  handleRenameNode: null,
   handleDragDrop: null,
   hoveredNodeId: '',
-  handleDoubleClick: () => {},
-  handleOnClick: () => {},
+  handleOnClick: null,
+  handleDoubleClick: null,
+  handleTripleClick: null,
   classes: {},
   openByDefault: true,
   style: {},
@@ -340,10 +333,12 @@ TreeView.propTypes = {
   hoveredNodeId: PropTypes.string,
   /** Double click handler function */
   handleDoubleClick: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+  /** Triple click handler function */
+  handleTripleClick: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   /** Tree width */
   treeWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   /** Click handler function */
-  handleOnClick: PropTypes.func,
+  handleOnClick: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   /** Class names for various elements */
   classes: PropTypes.shape({
     /** Class for the container of the tree */
