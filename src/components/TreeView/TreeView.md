@@ -116,7 +116,15 @@ function Component() {
             style={style}
             treeWidth={500}
             data={dataForTreeView}
-            handleOnClick={handleOnClick}
+            // handleOnClick={handleOnClick}
+            // handleOnClick={'rename'}
+            // handleOnClick={'openAll'}
+            // handleDoubleClick={handleOnClick}
+            // handleDoubleClick={'openAll'}
+            // handleDoubleClick={'rename'}
+            // handleTripleClick={handleOnClick}
+            // handleTripleClick={'rename'}
+            // handleTripleClick={'openAll'}
             handleRenameNode={handleRenameNode}
             hoveredNodeId={hoveredNodeId}
             selectedNodeId={selectedNodeId}
