@@ -1,3 +1,110 @@
+### **Processing single, double and triple clicks on a tree node**
+
+In this example, one click on a tree node deletes the node, two clicks rename the node, and three clicks expand all children of the selected node
+
+```jsx
+import React, { useState, useEffect } from 'react';
+import { TreeView } from '@texttree/notepad-rcl';
+import { style } from './data';
+
+function Component() {
+  const [hoveredNodeId, setHoveredNodeId] = useState(null);
+  const [selectedNodeId, setSelectedNodeId] = useState(null);
+  const [databaseNotes, setDatabaseNotes] = useState([
+    { id: '1', name: 'Unread' },
+    { id: '2', name: 'Threads' },
+    {
+      id: '3',
+      name: 'Chat Rooms',
+      children: [
+        { id: 'c1', name: 'General' },
+        { id: 'c2', name: 'Random' },
+        {
+          id: 'c3',
+          name: 'Direct Messages',
+          children: [
+            { id: 'd1', name: 'Alice' },
+            { id: 'd2', name: 'Bob' },
+            { id: 'd3', name: 'Charlie' },
+          ],
+        },
+      ],
+    },
+  ]);
+  const [dataForTreeView, setDataForTreeView] = useState(databaseNotes);
+
+  useEffect(() => {
+    setDataForTreeView(databaseNotes);
+  }, [databaseNotes]);
+
+  const recursivelyModifyNode = (notes, nodeId, action, newName = null) => {
+    return notes.reduce((acc, note) => {
+      if (note.id === nodeId) {
+        if (action === 'remove') {
+          return acc;
+        } else if (action === 'rename') {
+          acc.push({ ...note, name: newName });
+          return acc;
+        }
+      }
+
+      const updatedChildren =
+        note.children && recursivelyModifyNode(note.children, nodeId, action, newName);
+
+      acc.push({
+        ...note,
+        children: updatedChildren,
+      });
+
+      return acc;
+    }, []);
+  };
+
+  const handleDeleteNode = ({ ids }) => {
+    const updatedNote = databaseNotes.filter((el) => el.id !== ids[0]);
+
+    setDatabaseNotes(updatedNote);
+  };
+
+  const handleOnClick = () => {
+    const updatedNotes = recursivelyModifyNode(databaseNotes, hoveredNodeId, 'remove');
+    setDatabaseNotes(updatedNotes);
+  };
+
+  const handleRenameNode = (newName, nodeId) => {
+    if (nodeId) {
+      const updatedNotes = recursivelyModifyNode(
+        databaseNotes,
+        nodeId,
+        'rename',
+        newName
+      );
+      setDatabaseNotes(updatedNotes);
+    }
+  };
+
+  return (
+    <>
+      <TreeView
+        style={style}
+        data={dataForTreeView}
+        handleOnClick={handleOnClick}
+        handleDoubleClick={'rename'}
+        handleTripleClick={'openAll'}
+        handleRenameNode={handleRenameNode}
+        hoveredNodeId={hoveredNodeId}
+        setHoveredNodeId={setHoveredNodeId}
+        selectedNodeId={selectedNodeId}
+        setSelectedNodeId={setSelectedNodeId}
+        handleDeleteNode={handleDeleteNode}
+      />
+    </>
+  );
+}
+
+<Component />;
+```
+
 ### **Saving to the database and using Drag and drop sorting**
 
 ```jsx
@@ -116,15 +223,7 @@ function Component() {
             style={style}
             treeWidth={500}
             data={dataForTreeView}
-            // handleOnClick={handleOnClick}
-            // handleOnClick={'rename'}
-            // handleOnClick={'openAll'}
-            // handleDoubleClick={handleOnClick}
-            // handleDoubleClick={'openAll'}
-            // handleDoubleClick={'rename'}
-            // handleTripleClick={handleOnClick}
-            // handleTripleClick={'rename'}
-            // handleTripleClick={'openAll'}
+            handleOnClick={handleOnClick}
             handleRenameNode={handleRenameNode}
             hoveredNodeId={hoveredNodeId}
             selectedNodeId={selectedNodeId}

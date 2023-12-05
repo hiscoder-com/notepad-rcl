@@ -94,7 +94,7 @@ function TreeView({
     if (clickCountRef.current === 1) {
       setTimeout(() => {
         if (clickCountRef.current === 1) {
-          handleAction(handleOnClick);
+          handleAction(handleOnClick(nodeProps));
         }
         resetClickCount();
       }, 400);
