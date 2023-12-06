@@ -138,12 +138,6 @@ function Component() {
     setDataForTreeView(convertNotesToTree(databaseNotes));
   }, [databaseNotes]);
 
-  const handleDeleteNode = ({ ids }) => {
-    const updatedNote = databaseNotes.filter((el) => el.id !== ids[0]);
-
-    setDatabaseNotes(updatedNote);
-  };
-
   const handleRenameNode = (newName, nodeId) => {
     if (nodeId) {
       const updatedNote = databaseNotes.map((node) =>
@@ -230,7 +224,6 @@ function Component() {
             handleDragDrop={handleDragDrop}
             setHoveredNodeId={setHoveredNodeId}
             setSelectedNodeId={setSelectedNodeId}
-            handleDeleteNode={handleDeleteNode}
           />
         </>
       ) : (

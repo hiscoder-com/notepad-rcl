@@ -6,8 +6,9 @@ function TreeView({
   handleDeleteNode,
   handleContextMenu,
   handleRenameNode,
-  handleDoubleClick,
   handleOnClick,
+  handleDoubleClick,
+  handleTripleClick,
   handleDragDrop,
   showRenameButton,
   showRemoveButton,
@@ -29,7 +30,6 @@ function TreeView({
   setSelectedNodeId,
   getCurrentNodeProps,
   selection,
-  handleTripleClick,
 }) {
   const [calcTreeHeight, setCalcTreeHeight] = useState(0);
   const [visibleNodesCount, setVisibleNodesCount] = useState(0);
@@ -94,7 +94,7 @@ function TreeView({
     if (clickCountRef.current === 1) {
       setTimeout(() => {
         if (clickCountRef.current === 1) {
-          handleAction(handleOnClick(nodeProps));
+          handleAction(handleOnClick);
         }
         resetClickCount();
       }, 400);
