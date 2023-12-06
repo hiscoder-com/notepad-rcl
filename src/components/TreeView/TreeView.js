@@ -47,31 +47,23 @@ function TreeView({
       const handleBranch = () =>
         toggleInternalNodes(nodeProps, nodeProps.node.isOpen ? 'close' : 'open');
 
-      const actions = {
-        openAll: handleBranch,
-        rename: () => nodeProps.node.edit(),
-        default: () => {
-          if (typeof action === 'function') {
-            nodeProps.node.isInternal ? nodeProps.node.toggle() : action(nodeProps);
-          } else {
-            !['openAll', 'edit'].includes(mode) && nodeProps.node.toggle();
-          }
-        },
-      };
-
-      const modes = {
-        edit: () =>
-          typeof action !== 'function' &&
-          !['rename', 'openAll'].includes(action) &&
-          nodeProps.node.edit(),
-        openAll: () =>
-          typeof action !== 'function' &&
-          !['rename', 'openAll'].includes(action) &&
-          handleBranch(),
-      };
-
-      (actions[action] || actions.default)();
-      modes[mode]?.();
+      if (action === 'openAll') {
+        handleBranch();
+      } else if (action === 'rename') {
+        nodeProps.node.edit();
+      } else if (action) {
+        if (action.name === 'removeNode') {
+          action(nodeProps);
+        } else if (action.name === 'changeNode') {
+          nodeProps.node.isInternal ? nodeProps.node.toggle() : action(nodeProps);
+        }
+      } else if (mode === 'edit') {
+        nodeProps.node.edit();
+      } else if (mode === 'openAll') {
+        handleBranch();
+      } else {
+        nodeProps.node.toggle();
+      }
     };
 
     const resetClickCount = () => {
@@ -343,13 +335,13 @@ TreeView.propTypes = {
   handleDragDrop: PropTypes.func,
   /** Hover node ID */
   hoveredNodeId: PropTypes.string,
-  /** Double click handler function. By default, expands all children of a tree branch */
+  /** Double click handler function. By default, expands all children of a tree branch. If you want to use the built-in function to rename or expand all nested elements, then pass a string with the corresponding 'rename' or 'openAll' values. If you want to pass a function that changes a node, the function should be called 'changeNode'. If you want to pass a function that removes a node, the function should be called 'removeNode' */
   handleDoubleClick: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-  /** Triple click handler function. By default, causes the node to be renamed if handleRenameNode is true */
+  /** Triple click handler function. By default, causes the node to be renamed if handleRenameNode is true. If you want to use the built-in function to rename or expand all nested elements, then pass a string with the corresponding 'rename' or 'openAll' values. If you want to pass a function that changes a node, the function should be called 'changeNode'. If you want to pass a function that removes a node, the function should be called 'removeNode' */
   handleTripleClick: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   /** Tree width */
   treeWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  /** Click handler function. By default, this is toggles the open/closed state of the folder */
+  /** Click handler function. By default, this is toggles the open/closed state of the folder. If you want to use the built-in function to rename or expand all nested elements, then pass a string with the corresponding 'rename' or 'openAll' values. If you want to pass a function that changes a node, the function should be called 'changeNode'. If you want to pass a function that removes a node, the function should be called 'removeNode' */
   handleOnClick: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   /** Class names for various elements */
   classes: PropTypes.shape({

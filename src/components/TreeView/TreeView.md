@@ -66,7 +66,7 @@ function Component() {
     setDatabaseNotes(updatedNote);
   };
 
-  const handleOnClick = () => {
+  const removeNode = () => {
     const updatedNotes = recursivelyModifyNode(databaseNotes, hoveredNodeId, 'remove');
     setDatabaseNotes(updatedNotes);
   };
@@ -88,7 +88,7 @@ function Component() {
       <TreeView
         style={style}
         data={dataForTreeView}
-        handleOnClick={handleOnClick}
+        handleOnClick={removeNode}
         handleDoubleClick={'rename'}
         handleTripleClick={'openAll'}
         handleRenameNode={handleRenameNode}
@@ -204,7 +204,7 @@ function Component() {
     }
   };
 
-  const handleOnClick = () => {
+  const changeNode = () => {
     const note = databaseNotes.find((el) => el.id === hoveredNodeId);
     setActiveNote(note);
   };
@@ -217,7 +217,7 @@ function Component() {
             style={style}
             treeWidth={500}
             data={dataForTreeView}
-            handleOnClick={handleOnClick}
+            handleOnClick={changeNode}
             handleRenameNode={handleRenameNode}
             hoveredNodeId={hoveredNodeId}
             selectedNodeId={selectedNodeId}
