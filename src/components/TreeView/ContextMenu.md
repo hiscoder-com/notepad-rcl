@@ -68,14 +68,8 @@ function Component() {
     setContextMenuEvent({ event });
   };
 
-  const handleRename = () => {
-    currentNodeProps.node.edit();
-  };
-
-  const handleDelete = () => {
-    currentNodeProps.tree.delete(currentNodeProps.node.id);
-  };
-
+  const handleRename = () => currentNodeProps.node.edit();
+  const handleDelete = () => currentNodeProps.tree.delete(currentNodeProps.node.id);
   const menuItems = [
     {
       id: 'rename',

@@ -52,9 +52,9 @@ function TreeView({
       } else if (action === 'rename') {
         nodeProps.node.edit();
       } else if (action) {
-        if (action.name === 'removeNode') {
-          action(nodeProps);
-        } else if (action.name === 'changeNode') {
+        if (action.changeNode) {
+          action.changeNode(nodeProps);
+        } else {
           nodeProps.node.isInternal ? nodeProps.node.toggle() : action(nodeProps);
         }
       } else if (mode === 'edit') {
@@ -335,14 +335,32 @@ TreeView.propTypes = {
   handleDragDrop: PropTypes.func,
   /** Hover node ID */
   hoveredNodeId: PropTypes.string,
-  /** Double click handler function. By default, expands all children of a tree branch. If you want to use the built-in function to rename or expand all nested elements, then pass a string with the corresponding 'rename' or 'openAll' values. If you want to pass a function that changes a node, the function should be called 'changeNode'. If you want to pass a function that removes a node, the function should be called 'removeNode' */
-  handleDoubleClick: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-  /** Triple click handler function. By default, causes the node to be renamed if handleRenameNode is true. If you want to use the built-in function to rename or expand all nested elements, then pass a string with the corresponding 'rename' or 'openAll' values. If you want to pass a function that changes a node, the function should be called 'changeNode'. If you want to pass a function that removes a node, the function should be called 'removeNode' */
-  handleTripleClick: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+  /** Click handler function. By default, this is toggles the open/closed state of the folder. If you want to use the built-in function to rename or expand all nested elements, then pass a string with the corresponding 'rename' or 'openAll' values. If you want to pass a function that handles a node, whether it is a file or a folder, then you should provide the object with a "changeNode" function. */
+  handleOnClick: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.string,
+    PropTypes.shape({
+      changeNode: PropTypes.func,
+    }),
+  ]),
+  /** Double click handler function. By default, expands all children of a tree branch. If you want to use the built-in function to rename or expand all nested elements, then pass a string with the corresponding 'rename' or 'openAll' values. If you want to pass a function that handles a node, whether it is a file or a folder, then you should provide the object with a "changeNode" function. */
+  handleDoubleClick: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.string,
+    PropTypes.shape({
+      changeNode: PropTypes.func,
+    }),
+  ]),
+  /** Triple click handler function. By default, causes the node to be renamed if handleRenameNode is true. If you want to use the built-in function to rename or expand all nested elements, then pass a string with the corresponding 'rename' or 'openAll' values. If you want to pass a function that handles a node, whether it is a file or a folder, then you should provide the object with a "changeNode" function. */
+  handleTripleClick: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.string,
+    PropTypes.shape({
+      changeNode: PropTypes.func,
+    }),
+  ]),
   /** Tree width */
   treeWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  /** Click handler function. By default, this is toggles the open/closed state of the folder. If you want to use the built-in function to rename or expand all nested elements, then pass a string with the corresponding 'rename' or 'openAll' values. If you want to pass a function that changes a node, the function should be called 'changeNode'. If you want to pass a function that removes a node, the function should be called 'removeNode' */
-  handleOnClick: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   /** Class names for various elements */
   classes: PropTypes.shape({
     /** Class for the container of the tree */

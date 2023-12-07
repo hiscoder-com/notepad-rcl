@@ -88,7 +88,7 @@ function Component() {
       <TreeView
         style={style}
         data={dataForTreeView}
-        handleOnClick={removeNode}
+        handleOnClick={{ changeNode: removeNode }}
         handleDoubleClick={'rename'}
         handleTripleClick={'openAll'}
         handleRenameNode={handleRenameNode}
@@ -204,7 +204,7 @@ function Component() {
     }
   };
 
-  const changeNode = () => {
+  const openNote = () => {
     const note = databaseNotes.find((el) => el.id === hoveredNodeId);
     setActiveNote(note);
   };
@@ -217,7 +217,7 @@ function Component() {
             style={style}
             treeWidth={500}
             data={dataForTreeView}
-            handleOnClick={changeNode}
+            handleOnClick={openNote}
             handleRenameNode={handleRenameNode}
             hoveredNodeId={hoveredNodeId}
             selectedNodeId={selectedNodeId}
