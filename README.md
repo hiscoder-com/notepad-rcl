@@ -5,7 +5,7 @@
 <br/>
 <div align="center">
   <a href="https://github.com/texttree/notepad-rcl">
-    <img src="images/logo.svg" alt="Logo" width="80" height="80">
+    <img src="images/logo.svg" alt="Logo">
   </a>
 <br/>
 <br/>
