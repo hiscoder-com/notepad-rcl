@@ -4,8 +4,8 @@
 <br/>
 <br/>
 <div align="center">
-  <a href="https://github.com/texttree/template-rcl">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  <a href="https://github.com/texttree/notepad-rcl">
+    <img src="images/logo.svg" alt="Logo" width="80" height="80">
   </a>
 <br/>
 <br/>
