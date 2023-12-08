@@ -5,7 +5,7 @@
 <br/>
 <div align="center">
   <a href="https://github.com/texttree/notepad-rcl">
-    <img src="images/logo.svg" alt="Logo">
+    <img src="https://github.com/texttree/notepad-rcl/raw/master/images/logo.png" alt="Logo">
   </a>
 <br/>
 <br/>
@@ -66,7 +66,7 @@
 ## About The Project
 
 <a href="https://github.com/texttree/notepad-rcl">
-    <img src="images/editorjs-screenshot.png" >
+    <img src="https://github.com/texttree/notepad-rcl/raw/master/images/editorjs-screenshot.png" >
   </a>
 
 **Purpose**
