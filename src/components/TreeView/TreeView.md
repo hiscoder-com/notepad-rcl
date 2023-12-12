@@ -49,7 +49,7 @@ function Component() {
       }
 
       const updatedChildren =
-        note.children && recursivelyModifyNode(note.children, nodeId, action, newName);
+        note?.children && recursivelyModifyNode(note.children, nodeId, action, newName);
 
       acc.push({
         ...note,
