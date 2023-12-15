@@ -24,7 +24,6 @@ function useData() {
     fetchNotes();
   }, [isSaving]);
 
-  // Assign a name to the database
   const dBNameRegistration = (name) => {
     localforage.config({
       name,
@@ -71,7 +70,7 @@ function useData() {
     }
   };
 
-  const addNote = async (title) => {
+  const addNote = async (title, content) => {
     const id =
       'note' + ('000000000' + Math.random().toString(36).substring(2, 9)).slice(-9);
     const newNote = {
@@ -81,7 +80,9 @@ function useData() {
         blocks: [
           {
             type: 'paragraph',
-            data: {},
+            data: {
+              text: content || '',
+            },
           },
         ],
         version: '2.27.2',
