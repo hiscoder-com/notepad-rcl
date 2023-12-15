@@ -7,6 +7,7 @@ function ListOfNotes({
   removeNote,
   setNoteId,
   classes,
+  style,
   delBtnChildren,
   isShowDate,
   isShowText,
