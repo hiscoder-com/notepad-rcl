@@ -12,10 +12,10 @@ function ContextMenu({
   emptyMenuText,
 }) {
   const [position, setPosition] = useState({ top: 0, left: 0 });
-
+  const [isOpen, setIsOpen] = useState(isVisible);
   useEffect(() => {
-    if (isVisible) {
-      setIsVisible(false);
+    if (isOpen) {
+      setIsOpen(false);
     }
 
     const handleScroll = () => {
@@ -32,8 +32,8 @@ function ContextMenu({
   useEffect(() => {
     if (isVisible && nodeProps?.tree.props.data.length > 0) {
       const { event } = clickMenuEvent;
-      setIsVisible(true);
       setPosition({ top: event.clientY, left: event.clientX });
+      setIsOpen(true);
     }
   }, [clickMenuEvent]);
 
@@ -50,11 +50,12 @@ function ContextMenu({
     );
   }
 
-  const hideContextMenu = () => setIsVisible(false);
-
+  const hideContextMenu = () => {
+    setIsVisible(false);
+  };
   return (
     <>
-      {isVisible && nodeProps?.tree.props.data.length > 0 && (
+      {isOpen && nodeProps?.tree.props.data.length > 0 && (
         <div
           style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 100 }}
           onClick={hideContextMenu}
