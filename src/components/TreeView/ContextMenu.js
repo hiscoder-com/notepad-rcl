@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 function ContextMenu({
-  setSelectedNodeId,
-  selectedNodeId,
+  isVisible,
+  setIsVisible,
   menuItems,
   nodeProps,
   classes,
@@ -11,12 +11,11 @@ function ContextMenu({
   clickMenuEvent,
   emptyMenuText,
 }) {
-  const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: 0 });
 
   useEffect(() => {
-    if (visible) {
-      setVisible(false);
+    if (isVisible) {
+      setIsVisible(false);
     }
 
     const handleScroll = () => {
@@ -28,12 +27,12 @@ function ContextMenu({
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [selectedNodeId]);
+  }, [isVisible]);
 
   useEffect(() => {
-    if (selectedNodeId && nodeProps?.tree.props.data.length > 0) {
+    if (isVisible && nodeProps?.tree.props.data.length > 0) {
       const { event } = clickMenuEvent;
-      setVisible(true);
+      setIsVisible(true);
       setPosition({ top: event.clientY, left: event.clientX });
     }
   }, [clickMenuEvent]);
@@ -51,13 +50,11 @@ function ContextMenu({
     );
   }
 
-  const hideContextMenu = () => {
-    setSelectedNodeId(null);
-  };
+  const hideContextMenu = () => setIsVisible(false);
 
   return (
     <>
-      {visible && nodeProps?.tree.props.data.length > 0 && (
+      {isVisible && nodeProps?.tree.props.data.length > 0 && (
         <div
           style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 100 }}
           onClick={hideContextMenu}
@@ -95,8 +92,8 @@ function ContextMenu({
 }
 
 ContextMenu.defaultProps = {
-  selectedNodeId: null,
-  setSelectedNodeId: () => {},
+  isVisible: false,
+  setIsVisible: () => {},
   menuItems: [],
   classes: null,
   nodeProps: {},
@@ -110,10 +107,10 @@ ContextMenu.propTypes = {
   nodeProps: PropTypes.object,
   /** If there is no menuItems, then we will see this text */
   emptyMenuText: PropTypes.string,
-  /** ID of the selected node in the tree structure */
-  selectedNodeId: PropTypes.string,
-  /** Function to set the selected node */
-  setSelectedNodeId: PropTypes.func,
+  /** Indicates whether the context menu is visible or not */
+  isVisible: PropTypes.bool,
+  /** Function to control the visibility of the context menu */
+  setIsVisible: PropTypes.func,
   /** Array of context menu items */
   menuItems: PropTypes.arrayOf(
     PropTypes.shape({
