@@ -23,6 +23,7 @@ const renameIcon = (
 );
 
 function Component() {
+  const [isVisible, setIsVisible] = useState(false);
   const [hoveredNodeId, setHoveredNodeId] = useState(null);
   const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [contextMenuEvent, setContextMenuEvent] = useState(null);
@@ -64,7 +65,7 @@ function Component() {
   };
 
   const handleContextMenu = (event) => {
-    setSelectedNodeId(hoveredNodeId);
+    setIsVisible(true);
     setContextMenuEvent({ event });
   };
 
@@ -102,8 +103,8 @@ function Component() {
           handleDeleteNode={handleDeleteNode}
         />
         <ContextMenu
-          setSelectedNodeId={setSelectedNodeId}
-          selectedNodeId={selectedNodeId}
+          setIsVisible={setIsVisible}
+          isVisible={isVisible}
           nodeProps={currentNodeProps}
           clickMenuEvent={contextMenuEvent}
           menuItems={menuItems}
