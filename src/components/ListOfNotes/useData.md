@@ -51,7 +51,9 @@ function Component() {
             <div className="flex justify-end">
               <button
                 className="text-3xl bg-gray-400 px-4 py-1 rounded-xl hover:bg-orange-300"
-                onClick={() => addNote('My custom note title')}
+                onClick={() =>
+                  addNote('My custom note title', 'Custom text for new note...')
+                }
               >
                 +
               </button>

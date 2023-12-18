@@ -1,3 +1,112 @@
+### **Processing single, double and triple clicks on a tree node**
+
+In this example, one click on a tree node deletes the node, two clicks rename the node, and three clicks expand all children of the selected node
+
+```jsx
+import React, { useState, useEffect } from 'react';
+import { TreeView } from '@texttree/notepad-rcl';
+import { style } from './data';
+
+function Component() {
+  const [hoveredNodeId, setHoveredNodeId] = useState(null);
+  const [selectedNodeId, setSelectedNodeId] = useState(null);
+  const [databaseNotes, setDatabaseNotes] = useState([
+    { id: '1', name: 'Unread' },
+    { id: '2', name: 'Threads' },
+    {
+      id: '3',
+      name: 'Chat Rooms',
+      children: [
+        { id: 'c1', name: 'General' },
+        { id: 'c2', name: 'Random' },
+        {
+          id: 'c3',
+          name: 'Direct Messages',
+          children: [
+            { id: 'd1', name: 'Alice' },
+            { id: 'd2', name: 'Bob' },
+            { id: 'd3', name: 'Charlie' },
+          ],
+        },
+      ],
+    },
+  ]);
+  const [dataForTreeView, setDataForTreeView] = useState(databaseNotes);
+
+  useEffect(() => {
+    setDataForTreeView(databaseNotes);
+  }, [databaseNotes]);
+
+  const recursivelyModifyNode = (notes, nodeId, action, newName = null) => {
+    return notes.reduce((acc, note) => {
+      if (note.id === nodeId) {
+        if (action === 'remove') {
+          return acc;
+        } else if (action === 'rename') {
+          acc.push({ ...note, name: newName });
+          return acc;
+        }
+      }
+
+      const updatedChildren =
+        note &&
+        note.children &&
+        recursivelyModifyNode(note.children, nodeId, action, newName);
+
+      acc.push({
+        ...note,
+        children: updatedChildren,
+      });
+
+      return acc;
+    }, []);
+  };
+
+  const handleDeleteNode = ({ ids }) => {
+    const updatedNote = databaseNotes.filter((el) => el.id !== ids[0]);
+
+    setDatabaseNotes(updatedNote);
+  };
+
+  const removeNode = () => {
+    const updatedNotes = recursivelyModifyNode(databaseNotes, hoveredNodeId, 'remove');
+    setDatabaseNotes(updatedNotes);
+  };
+
+  const handleRenameNode = (newName, nodeId) => {
+    if (nodeId) {
+      const updatedNotes = recursivelyModifyNode(
+        databaseNotes,
+        nodeId,
+        'rename',
+        newName
+      );
+      setDatabaseNotes(updatedNotes);
+    }
+  };
+
+  return (
+    <>
+      <TreeView
+        style={style}
+        data={dataForTreeView}
+        handleOnClick={{ changeNode: removeNode }}
+        handleDoubleClick={'rename'}
+        handleTripleClick={'openAll'}
+        handleRenameNode={handleRenameNode}
+        hoveredNodeId={hoveredNodeId}
+        setHoveredNodeId={setHoveredNodeId}
+        selectedNodeId={selectedNodeId}
+        setSelectedNodeId={setSelectedNodeId}
+        handleDeleteNode={handleDeleteNode}
+      />
+    </>
+  );
+}
+
+<Component />;
+```
+
 ### **Saving to the database and using Drag and drop sorting**
 
 ```jsx
@@ -30,12 +139,6 @@ function Component() {
   useEffect(() => {
     setDataForTreeView(convertNotesToTree(databaseNotes));
   }, [databaseNotes]);
-
-  const handleDeleteNode = ({ ids }) => {
-    const updatedNote = databaseNotes.filter((el) => el.id !== ids[0]);
-
-    setDatabaseNotes(updatedNote);
-  };
 
   const handleRenameNode = (newName, nodeId) => {
     if (nodeId) {
@@ -103,8 +206,8 @@ function Component() {
     }
   };
 
-  const handleDoubleClick = (nodeProps) => {
-    const note = databaseNotes.find((el) => el.id === selectedNodeId);
+  const openNote = () => {
+    const note = databaseNotes.find((el) => el.id === hoveredNodeId);
     setActiveNote(note);
   };
 
@@ -116,14 +219,13 @@ function Component() {
             style={style}
             treeWidth={500}
             data={dataForTreeView}
-            handleDoubleClick={handleDoubleClick}
+            handleOnClick={openNote}
+            handleRenameNode={handleRenameNode}
             hoveredNodeId={hoveredNodeId}
             selectedNodeId={selectedNodeId}
             handleDragDrop={handleDragDrop}
-            handleRenameNode={handleRenameNode}
             setHoveredNodeId={setHoveredNodeId}
             setSelectedNodeId={setSelectedNodeId}
-            handleDeleteNode={handleDeleteNode}
           />
         </>
       ) : (

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Tree } from 'react-arborist';
 import PropTypes from 'prop-types';
 
@@ -6,8 +6,9 @@ function TreeView({
   handleDeleteNode,
   handleContextMenu,
   handleRenameNode,
-  handleDoubleClick,
   handleOnClick,
+  handleDoubleClick,
+  handleTripleClick,
   handleDragDrop,
   showRenameButton,
   showRemoveButton,
@@ -32,10 +33,78 @@ function TreeView({
 }) {
   const [calcTreeHeight, setCalcTreeHeight] = useState(0);
   const [visibleNodesCount, setVisibleNodesCount] = useState(0);
-
+  const clickCountRef = useRef(0);
+  const clickTimer = useRef(null);
   useEffect(() => {
     setCalcTreeHeight((visibleNodesCount + 1) * nodeHeight);
   }, [visibleNodesCount]);
+
+  const handleClick = (nodeProps) => {
+    const isSameNode = nodeProps.node.id === selectedNodeId;
+    clickCountRef.current += 1;
+
+    const handleAction = (action, mode) => {
+      const handleBranch = () =>
+        toggleInternalNodes(nodeProps, nodeProps.node.isOpen ? 'close' : 'open');
+
+      if (action === 'openAll') {
+        handleBranch();
+      } else if (action === 'rename') {
+        nodeProps.node.edit();
+      } else if (action) {
+        if (action.changeNode) {
+          action.changeNode(nodeProps);
+        } else {
+          nodeProps.node.isInternal ? nodeProps.node.toggle() : action(nodeProps);
+        }
+      } else if (mode === 'edit') {
+        nodeProps.node.edit();
+      } else if (mode === 'openAll') {
+        handleBranch();
+      } else {
+        nodeProps.node.toggle();
+      }
+    };
+
+    const resetClickCount = () => {
+      clickCountRef.current = 0;
+    };
+
+    if (clickCountRef.current === (isSameNode ? 2 : 3)) {
+      clickTimer.current = setTimeout(() => {
+        handleAction(handleDoubleClick, 'openAll');
+        resetClickCount();
+      }, 300);
+    }
+
+    if (clickCountRef.current === (isSameNode ? 3 : 4) && handleRenameNode) {
+      clearTimeout(clickTimer.current);
+      handleAction(handleTripleClick, 'edit');
+      resetClickCount();
+    }
+
+    if (clickCountRef.current === 1) {
+      setTimeout(() => {
+        if (clickCountRef.current === 1) {
+          handleAction(handleOnClick);
+        }
+        resetClickCount();
+      }, 400);
+    }
+
+    setTimeout(resetClickCount, 500);
+  };
+
+  const toggleInternalNodes = (nodeProps, action) => {
+    nodeProps.node.isInternal &&
+      (action === 'open' ? nodeProps.node.open() : nodeProps.node.close());
+
+    if (nodeProps.node.children !== null) {
+      nodeProps.node.children.forEach((child) => {
+        toggleInternalNodes({ node: child, tree: nodeProps.tree }, action);
+      });
+    }
+  };
 
   return (
     <div
@@ -90,14 +159,9 @@ function TreeView({
                     : null,
                 }}
                 onClick={() => {
+                  handleClick(nodeProps);
                   setSelectedNodeId(nodeProps.node.id);
-                  !nodeProps.node.isInternal && handleOnClick && handleOnClick(nodeProps);
                 }}
-                onDoubleClick={() =>
-                  nodeProps.node.isInternal
-                    ? nodeProps.node.toggle()
-                    : handleDoubleClick && handleDoubleClick(nodeProps)
-                }
                 onContextMenu={(event) => {
                   handleContextMenu && event.preventDefault();
                   nodeProps.node.select();
@@ -122,19 +186,12 @@ function TreeView({
                 >
                   {!isFile ? (
                     nodeProps.node.children.length > 0 ? (
-                      isFolderOpen ? (
-                        <>
-                          {icons.arrowDown} {icons.openFolder}
-                        </>
-                      ) : (
-                        <>
-                          {icons.arrowRight} {icons.closeFolder}
-                        </>
-                      )
-                    ) : isFolderOpen ? (
-                      <>{icons.openFolder}</>
+                      <>
+                        <span>{isFolderOpen ? icons.arrowDown : icons.arrowRight}</span>
+                        <span>{isFolderOpen ? icons.openFolder : icons.closeFolder}</span>
+                      </>
                     ) : (
-                      <>{icons.closeFolder}</>
+                      <>{isFolderOpen ? icons.openFolder : icons.closeFolder}</>
                     )
                   ) : (
                     <>{icons.file}</>
@@ -210,11 +267,12 @@ TreeView.defaultProps = {
   handleContextMenu: () => {},
   setSelectedNodeId: () => {},
   setHoveredNodeId: () => {},
-  handleRenameNode: () => {},
+  handleRenameNode: null,
   handleDragDrop: null,
   hoveredNodeId: '',
-  handleDoubleClick: () => {},
-  handleOnClick: () => {},
+  handleOnClick: null,
+  handleDoubleClick: null,
+  handleTripleClick: null,
   classes: {},
   openByDefault: true,
   style: {},
@@ -277,12 +335,32 @@ TreeView.propTypes = {
   handleDragDrop: PropTypes.func,
   /** Hover node ID */
   hoveredNodeId: PropTypes.string,
-  /** Double click handler function */
-  handleDoubleClick: PropTypes.func,
+  /** Click handler function. By default, this is toggles the open/closed state of the folder. If you want to use the built-in function to rename or expand all nested elements, then pass a string with the corresponding 'rename' or 'openAll' values. If you want to pass a function that handles a node, whether it is a file or a folder, then you should provide the object with a "changeNode" function. */
+  handleOnClick: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.string,
+    PropTypes.shape({
+      changeNode: PropTypes.func,
+    }),
+  ]),
+  /** Double click handler function. By default, expands all children of a tree branch. If you want to use the built-in function to rename or expand all nested elements, then pass a string with the corresponding 'rename' or 'openAll' values. If you want to pass a function that handles a node, whether it is a file or a folder, then you should provide the object with a "changeNode" function. */
+  handleDoubleClick: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.string,
+    PropTypes.shape({
+      changeNode: PropTypes.func,
+    }),
+  ]),
+  /** Triple click handler function. By default, causes the node to be renamed if handleRenameNode is true. If you want to use the built-in function to rename or expand all nested elements, then pass a string with the corresponding 'rename' or 'openAll' values. If you want to pass a function that handles a node, whether it is a file or a folder, then you should provide the object with a "changeNode" function. */
+  handleTripleClick: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.string,
+    PropTypes.shape({
+      changeNode: PropTypes.func,
+    }),
+  ]),
   /** Tree width */
   treeWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  /** Click handler function */
-  handleOnClick: PropTypes.func,
   /** Class names for various elements */
   classes: PropTypes.shape({
     /** Class for the container of the tree */

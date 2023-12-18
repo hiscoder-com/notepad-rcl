@@ -89,12 +89,26 @@ function Component() {
     </svg>
   );
 
+  const handleEditNoteTitle = (id, newTitle) => {
+    setNotes((prevNotes) => {
+      const updatedNotes = prevNotes.map((note) => {
+        if (note.id === id) {
+          return { ...note, title: newTitle };
+        }
+        return note;
+      });
+
+      return updatedNotes;
+    });
+  };
+
   return (
     <div>
       <div>
         {!activeNote ? (
           <>
             <ListOfNotes
+              editNoteTitle={handleEditNoteTitle}
               notes={notes}
               removeNote={removeNote}
               setNoteId={setNoteId}
