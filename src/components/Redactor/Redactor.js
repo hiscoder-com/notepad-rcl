@@ -1,4 +1,4 @@
-import { default as React, useState, useEffect } from 'react';
+import { default as React, useState, useEffect, useRef } from 'react';
 
 import PropTypes from 'prop-types';
 
@@ -14,7 +14,10 @@ function Redactor({
   readOnly,
   initId,
   emptyTitle,
+  isSelectTitle,
 }) {
+  const titleRef = useRef(null);
+
   const ReactEditorJS = createReactEditorJS();
 
   const [title, setTitle] = useState(activeNote?.title || emptyTitle);
@@ -37,6 +40,14 @@ function Redactor({
     setActiveNote((prev) => ({ ...prev, data: content }));
   };
 
+  const selectTitle = () => {
+    const range = document.createRange();
+    const selection = window.getSelection();
+    range.selectNodeContents(titleRef.current);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  };
+
   return (
     <div className={classes.wrapper}>
       {!disableTitle && (
@@ -47,6 +58,8 @@ function Redactor({
           contentEditable={!readOnly}
           suppressContentEditableWarning={true}
           onBlur={handleTitleChange}
+          onClick={() => isSelectTitle && selectTitle()}
+          ref={titleRef}
         >
           {title}
         </div>
@@ -78,6 +91,7 @@ Redactor.defaultProps = {
   classes: {},
   readOnly: false,
   disableTitle: false,
+  isSelectTitle: false,
 };
 
 Redactor.propTypes = {
@@ -105,6 +119,8 @@ Redactor.propTypes = {
   disableTitle: PropTypes.bool,
   /** Sets the title value if the title is empty */
   emptyTitle: PropTypes.string,
+  /** If true, then the title selected by click */
+  isSelectTitle: PropTypes.bool,
 };
 
 export default Redactor;
