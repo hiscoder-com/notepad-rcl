@@ -14,7 +14,7 @@ function Redactor({
   readOnly,
   initId,
   emptyTitle,
-  isSelectTitle,
+  isSelectableTitle,
 }) {
   const titleRef = useRef(null);
 
@@ -58,7 +58,7 @@ function Redactor({
           contentEditable={!readOnly}
           suppressContentEditableWarning={true}
           onBlur={handleTitleChange}
-          onClick={() => isSelectTitle && selectTitle()}
+          onClick={() => isSelectableTitle && selectTitle()}
           ref={titleRef}
         >
           {title}
@@ -91,7 +91,7 @@ Redactor.defaultProps = {
   classes: {},
   readOnly: false,
   disableTitle: false,
-  isSelectTitle: false,
+  isSelectableTitle: false,
 };
 
 Redactor.propTypes = {
@@ -120,7 +120,7 @@ Redactor.propTypes = {
   /** Sets the title value if the title is empty */
   emptyTitle: PropTypes.string,
   /** If true, then the title selected by click */
-  isSelectTitle: PropTypes.bool,
+  isSelectableTitle: PropTypes.bool,
 };
 
 export default Redactor;
