@@ -14,6 +14,7 @@ function ListOfNotes({
   isShowDelBtn,
   dateOptions,
   editNoteTitle,
+  isRtl,
 }) {
   const [editingTitle, setEditingTitle] = useState(null);
 
@@ -33,6 +34,8 @@ function ListOfNotes({
     }
   };
 
+  const direction = isRtl ? 'rtl' : 'ltr';
+
   return (
     <div className={classes?.wrapper} style={style?.wrapper}>
       {notes?.map((note) => (
@@ -41,6 +44,7 @@ function ListOfNotes({
           className={classes?.item}
           style={style?.item}
           onClick={() => handleClick(note.id)}
+          dir={direction}
         >
           <div
             className={classes?.titleBlock}
@@ -113,6 +117,7 @@ ListOfNotes.defaultProps = {
   title: 'untitled',
   delBtnChildren: 'Delete',
   setNoteId: () => {},
+  isRtl: false,
 };
 
 ListOfNotes.propTypes = {
@@ -178,5 +183,7 @@ ListOfNotes.propTypes = {
   isShowDate: PropTypes.bool,
   /** if true, display note text during note preview */
   isShowText: PropTypes.bool,
+  /** if true, display note, title and date in rtl direction */
+  isRtl: PropTypes.bool,
 };
 export default ListOfNotes;

@@ -141,7 +141,7 @@ function Component() {
               setActiveNote={setActiveNote}
               initId={'first'}
               classes={{
-                title: 'bg-inherit font-bold',
+                title: 'mr-10 bg-inherit font-bold',
                 redactor: 'px-4 pt-4 pb-20 break-words bg-green-100 m-4',
               }}
             />
@@ -178,7 +178,9 @@ function Component() {
 <Component />;
 ```
 
-### **save note to database using localforage**
+### **Save note to database using localforage**
+
+**use rtl direction and selectable title**
 
 ```jsx
 import { useState, useEffect } from 'react';
@@ -243,6 +245,7 @@ function Component() {
                 minute: 'numeric',
                 second: 'numeric',
               }}
+              isRtl
             />
             <div className="flex justify-end">
               <button
@@ -259,7 +262,9 @@ function Component() {
               activeNote={activeNote}
               setActiveNote={setActiveNote}
               initId={'second'}
-              classes={{ title: 'bg-inherit font-bold' }}
+              classes={{ title: 'mr-10 bg-inherit font-bold' }}
+              isRtl
+              isSelectableTitle
             />
             <button
               className={'bg-orange-300 px-4 py-2  rounded-lg '}
