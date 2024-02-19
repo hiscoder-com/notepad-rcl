@@ -31,6 +31,7 @@ function TreeView({
   getCurrentNodeProps,
   selection,
   isRtl,
+  maxDraggingNodeWidth,
 }) {
   const [calcTreeHeight, setCalcTreeHeight] = useState(0);
   const [visibleNodesCount, setVisibleNodesCount] = useState(0);
@@ -139,6 +140,7 @@ function TreeView({
         {(nodeProps) => {
           const isFile = nodeProps.node.isLeaf;
           const isFolderOpen = nodeProps.node.isOpen;
+          const isDragging = nodeProps.preview;
 
           useEffect(() => {
             setVisibleNodesCount(nodeProps.tree.visibleNodes.length);
@@ -159,6 +161,7 @@ function TreeView({
                       ? style?.nodeWrapper.hoveredColor
                       : style?.nodeWrapper.backgroundColor
                     : null,
+                  maxWidth: isDragging ? maxDraggingNodeWidth : '',
                 }}
                 onClick={() => {
                   handleClick(nodeProps);
@@ -294,6 +297,7 @@ TreeView.defaultProps = {
   removeButton: { content: '🗑️', title: 'Delete' },
   renameButton: { content: '✏️', title: 'Rename...' },
   isRtl: false,
+  maxDraggingNodeWidth: '20%',
 };
 
 TreeView.propTypes = {
@@ -423,6 +427,8 @@ TreeView.propTypes = {
   }),
   /** if true, display nodes in rtl direction */
   isRtl: PropTypes.bool,
+  /** max width of draggable node */
+  maxDraggingNodeWidth: PropTypes.string,
 };
 
 export default TreeView;
