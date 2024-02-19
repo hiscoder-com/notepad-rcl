@@ -10,8 +10,10 @@ function ContextMenu({
   styles,
   clickMenuEvent,
   emptyMenuText,
+  isRtl,
 }) {
   const [position, setPosition] = useState({ top: 0, left: 0 });
+  const direction = isRtl ? 'rtl' : 'ltr';
   const [isOpen, setIsOpen] = useState(isVisible);
   useEffect(() => {
     if (isOpen) {
@@ -44,6 +46,7 @@ function ContextMenu({
         className={classes?.menuItem}
         style={styles?.menuItem}
         onClick={onClick}
+        dir={direction}
       >
         {children}
       </div>
@@ -146,6 +149,8 @@ ContextMenu.propTypes = {
 
   /** An object that contains information about the event that triggers the context menu */
   clickMenuEvent: PropTypes.object,
+  /** if true, display menu in rtl direction */
+  isRtl: PropTypes.bool,
 };
 
 export default ContextMenu;

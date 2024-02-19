@@ -30,11 +30,13 @@ function TreeView({
   setSelectedNodeId,
   getCurrentNodeProps,
   selection,
+  isRtl,
 }) {
   const [calcTreeHeight, setCalcTreeHeight] = useState(0);
   const [visibleNodesCount, setVisibleNodesCount] = useState(0);
   const clickCountRef = useRef(0);
   const clickTimer = useRef(null);
+  const direction = isRtl ? 'rtl' : 'ltr';
   useEffect(() => {
     setCalcTreeHeight((visibleNodesCount + 1) * nodeHeight);
   }, [visibleNodesCount]);
@@ -183,6 +185,7 @@ function TreeView({
                     gap: '7px',
                     zIndex: '10',
                   }}
+                  dir={direction}
                 >
                   {!isFile ? (
                     nodeProps.node.children.length > 0 ? (
@@ -290,6 +293,7 @@ TreeView.defaultProps = {
   showRenameButton: false,
   removeButton: { content: '🗑️', title: 'Delete' },
   renameButton: { content: '✏️', title: 'Rename...' },
+  isRtl: false,
 };
 
 TreeView.propTypes = {
@@ -417,6 +421,8 @@ TreeView.propTypes = {
     content: PropTypes.node,
     title: PropTypes.string,
   }),
+  /** if true, display nodes in rtl direction */
+  isRtl: PropTypes.bool,
 };
 
 export default TreeView;

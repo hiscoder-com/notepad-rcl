@@ -15,6 +15,7 @@ function Redactor({
   initId,
   emptyTitle,
   isSelectableTitle,
+  isRtl,
 }) {
   const titleRef = useRef(null);
 
@@ -47,6 +48,7 @@ function Redactor({
     selection.removeAllRanges();
     selection.addRange(range);
   };
+  const direction = isRtl ? 'rtl' : 'ltr';
 
   return (
     <div className={classes.wrapper}>
@@ -60,11 +62,12 @@ function Redactor({
           onBlur={handleTitleChange}
           onClick={() => isSelectableTitle && selectTitle()}
           ref={titleRef}
+          dir={direction}
         >
           {title}
         </div>
       )}
-      <div className={classes.redactor}>
+      <div className={classes.redactor} dir={direction}>
         <ReactEditorJS
           onChange={handleEditorChange}
           autofocus={false}
@@ -92,6 +95,7 @@ Redactor.defaultProps = {
   readOnly: false,
   disableTitle: false,
   isSelectableTitle: false,
+  isRtl: false,
 };
 
 Redactor.propTypes = {
@@ -121,6 +125,8 @@ Redactor.propTypes = {
   emptyTitle: PropTypes.string,
   /** If true, then the title selected by click */
   isSelectableTitle: PropTypes.bool,
+  /** if true, display note, title in rtl direction */
+  isRtl: PropTypes.bool,
 };
 
 export default Redactor;
