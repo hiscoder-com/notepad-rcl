@@ -5,17 +5,17 @@ import PropTypes from 'prop-types';
 import { createReactEditorJS } from 'react-editor-js';
 
 function Redactor({
-  classes,
-  editorTools,
-  placeholder,
-  setActiveNote,
-  disableTitle,
-  activeNote,
-  readOnly,
-  initId,
-  emptyTitle,
-  isSelectableTitle,
-  isRtl,
+  classes = {},
+  editorTools = {},
+  placeholder = 'Let`s write an awesome note!',
+  setActiveNote = () => {},
+  disableTitle = false,
+  activeNote = {},
+  readOnly = false,
+  initId = 'default_id',
+  emptyTitle = 'Empty Title',
+  isSelectableTitle = false,
+  isRtl = false,
 }) {
   const titleRef = useRef(null);
 
@@ -83,20 +83,6 @@ function Redactor({
     </div>
   );
 }
-
-Redactor.defaultProps = {
-  editorTools: {},
-  initId: 'default_id',
-  emptyTitle: 'Empty Title',
-  placeholder: 'Let`s write an awesome note!',
-  activeNote: {},
-  setActiveNote: () => {},
-  classes: {},
-  readOnly: false,
-  disableTitle: false,
-  isSelectableTitle: false,
-  isRtl: false,
-};
 
 Redactor.propTypes = {
   classes: PropTypes.shape({

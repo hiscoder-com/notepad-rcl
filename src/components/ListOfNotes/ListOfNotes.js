@@ -3,18 +3,18 @@ import PropTypes from 'prop-types';
 import Blocks from 'editorjs-blocks-react-renderer';
 
 function ListOfNotes({
-  notes,
-  removeNote,
-  setNoteId,
-  classes,
-  style,
-  delBtnChildren,
-  isShowDate,
-  isShowText,
-  isShowDelBtn,
-  dateOptions,
-  editNoteTitle,
-  isRtl,
+  notes = [],
+  removeNote = () => {},
+  setNoteId = () => {},
+  classes = {},
+  style = {},
+  delBtnChildren = 'Delete',
+  isShowDate = false,
+  isShowText = false,
+  isShowDelBtn = false,
+  dateOptions = {},
+  editNoteTitle = null,
+  isRtl = false,
 }) {
   const [editingTitle, setEditingTitle] = useState(null);
 
@@ -105,21 +105,6 @@ function ListOfNotes({
   );
 }
 
-ListOfNotes.defaultProps = {
-  editNoteTitle: null,
-  notes: [],
-  style: {},
-  classes: {},
-  dateOptions: {},
-  isShowDate: false,
-  isShowText: false,
-  isShowDelBtn: false,
-  title: 'untitled',
-  delBtnChildren: 'Delete',
-  setNoteId: () => {},
-  isRtl: false,
-};
-
 ListOfNotes.propTypes = {
   /** component styles */
   style: PropTypes.shape({
@@ -160,8 +145,6 @@ ListOfNotes.propTypes = {
   }),
   /** you can change the date representation (https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString) */
   dateOptions: PropTypes.object,
-  /** note title in preview */
-  title: PropTypes.string,
   /** an array of existing notes. Required to display a list of notes */
   notes: PropTypes.arrayOf(
     PropTypes.shape({
