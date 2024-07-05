@@ -1036,22 +1036,23 @@
   resolved "https://registry.npmjs.org/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
-"@editorjs/editorjs@^2.27.2":
-  version "2.28.0"
-  resolved "https://registry.npmjs.org/@editorjs/editorjs/-/editorjs-2.28.0.tgz"
-  integrity sha512-v0KxSoX4MSZR5HyEbCo0vBri+qdThasABH9u1O1wC3ZxNMO7FiPJ580rp6uTPeFSDSQBmOL3VmRm7ZMfI3iKAg==
+"@editorjs/editorjs@^2.29.1":
+  version "2.29.1"
+  resolved "https://registry.yarnpkg.com/@editorjs/editorjs/-/editorjs-2.29.1.tgz#d7c644c5c3fc1ea1022373cbf2c8c3ac9f990b7b"
+  integrity sha512-WRT2pCfikMsvySQJqpCU21LfTZaPuxUWsDO8aFGrPx4MKzOR9D+Ur4mNb3jq0FXx2EMqvIWfTyFixJxtjGHTyQ==
 
-"@editorjs/header@^2.7.0":
-  version "2.7.0"
-  resolved "https://registry.npmjs.org/@editorjs/header/-/header-2.7.0.tgz"
-  integrity sha512-4fGKGe2ZYblVqR/P/iw5ieG00uXInFgNMftBMqJRYcB2hUPD30kuu7Sn6eJDcLXoKUMOeqi8Z2AlUxYAmvw7zQ==
+"@editorjs/header@^2.8.5":
+  version "2.8.5"
+  resolved "https://registry.yarnpkg.com/@editorjs/header/-/header-2.8.5.tgz#6a87cec535b3de0bac2933eb857bcf98d1279fbc"
+  integrity sha512-a/makcaWgvq+DV0mZlVu3fmo+mkW/pXKzlcCPl+zmP1OmE682EbXohlP1ugQGp77TsclRTxnjGY4y5Fsn3vlxw==
   dependencies:
     "@codexteam/icons" "^0.0.5"
+    "@editorjs/editorjs" "^2.29.1"
 
-"@editorjs/paragraph@^2.9.0":
-  version "2.10.0"
-  resolved "https://registry.npmjs.org/@editorjs/paragraph/-/paragraph-2.10.0.tgz"
-  integrity sha512-AzaGxR9DQAdWhx43yupBcwqtwH0WWi5jBDOCSeALIK86IYOnO6Lp4anEbH8IYmYrE/5MdnRiTwdU8/Xs8W15Nw==
+"@editorjs/paragraph@^2.11.6":
+  version "2.11.6"
+  resolved "https://registry.yarnpkg.com/@editorjs/paragraph/-/paragraph-2.11.6.tgz#011444187a74dc603201dce37d2fc6d054022407"
+  integrity sha512-i9B50Ylvh+0ZzUGWIba09PfUXsA00Y//zFZMwqsyaXXKxMluSIJ6ADFJbbK0zaV9Ijx49Xocrlg+CEPRqATk9w==
   dependencies:
     "@codexteam/icons" "^0.0.4"
 
@@ -2561,10 +2562,10 @@ editorjs-blocks-react-renderer@^1.3.0:
   dependencies:
     html-react-parser "^1.4.14"
 
-editorjs-toggle-block@^0.3.11:
-  version "0.3.11"
-  resolved "https://registry.npmjs.org/editorjs-toggle-block/-/editorjs-toggle-block-0.3.11.tgz"
-  integrity sha512-Z0/0/OKofiPU5rxlNcz7U/VANK0PGMWyKQ2tVZytMaoyHmqZXmpa68xKATvxO9ldher6873wjgOWT6ZK1bi5YA==
+editorjs-toggle-block@^0.3.16:
+  version "0.3.16"
+  resolved "https://registry.yarnpkg.com/editorjs-toggle-block/-/editorjs-toggle-block-0.3.16.tgz#3f881c5d9dd59116dd4e3388afb8a8891460e548"
+  integrity sha512-vjLE0bTF2HcQ7gQdgQ4c+Dl0n2o+oA0JICseJSYkQluDIE+LA9oHfTAE8ziJr03oeya7iVQ/b+d21Ez5hKsVsw==
   dependencies:
     uuid "^9.0.0"
 
