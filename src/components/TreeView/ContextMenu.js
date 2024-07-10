@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 function ContextMenu({
-  setIsVisible = () => {},
-  nodeProps = {},
+  setIsVisible,
+  nodeProps,
+  menuItems,
+  clickMenuEvent,
+  emptyMenuText,
+  isVisible = false,
+  isRtl = false,
   classes = {},
   styles = {},
-  menuItems = [],
-  isRtl = false,
-  isVisible = false,
-  clickMenuEvent = null,
-  emptyMenuText = 'No menu items provided.',
 }) {
   const [position, setPosition] = useState({ top: 0, left: 0 });
   const direction = isRtl ? 'rtl' : 'ltr';
@@ -54,8 +54,9 @@ function ContextMenu({
   }
 
   const hideContextMenu = () => {
-    setIsVisible(false);
+    setIsVisible && setIsVisible(false);
   };
+
   return (
     <>
       {isOpen && nodeProps?.tree.props.data.length > 0 && (
@@ -76,7 +77,7 @@ function ContextMenu({
             }}
           >
             <div className={classes?.menuContainer} style={styles?.menuContainer}>
-              {menuItems.length > 0 ? (
+              {menuItems?.length > 0 ? (
                 menuItems.map((item) => (
                   <MenuItem key={item.id} onClick={item.action}>
                     {item.buttonContent}
@@ -84,7 +85,7 @@ function ContextMenu({
                 ))
               ) : (
                 <div className={classes?.emptyMenu} style={styles?.emptyMenu}>
-                  {emptyMenuText}
+                  {emptyMenuText || 'No menu items provided.'}
                 </div>
               )}
             </div>
@@ -101,9 +102,9 @@ ContextMenu.propTypes = {
   /** If there is no menuItems, then we will see this text */
   emptyMenuText: PropTypes.string,
   /** Indicates whether the context menu is visible or not */
-  isVisible: PropTypes.bool,
+  isVisible: PropTypes.bool.isRequired,
   /** Function to control the visibility of the context menu */
-  setIsVisible: PropTypes.func,
+  setIsVisible: PropTypes.func.isRequired,
   /** Array of context menu items */
   menuItems: PropTypes.arrayOf(
     PropTypes.shape({
