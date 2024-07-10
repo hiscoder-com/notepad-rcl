@@ -3,33 +3,37 @@ import PropTypes from 'prop-types';
 import Blocks from 'editorjs-blocks-react-renderer';
 
 function ListOfNotes({
-  editNoteTitle = () => {},
-  removeNote = () => {},
-  setNoteId = () => {},
-  dateOptions = {},
+  notes,
+  setNoteId,
+  removeNote,
+  dateOptions,
+  editNoteTitle,
+  delBtnChildren,
   classes = {},
   style = {},
-  notes = [],
-  isRtl = false,
+  isShowDelBtn = false,
   isShowDate = false,
   isShowText = false,
-  isShowDelBtn = false,
-  delBtnChildren = 'Delete',
+  isRtl = false,
 }) {
   const [editingTitle, setEditingTitle] = useState(null);
 
   const handleClick = (id) => {
-    setNoteId(id);
+    if (typeof setNoteId === 'function') {
+      setNoteId(id);
+    }
   };
 
   const handleRemoveNote = (e, id) => {
     e.stopPropagation();
-    removeNote(id);
+    if (typeof removeNote === 'function') {
+      removeNote(id);
+    }
   };
 
   const handleTitleClick = (e, id) => {
     e.stopPropagation();
-    if (!editNoteTitle) {
+    if (!editNoteTitle && typeof setNoteId === 'function') {
       setNoteId(id);
     }
   };
@@ -90,7 +94,7 @@ function ListOfNotes({
               style={style?.delBtn}
               onClick={(e) => handleRemoveNote(e, note.id)}
             >
-              {delBtnChildren}
+              {delBtnChildren || 'Delete'}
             </button>
           )}
 
@@ -153,11 +157,11 @@ ListOfNotes.propTypes = {
       data: PropTypes.object,
       created_at: PropTypes.instanceOf(Date),
     })
-  ),
+  ).isRequired,
   /** function to remove a note */
   removeNote: PropTypes.func,
   /** pass the id of the selected note to the setter */
-  setNoteId: PropTypes.func,
+  setNoteId: PropTypes.func.isRequired,
   /** if true, display delete button for each note */
   isShowDelBtn: PropTypes.bool,
   /** content of the delete button */
