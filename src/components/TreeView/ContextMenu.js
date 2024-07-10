@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 function ContextMenu({
-  isVisible = false,
   setIsVisible = () => {},
-  menuItems = [],
   nodeProps = {},
-  classes = null,
-  styles = null,
+  classes = {},
+  styles = {},
+  menuItems = [],
+  isRtl = false,
+  isVisible = false,
   clickMenuEvent = null,
   emptyMenuText = 'No menu items provided.',
-  isRtl = false,
 }) {
   const [position, setPosition] = useState({ top: 0, left: 0 });
   const direction = isRtl ? 'rtl' : 'ltr';

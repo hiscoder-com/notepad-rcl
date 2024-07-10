@@ -3,18 +3,18 @@ import PropTypes from 'prop-types';
 import Blocks from 'editorjs-blocks-react-renderer';
 
 function ListOfNotes({
-  notes = [],
+  editNoteTitle = () => {},
   removeNote = () => {},
   setNoteId = () => {},
+  dateOptions = {},
   classes = {},
   style = {},
-  delBtnChildren = 'Delete',
+  notes = [],
+  isRtl = false,
   isShowDate = false,
   isShowText = false,
   isShowDelBtn = false,
-  dateOptions = {},
-  editNoteTitle = null,
-  isRtl = false,
+  delBtnChildren = 'Delete',
 }) {
   const [editingTitle, setEditingTitle] = useState(null);
 

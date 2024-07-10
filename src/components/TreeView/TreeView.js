@@ -3,41 +3,41 @@ import { Tree } from 'react-arborist';
 import PropTypes from 'prop-types';
 
 function TreeView({
-  handleDeleteNode = () => {},
+  data,
+  getCurrentNodeProps,
+  setSelectedNodeId,
+  handleDoubleClick,
+  handleTripleClick,
+  handleDeleteNode,
+  setHoveredNodeId,
+  handleRenameNode,
+  selectedNodeId,
+  handleDragDrop,
+  handleOnClick,
+  hoveredNodeId,
+  selection = '',
+  term = '',
+  style = {},
+  classes = {},
   handleContextMenu = () => {},
-  handleRenameNode = null,
-  handleOnClick = null,
-  handleDoubleClick = null,
-  handleTripleClick = null,
-  handleDragDrop = null,
   showRenameButton = false,
   showRemoveButton = false,
+  openByDefault = true,
+  isRtl = false,
+  maxDraggingNodeWidth = '20%',
   minTreeHeight = 400,
   treeWidth = 300,
   nodeHeight = 57,
   indent = 20,
-  classes = {},
-  style = {},
-  term = '',
-  data = [],
   icons = {
-    file: '🗎',
-    openFolder: '🗁',
-    arrowDown: '⏷',
-    arrowRight: '⏵',
     closeFolder: '🗀',
+    openFolder: '🗁',
+    arrowRight: '⏵',
+    arrowDown: '⏷',
+    file: '🗎',
   },
-  renameButton = { content: '✏️', title: 'Rename...' },
   removeButton = { content: '🗑️', title: 'Delete' },
-  openByDefault = true,
-  hoveredNodeId = '',
-  setHoveredNodeId = () => {},
-  selectedNodeId = '',
-  setSelectedNodeId = () => {},
-  getCurrentNodeProps = () => {},
-  selection = '',
-  isRtl = false,
-  maxDraggingNodeWidth = '20%',
+  renameButton = { content: '✏️', title: 'Rename...' },
 }) {
   const [calcTreeHeight, setCalcTreeHeight] = useState(0);
   const [visibleNodesCount, setVisibleNodesCount] = useState(0);
@@ -56,20 +56,16 @@ function TreeView({
       const handleBranch = () =>
         toggleInternalNodes(nodeProps, nodeProps.node.isOpen ? 'close' : 'open');
 
-      if (action === 'openAll') {
+      if (action === 'openAll' || (!action && mode === 'openAll')) {
         handleBranch();
       } else if (action === 'rename') {
         nodeProps.node.edit();
-      } else if (action) {
-        if (action.changeNode) {
-          action.changeNode(nodeProps);
-        } else {
-          nodeProps.node.isInternal ? nodeProps.node.toggle() : action(nodeProps);
-        }
+      } else if (typeof action === 'function') {
+        nodeProps.node.isInternal ? nodeProps.node.toggle() : action(nodeProps);
+      } else if (action && action.changeNode) {
+        action.changeNode(nodeProps);
       } else if (mode === 'edit') {
         nodeProps.node.edit();
-      } else if (mode === 'openAll') {
-        handleBranch();
       } else {
         nodeProps.node.toggle();
       }
@@ -135,7 +131,7 @@ function TreeView({
         openByDefault={openByDefault}
         rowHeight={nodeHeight}
         rowClassName={'focus:outline-none'}
-        disableDrag={handleDragDrop !== null ? false : true}
+        disableDrag={typeof handleDragDrop !== 'function'}
         onMove={handleDragDrop}
         onDelete={handleDeleteNode}
         onContextMenu={handleContextMenu}
@@ -171,19 +167,25 @@ function TreeView({
                 }}
                 onClick={() => {
                   handleClick(nodeProps);
-                  setSelectedNodeId(nodeProps.node.id);
+                  if (typeof setSelectedNodeId === 'function') {
+                    setSelectedNodeId(nodeProps.node.id);
+                  }
                 }}
                 onContextMenu={(event) => {
                   handleContextMenu && event.preventDefault();
                   nodeProps.node.select();
                   nodeProps.node.tree.props.onContextMenu(event);
-                  getCurrentNodeProps(nodeProps);
+                  getCurrentNodeProps && getCurrentNodeProps(nodeProps);
                 }}
                 onMouseOver={() => {
-                  setHoveredNodeId(nodeProps.node.id);
+                  if (typeof setHoveredNodeId === 'function') {
+                    setHoveredNodeId(nodeProps.node.id);
+                  }
                 }}
                 onMouseLeave={() => {
-                  setHoveredNodeId(null);
+                  if (typeof setHoveredNodeId === 'function') {
+                    setHoveredNodeId(null);
+                  }
                 }}
               >
                 <div
@@ -218,7 +220,9 @@ function TreeView({
                         if (e.key === 'Escape') nodeProps.node.reset();
                         if (e.key === 'Enter') {
                           nodeProps.node.submit(e.currentTarget.value);
-                          handleRenameNode(e.currentTarget.value, nodeProps.node.id);
+                          if (typeof handleRenameNode === 'function') {
+                            handleRenameNode(e.currentTarget.value, nodeProps.node.id);
+                          }
                         }
                       }}
                       autoFocus
@@ -292,17 +296,17 @@ TreeView.propTypes = {
   /** Data for visual representation of hierarchy */
   data: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string,
-      name: PropTypes.string,
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
       children: PropTypes.array,
     })
-  ),
+  ).isRequired,
   /** Function to get properties of the current node */
   getCurrentNodeProps: PropTypes.func,
   /** Context menu handler function */
   handleContextMenu: PropTypes.func,
   /** Function to set the selected node */
-  setSelectedNodeId: PropTypes.func,
+  setSelectedNodeId: PropTypes.func.isRequired,
   /** Function to set hover node */
   setHoveredNodeId: PropTypes.func,
   /** Node rename handler function */

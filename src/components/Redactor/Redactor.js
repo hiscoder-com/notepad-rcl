@@ -5,17 +5,17 @@ import PropTypes from 'prop-types';
 import { createReactEditorJS } from 'react-editor-js';
 
 function Redactor({
-  classes = {},
-  editorTools = {},
-  placeholder = 'Let`s write an awesome note!',
   setActiveNote = () => {},
-  disableTitle = false,
+  editorTools = {},
   activeNote = {},
+  classes = {},
+  isSelectableTitle = false,
+  disableTitle = false,
   readOnly = false,
+  isRtl = false,
   initId = 'default_id',
   emptyTitle = 'Empty Title',
-  isSelectableTitle = false,
-  isRtl = false,
+  placeholder = 'Let`s write an awesome note!',
 }) {
   const titleRef = useRef(null);
 
