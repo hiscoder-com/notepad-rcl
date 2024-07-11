@@ -4,32 +4,36 @@ import Blocks from 'editorjs-blocks-react-renderer';
 
 function ListOfNotes({
   notes,
-  removeNote,
   setNoteId,
-  classes,
-  style,
-  delBtnChildren,
-  isShowDate,
-  isShowText,
-  isShowDelBtn,
+  removeNote,
   dateOptions,
   editNoteTitle,
-  isRtl,
+  delBtnChildren,
+  classes = {},
+  style = {},
+  isShowDelBtn = false,
+  isShowDate = false,
+  isShowText = false,
+  isRtl = false,
 }) {
   const [editingTitle, setEditingTitle] = useState(null);
 
   const handleClick = (id) => {
-    setNoteId(id);
+    if (typeof setNoteId === 'function') {
+      setNoteId(id);
+    }
   };
 
   const handleRemoveNote = (e, id) => {
     e.stopPropagation();
-    removeNote(id);
+    if (typeof removeNote === 'function') {
+      removeNote(id);
+    }
   };
 
   const handleTitleClick = (e, id) => {
     e.stopPropagation();
-    if (!editNoteTitle) {
+    if (!editNoteTitle && typeof setNoteId === 'function') {
       setNoteId(id);
     }
   };
@@ -90,7 +94,7 @@ function ListOfNotes({
               style={style?.delBtn}
               onClick={(e) => handleRemoveNote(e, note.id)}
             >
-              {delBtnChildren}
+              {delBtnChildren || 'Delete'}
             </button>
           )}
 
@@ -104,21 +108,6 @@ function ListOfNotes({
     </div>
   );
 }
-
-ListOfNotes.defaultProps = {
-  editNoteTitle: null,
-  notes: [],
-  style: {},
-  classes: {},
-  dateOptions: {},
-  isShowDate: false,
-  isShowText: false,
-  isShowDelBtn: false,
-  title: 'untitled',
-  delBtnChildren: 'Delete',
-  setNoteId: () => {},
-  isRtl: false,
-};
 
 ListOfNotes.propTypes = {
   /** component styles */
@@ -160,8 +149,6 @@ ListOfNotes.propTypes = {
   }),
   /** you can change the date representation (https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString) */
   dateOptions: PropTypes.object,
-  /** note title in preview */
-  title: PropTypes.string,
   /** an array of existing notes. Required to display a list of notes */
   notes: PropTypes.arrayOf(
     PropTypes.shape({
@@ -170,11 +157,11 @@ ListOfNotes.propTypes = {
       data: PropTypes.object,
       created_at: PropTypes.instanceOf(Date),
     })
-  ),
+  ).isRequired,
   /** function to remove a note */
   removeNote: PropTypes.func,
   /** pass the id of the selected note to the setter */
-  setNoteId: PropTypes.func,
+  setNoteId: PropTypes.func.isRequired,
   /** if true, display delete button for each note */
   isShowDelBtn: PropTypes.bool,
   /** content of the delete button */

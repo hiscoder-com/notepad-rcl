@@ -108,8 +108,8 @@ function Component() {
         {!activeNote ? (
           <>
             <ListOfNotes
-              editNoteTitle={handleEditNoteTitle}
               notes={notes}
+              editNoteTitle={handleEditNoteTitle}
               removeNote={removeNote}
               setNoteId={setNoteId}
               classes={{
@@ -233,7 +233,6 @@ function Component() {
                 text: 'overflow-hidden',
                 delBtn: 'bg-orange-300 p-2 mt-4 rounded-lg',
               }}
-              delBtnChildren={'Delete'}
               isShowDelBtn
               isShowDate
               dateOptions={{
