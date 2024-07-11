@@ -5,17 +5,17 @@ import PropTypes from 'prop-types';
 import { createReactEditorJS } from 'react-editor-js';
 
 function Redactor({
-  classes,
-  editorTools,
+  initId,
+  activeNote,
   placeholder,
   setActiveNote,
-  disableTitle,
-  activeNote,
-  readOnly,
-  initId,
-  emptyTitle,
-  isSelectableTitle,
-  isRtl,
+  editorTools,
+  classes = {},
+  isRtl = false,
+  readOnly = false,
+  disableTitle = false,
+  isSelectableTitle = false,
+  emptyTitle = 'Empty Title',
 }) {
   const titleRef = useRef(null);
 
@@ -32,13 +32,18 @@ function Redactor({
   const handleTitleChange = (e) => {
     const newTitle = e.target.innerText.trim();
     const updatedTitle = newTitle || emptyTitle;
-    setActiveNote((prev) => ({ ...prev, title: updatedTitle }));
+    if (typeof setActiveNote === 'function') {
+      setActiveNote((prev) => ({ ...prev, title: updatedTitle }));
+    }
+
     setTitle(updatedTitle);
   };
 
   const handleEditorChange = async (e) => {
     const content = await e.saver.save();
-    setActiveNote((prev) => ({ ...prev, data: content }));
+    if (typeof setActiveNote === 'function') {
+      setActiveNote((prev) => ({ ...prev, data: content }));
+    }
   };
 
   const selectTitle = () => {
@@ -72,7 +77,7 @@ function Redactor({
           onChange={handleEditorChange}
           autofocus={false}
           defaultValue={activeNote?.data}
-          placeholder={placeholder}
+          placeholder={placeholder || 'Let`s write an awesome note!'}
           readOnly={readOnly}
           tools={editorTools}
           minHeight={0}
@@ -83,20 +88,6 @@ function Redactor({
     </div>
   );
 }
-
-Redactor.defaultProps = {
-  editorTools: {},
-  initId: 'default_id',
-  emptyTitle: 'Empty Title',
-  placeholder: 'Let`s write an awesome note!',
-  activeNote: {},
-  setActiveNote: () => {},
-  classes: {},
-  readOnly: false,
-  disableTitle: false,
-  isSelectableTitle: false,
-  isRtl: false,
-};
 
 Redactor.propTypes = {
   classes: PropTypes.shape({

@@ -1036,22 +1036,23 @@
   resolved "https://registry.npmjs.org/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
-"@editorjs/editorjs@^2.27.2":
-  version "2.28.0"
-  resolved "https://registry.npmjs.org/@editorjs/editorjs/-/editorjs-2.28.0.tgz"
-  integrity sha512-v0KxSoX4MSZR5HyEbCo0vBri+qdThasABH9u1O1wC3ZxNMO7FiPJ580rp6uTPeFSDSQBmOL3VmRm7ZMfI3iKAg==
+"@editorjs/editorjs@^2.29.1":
+  version "2.29.1"
+  resolved "https://registry.yarnpkg.com/@editorjs/editorjs/-/editorjs-2.29.1.tgz#d7c644c5c3fc1ea1022373cbf2c8c3ac9f990b7b"
+  integrity sha512-WRT2pCfikMsvySQJqpCU21LfTZaPuxUWsDO8aFGrPx4MKzOR9D+Ur4mNb3jq0FXx2EMqvIWfTyFixJxtjGHTyQ==
 
-"@editorjs/header@^2.7.0":
-  version "2.7.0"
-  resolved "https://registry.npmjs.org/@editorjs/header/-/header-2.7.0.tgz"
-  integrity sha512-4fGKGe2ZYblVqR/P/iw5ieG00uXInFgNMftBMqJRYcB2hUPD30kuu7Sn6eJDcLXoKUMOeqi8Z2AlUxYAmvw7zQ==
+"@editorjs/header@^2.8.5":
+  version "2.8.5"
+  resolved "https://registry.yarnpkg.com/@editorjs/header/-/header-2.8.5.tgz#6a87cec535b3de0bac2933eb857bcf98d1279fbc"
+  integrity sha512-a/makcaWgvq+DV0mZlVu3fmo+mkW/pXKzlcCPl+zmP1OmE682EbXohlP1ugQGp77TsclRTxnjGY4y5Fsn3vlxw==
   dependencies:
     "@codexteam/icons" "^0.0.5"
+    "@editorjs/editorjs" "^2.29.1"
 
-"@editorjs/paragraph@^2.9.0":
-  version "2.10.0"
-  resolved "https://registry.npmjs.org/@editorjs/paragraph/-/paragraph-2.10.0.tgz"
-  integrity sha512-AzaGxR9DQAdWhx43yupBcwqtwH0WWi5jBDOCSeALIK86IYOnO6Lp4anEbH8IYmYrE/5MdnRiTwdU8/Xs8W15Nw==
+"@editorjs/paragraph@^2.11.6":
+  version "2.11.6"
+  resolved "https://registry.yarnpkg.com/@editorjs/paragraph/-/paragraph-2.11.6.tgz#011444187a74dc603201dce37d2fc6d054022407"
+  integrity sha512-i9B50Ylvh+0ZzUGWIba09PfUXsA00Y//zFZMwqsyaXXKxMluSIJ6ADFJbbK0zaV9Ijx49Xocrlg+CEPRqATk9w==
   dependencies:
     "@codexteam/icons" "^0.0.4"
 
@@ -2561,10 +2562,10 @@ editorjs-blocks-react-renderer@^1.3.0:
   dependencies:
     html-react-parser "^1.4.14"
 
-editorjs-toggle-block@^0.3.11:
-  version "0.3.11"
-  resolved "https://registry.npmjs.org/editorjs-toggle-block/-/editorjs-toggle-block-0.3.11.tgz"
-  integrity sha512-Z0/0/OKofiPU5rxlNcz7U/VANK0PGMWyKQ2tVZytMaoyHmqZXmpa68xKATvxO9ldher6873wjgOWT6ZK1bi5YA==
+editorjs-toggle-block@^0.3.16:
+  version "0.3.16"
+  resolved "https://registry.yarnpkg.com/editorjs-toggle-block/-/editorjs-toggle-block-0.3.16.tgz#3f881c5d9dd59116dd4e3388afb8a8891460e548"
+  integrity sha512-vjLE0bTF2HcQ7gQdgQ4c+Dl0n2o+oA0JICseJSYkQluDIE+LA9oHfTAE8ziJr03oeya7iVQ/b+d21Ez5hKsVsw==
   dependencies:
     uuid "^9.0.0"
 
@@ -5288,10 +5289,10 @@ react-simple-code-editor@^0.13.1:
   resolved "https://registry.npmjs.org/react-simple-code-editor/-/react-simple-code-editor-0.13.1.tgz"
   integrity sha512-XYeVwRZwgyKtjNIYcAEgg2FaQcCZwhbarnkJIV20U2wkCU9q/CPFBo8nRXrK4GXUz3AvbqZFsZRrpUTkqqEYyQ==
 
-react-styleguidist@^13.1.1:
-  version "13.1.1"
-  resolved "https://registry.npmjs.org/react-styleguidist/-/react-styleguidist-13.1.1.tgz"
-  integrity sha512-TUCBTB6+/eLrTKYCJ+7moW8nVKUNhE1Q+C8gJLDgb+z1Vuf3PydHR5uaIzVOnqItygNOI3NLGLgSuPT7MKLfsA==
+react-styleguidist@^13.1.3:
+  version "13.1.3"
+  resolved "https://registry.yarnpkg.com/react-styleguidist/-/react-styleguidist-13.1.3.tgz#6d095f9776743155f64905bf785b09cbe0fb2860"
+  integrity sha512-3H5AAlzDW7QXuL1k1SzzlSbmEhk+r18t+m5VdUtaI0x1btpl+lDYPtfB+//zlU8ucnis0q2cdxqABsHx20UmaQ==
   dependencies:
     "@tippyjs/react" "4.1.0"
     "@types/react-test-renderer" "^18.0.0"
@@ -5355,7 +5356,7 @@ react-styleguidist@^13.1.1:
     to-ast "^1.0.0"
     type-detect "^4.0.8"
     unist-util-visit "^2.0.0"
-    webpack-dev-server "^4.9.2"
+    webpack-dev-server "^4.15.0"
     webpack-merge "^4.2.2"
 
 react-window@^1.8.6:
@@ -6546,10 +6547,10 @@ webpack-cli@^5.1.4:
     rechoir "^0.8.0"
     webpack-merge "^5.7.3"
 
-webpack-dev-middleware@^5.3.1:
-  version "5.3.3"
-  resolved "https://registry.npmjs.org/webpack-dev-middleware/-/webpack-dev-middleware-5.3.3.tgz"
-  integrity sha512-hj5CYrY0bZLB+eTO+x/j67Pkrquiy7kWepMHmUMoPsmcUaeEnQJqFzHJOyxgWlq746/wUuA64p9ta34Kyb01pA==
+webpack-dev-middleware@^5.3.4:
+  version "5.3.4"
+  resolved "https://registry.yarnpkg.com/webpack-dev-middleware/-/webpack-dev-middleware-5.3.4.tgz#eb7b39281cbce10e104eb2b8bf2b63fce49a3517"
+  integrity sha512-BVdTqhhs+0IfoeAf7EoH5WE+exCmqGerHfDM0IL096Px60Tq2Mn9MAbnaGUe6HiMa41KMCYF19gyzZmBcq/o4Q==
   dependencies:
     colorette "^2.0.10"
     memfs "^3.4.3"
@@ -6557,10 +6558,10 @@ webpack-dev-middleware@^5.3.1:
     range-parser "^1.2.1"
     schema-utils "^4.0.0"
 
-webpack-dev-server@^4.9.2:
-  version "4.15.1"
-  resolved "https://registry.npmjs.org/webpack-dev-server/-/webpack-dev-server-4.15.1.tgz"
-  integrity sha512-5hbAst3h3C3L8w6W4P96L5vaV0PxSmJhxZvWKYIdgxOQm8pNZ5dEOmmSLBVpP85ReeyRt6AS1QJNyo/oFFPeVA==
+webpack-dev-server@^4.15.0:
+  version "4.15.2"
+  resolved "https://registry.yarnpkg.com/webpack-dev-server/-/webpack-dev-server-4.15.2.tgz#9e0c70a42a012560860adb186986da1248333173"
+  integrity sha512-0XavAZbNJ5sDrCbkpWL8mia0o5WPOd2YGtxrEiZkBK9FjLppIUK2TgxK6qGD2P3hUXTJNNPVibrerKcx5WkR1g==
   dependencies:
     "@types/bonjour" "^3.5.9"
     "@types/connect-history-api-fallback" "^1.3.5"
@@ -6590,7 +6591,7 @@ webpack-dev-server@^4.9.2:
     serve-index "^1.9.1"
     sockjs "^0.3.24"
     spdy "^4.0.2"
-    webpack-dev-middleware "^5.3.1"
+    webpack-dev-middleware "^5.3.4"
     ws "^8.13.0"
 
 webpack-merge@^4.2.2:
