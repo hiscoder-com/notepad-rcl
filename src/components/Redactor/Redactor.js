@@ -30,12 +30,14 @@ function Redactor({
   }, [activeNote]);
 
   const handleTitleChange = (e) => {
-    const newTitle = e.target.innerText.trim();
-    const updatedTitle = newTitle || emptyTitle;
+    setTitle(e.target.value);
+  };
+
+  const handleTitleBlur = () => {
+    const updatedTitle = title.trim() || emptyTitle;
     if (typeof setActiveNote === 'function') {
       setActiveNote((prev) => ({ ...prev, title: updatedTitle }));
     }
-
     setTitle(updatedTitle);
   };
 
@@ -58,19 +60,19 @@ function Redactor({
   return (
     <div className={classes.wrapper}>
       {!disableTitle && (
-        <div
+        <input
           className={classes.title}
+          type="text"
           placeholder="Title"
           maxLength="256"
-          contentEditable={!readOnly}
-          suppressContentEditableWarning={true}
-          onBlur={handleTitleChange}
+          readOnly={readOnly}
+          value={title}
+          onChange={handleTitleChange}
+          onBlur={handleTitleBlur}
           onClick={() => isSelectableTitle && selectTitle()}
           ref={titleRef}
           dir={direction}
-        >
-          {title}
-        </div>
+        />
       )}
       <div className={classes.redactor} dir={direction}>
         <ReactEditorJS
