@@ -180,8 +180,6 @@ function Component() {
 
 ### **Save note to database using localforage**
 
-**use rtl direction and selectable title**
-
 ```jsx
 import { useState, useEffect } from 'react';
 
@@ -244,7 +242,6 @@ function Component() {
                 minute: 'numeric',
                 second: 'numeric',
               }}
-              isRtl
             />
             <div className="flex justify-end">
               <button

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Blocks from 'editorjs-blocks-react-renderer';
+import { calculateRtlDirection } from '../../utils/helpers';
 
 function ListOfNotes({
   notes,
@@ -14,7 +15,6 @@ function ListOfNotes({
   isShowDelBtn = false,
   isShowDate = false,
   isShowText = false,
-  isRtl = false,
 }) {
   const [editingTitle, setEditingTitle] = useState(null);
 
@@ -38,73 +38,77 @@ function ListOfNotes({
     }
   };
 
-  const direction = isRtl ? 'rtl' : 'ltr';
-
   return (
     <div className={classes?.wrapper} style={style?.wrapper}>
-      {notes?.map((note) => (
-        <div
-          key={note.id}
-          className={classes?.item}
-          style={style?.item}
-          onClick={() => handleClick(note.id)}
-          dir={direction}
-        >
+      {notes?.map((note) => {
+        const titleDirection = calculateRtlDirection(note.title);
+        const contentDirection = calculateRtlDirection(
+          note?.data ? note.data.blocks.map((block) => block.data.text).join(' ') : ''
+        );
+        return (
           <div
-            className={classes?.titleBlock}
-            style={style?.titleBlock}
-            onClick={(e) => handleTitleClick(e, note.id)}
+            key={note.id}
+            className={classes?.item}
+            style={style?.item}
+            onClick={() => handleClick(note.id)}
           >
-            {editNoteTitle && editingTitle === note.id ? (
-              <input
-                autoFocus
-                type="text"
-                defaultValue={note.title}
-                style={style?.renameInput}
-                className={classes?.renameInput}
-                onBlur={() => setEditingTitle(null)}
-                onFocus={(e) => e.currentTarget.select()}
-                onKeyDown={(e) => {
-                  if (e.key === 'Escape') setEditingTitle(null);
-                  if (e.key === 'Enter') {
-                    editNoteTitle(note.id, e.target.value);
-                    setEditingTitle(null);
-                  }
-                }}
-              />
-            ) : (
-              <div
-                className={classes?.title}
-                style={style?.title}
-                onDoubleClick={() => setEditingTitle(note.id)}
+            <div
+              className={classes?.titleBlock}
+              style={style?.titleBlock}
+              onClick={(e) => handleTitleClick(e, note.id)}
+              dir={titleDirection}
+            >
+              {editNoteTitle && editingTitle === note.id ? (
+                <input
+                  autoFocus
+                  type="text"
+                  defaultValue={note.title}
+                  style={style?.renameInput}
+                  className={classes?.renameInput}
+                  onBlur={() => setEditingTitle(null)}
+                  onFocus={(e) => e.currentTarget.select()}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Escape') setEditingTitle(null);
+                    if (e.key === 'Enter') {
+                      editNoteTitle(note.id, e.target.value);
+                      setEditingTitle(null);
+                    }
+                  }}
+                />
+              ) : (
+                <div
+                  className={classes?.title}
+                  style={style?.title}
+                  onDoubleClick={() => setEditingTitle(note.id)}
+                >
+                  {note.title}
+                </div>
+              )}
+            </div>
+            {isShowText && (
+              <div className={classes?.text} style={style?.text} dir={contentDirection}>
+                <Blocks data={note.data} />
+              </div>
+            )}
+
+            {isShowDelBtn && (
+              <button
+                className={classes?.delBtn}
+                style={style?.delBtn}
+                onClick={(e) => handleRemoveNote(e, note.id)}
               >
-                {note.title}
+                {delBtnChildren || 'Delete'}
+              </button>
+            )}
+
+            {isShowDate && note.created_at && (
+              <div className={classes?.date} style={style?.date}>
+                {new Date(note.created_at).toLocaleString('ru', dateOptions)}
               </div>
             )}
           </div>
-          {isShowText && (
-            <div className={classes?.text} style={style?.text}>
-              <Blocks data={note.data} />
-            </div>
-          )}
-
-          {isShowDelBtn && (
-            <button
-              className={classes?.delBtn}
-              style={style?.delBtn}
-              onClick={(e) => handleRemoveNote(e, note.id)}
-            >
-              {delBtnChildren || 'Delete'}
-            </button>
-          )}
-
-          {isShowDate && note.created_at && (
-            <div className={classes?.date} style={style?.date}>
-              {new Date(note.created_at).toLocaleString('ru', dateOptions)}
-            </div>
-          )}
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
@@ -170,7 +174,5 @@ ListOfNotes.propTypes = {
   isShowDate: PropTypes.bool,
   /** if true, display note text during note preview */
   isShowText: PropTypes.bool,
-  /** if true, display note, title and date in rtl direction */
-  isRtl: PropTypes.bool,
 };
 export default ListOfNotes;
