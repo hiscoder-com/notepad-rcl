@@ -5,11 +5,11 @@ export default function useRtlDirection() {
   return <></>;
 }
 
-useData.defaultProps = {
+useRtlDirection.defaultProps = {
  text: '',
 };
 
-useData.propTypes = {
+useRtlDirection.propTypes = {
   /** text in the editor */
   text: PropTypes.string,
 };
