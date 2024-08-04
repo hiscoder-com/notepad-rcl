@@ -9,7 +9,7 @@ let sections = [
   },
   {
     name: 'Notepad Block',
-    components: ['src/components/Redactor/Redactor.js'],
+    components: ['src/components/Redactor/Redactor.js','src/components/Redactor/useRtlDirection.jsx'],
   },
   {
     name: 'RedactorTools',

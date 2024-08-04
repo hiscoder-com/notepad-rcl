@@ -1,6 +1,7 @@
 import { default as React, useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { createReactEditorJS } from 'react-editor-js';
+import useRtlDirection from './useRtlDirection';
 
 function Redactor({
   initId,
@@ -17,38 +18,36 @@ function Redactor({
 }) {
   const titleRef = useRef(null);
   const ReactEditorJS = createReactEditorJS();
-
   const [title, setTitle] = useState(activeNote?.title || emptyTitle);
-  const [titleDirection, setTitleDirection] = useState(
-    calculateRtlDirection(activeNote?.title || emptyTitle)
+  const titleDirection = useRtlDirection(title);
+  const [editorContent, setEditorContent] = useState(
+    activeNote?.data
+      ? activeNote.data.blocks.map((block) => block.data.text).join(' ')
+      : ''
   );
-  const [redactorDirection, setRedactorDirection] = useState(
-    calculateRtlDirection(
-      activeNote?.data
-        ? activeNote.data.blocks.map((block) => block.data.text).join(' ')
-        : ''
-    )
-  );
+  const redactorDirection = useRtlDirection(editorContent);
+  // const [titleDirection, setTitleDirection] = useState(
+  //   calculateRtlDirection(activeNote?.title || emptyTitle)
+  // );
+  // const [redactorDirection, setRedactorDirection] = useState(
+  //   calculateRtlDirection(
+  //     activeNote?.data
+  //       ? activeNote.data.blocks.map((block) => block.data.text).join(' ')
+  //       : ''
+  //   )
+  // );
 
   useEffect(() => {
     if (activeNote?.title) {
       setTitle(activeNote.title);
-      updateDirection(activeNote.title, setTitleDirection);
+    }
+    if (activeNote?.data) {
+      const combinedText = activeNote.data.blocks
+        .map((block) => block.data.text)
+        .join(' ');
+      setEditorContent(combinedText);
     }
   }, [activeNote]);
-
-  function filterText(text) {
-    return text.replace(/<br>/g, '').replace(/\s|&nbsp;/g, '');
-  }
-
-  function calculateRtlDirection(text) {
-    const filteredText = filterText(text);
-    const totalChars = filteredText.length;
-    const rtlChars = (
-      filteredText.match(/[\u0591-\u07FF\uFB1D-\uFDFD\uFE70-\uFEFC]/g) || []
-    ).length;
-    return (totalChars > 0 && rtlChars / totalChars > 0.5) || handleRtl ? 'rtl' : 'ltr';
-  }
 
   const updateDirection = (text, setDirection) => {
     const direction = calculateRtlDirection(text);
@@ -58,7 +57,6 @@ function Redactor({
   const handleTitleChange = (e) => {
     const newTitle = e.target.value;
     setTitle(newTitle);
-    updateDirection(newTitle, setTitleDirection);
   };
 
   const handleTitleBlur = () => {
@@ -67,13 +65,12 @@ function Redactor({
       setActiveNote((prev) => ({ ...prev, title: updatedTitle }));
     }
     setTitle(updatedTitle);
-    updateDirection(updatedTitle, setTitleDirection);
   };
 
   const handleEditorChange = async (e) => {
     const content = await e.saver.save();
     const combinedText = content.blocks.map((block) => block.data.text).join(' ');
-    updateDirection(combinedText, setRedactorDirection);
+    setEditorContent(combinedText);
     if (typeof setActiveNote === 'function') {
       setActiveNote((prev) => ({ ...prev, data: content }));
     }
