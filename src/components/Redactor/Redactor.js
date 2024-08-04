@@ -10,7 +10,6 @@ function Redactor({
   setActiveNote,
   editorTools,
   classes = {},
-  handleRtl = false,
   readOnly = false,
   disableTitle = false,
   isSelectableTitle = false,
@@ -26,16 +25,6 @@ function Redactor({
       : ''
   );
   const redactorDirection = useRtlDirection(editorContent);
-  // const [titleDirection, setTitleDirection] = useState(
-  //   calculateRtlDirection(activeNote?.title || emptyTitle)
-  // );
-  // const [redactorDirection, setRedactorDirection] = useState(
-  //   calculateRtlDirection(
-  //     activeNote?.data
-  //       ? activeNote.data.blocks.map((block) => block.data.text).join(' ')
-  //       : ''
-  //   )
-  // );
 
   useEffect(() => {
     if (activeNote?.title) {
@@ -48,11 +37,6 @@ function Redactor({
       setEditorContent(combinedText);
     }
   }, [activeNote]);
-
-  const updateDirection = (text, setDirection) => {
-    const direction = calculateRtlDirection(text);
-    setDirection(direction);
-  };
 
   const handleTitleChange = (e) => {
     const newTitle = e.target.value;

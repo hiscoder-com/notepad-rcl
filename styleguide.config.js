@@ -9,15 +9,15 @@ let sections = [
   },
   {
     name: 'Notepad Block',
-    components: ['src/components/Redactor/Redactor.js','src/components/Redactor/useRtlDirection.jsx'],
+    components: ['src/components/Redactor/Redactor.js'],
   },
   {
     name: 'RedactorTools',
     content: 'src/components/Redactor/RedactorTools.md',
   },
   {
-    name: 'UseData Block',
-    components: ['src/components/ListOfNotes/useData.jsx'],
+    name: 'Hooks',
+    components: ['src/components/ListOfNotes/useData.jsx', 'src/components/Redactor/useRtlDirection.jsx'],
   },
   {
     name: 'Getting a list of notes Block',

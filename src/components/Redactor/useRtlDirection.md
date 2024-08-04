@@ -2,13 +2,11 @@
 
 This hook determines the text direction based on the presence of RTL characters. It returns `'ltr'` if the text is predominantly LTR characters and `'rtl'` if the text is predominantly RTL characters.
 
-## Example
-
 ```jsx
 import React, { useState } from 'react';
 import useRtlDirection from './useRtlDirection';
 
-const ExampleComponent = () => {
+const Component = () => {
   const [text, setText] = useState('Hello, world!');
   const direction = useRtlDirection(text);
 
@@ -27,5 +25,5 @@ const ExampleComponent = () => {
   );
 };
 
-<ExampleComponent />;
+<Component />;
 ```
