@@ -117,7 +117,6 @@ Redactor.propTypes = {
   disableTitle: PropTypes.bool,
   emptyTitle: PropTypes.string,
   isSelectableTitle: PropTypes.bool,
-  isRtl: PropTypes.bool,
 };
 
 export default Redactor;

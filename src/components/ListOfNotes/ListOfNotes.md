@@ -259,7 +259,6 @@ function Component() {
               setActiveNote={setActiveNote}
               initId={'second'}
               classes={{ title: 'mr-10 bg-inherit font-bold' }}
-              isRtl
               isSelectableTitle
             />
             <button
