@@ -17,7 +17,10 @@ let sections = [
   },
   {
     name: 'Hooks',
-    components: ['src/components/ListOfNotes/useData.jsx', 'src/components/Redactor/useRtlDirection.jsx'],
+    components: [
+      'src/components/ListOfNotes/useData.jsx',
+      'src/components/Redactor/useRtlDirection.jsx',
+    ],
   },
   {
     name: 'Getting a list of notes Block',
