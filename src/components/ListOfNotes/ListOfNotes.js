@@ -84,21 +84,21 @@ function ListOfNotes({
                   {note.title}
                 </div>
               )}
+              {isShowDelBtn && (
+                <button
+                  className={classes?.delBtn}
+                  style={style?.delBtn}
+                  onClick={(e) => handleRemoveNote(e, note.id)}
+                >
+                  {delBtnChildren || 'Delete'}
+                </button>
+              )}
             </div>
+
             {isShowText && (
               <div className={classes?.text} style={style?.text} dir={contentDirection}>
                 <Blocks data={note.data} />
               </div>
-            )}
-
-            {isShowDelBtn && (
-              <button
-                className={classes?.delBtn}
-                style={style?.delBtn}
-                onClick={(e) => handleRemoveNote(e, note.id)}
-              >
-                {delBtnChildren || 'Delete'}
-              </button>
             )}
 
             {isShowDate && note.created_at && (
