@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { calculateRtlDirection } from '../../utils/helpers';
+import { calculateRtlDirection } from '../helpers';
 
 const useRtlDirection = (text) => {
   const [direction, setDirection] = useState('ltr');

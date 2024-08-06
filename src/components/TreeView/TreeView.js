@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Tree } from 'react-arborist';
 import PropTypes from 'prop-types';
-import { calculateRtlDirection } from '../../utils/helpers';
+import { calculateRtlDirection } from '../helpers';
 import useRtlDirection from '../Redactor/useRtlDirection';
 
 function TreeView({

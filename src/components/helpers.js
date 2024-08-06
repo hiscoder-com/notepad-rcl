@@ -1,4 +1,4 @@
-export const filterText = (text) => text.replace(/<br>/g, '').replace(/\s|&nbsp;/g, '');
+const filterText = (text) => text.replace(/<br>/g, '').replace(/\s|&nbsp;/g, '');
 
 export const calculateRtlDirection = (text) => {
   const filteredText = filterText(text);

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Blocks from 'editorjs-blocks-react-renderer';
-import { calculateRtlDirection } from '../../utils/helpers';
+import { calculateRtlDirection } from '../helpers';
 
 function ListOfNotes({
   notes,
