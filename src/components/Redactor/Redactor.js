@@ -104,18 +104,30 @@ function Redactor({
 
 Redactor.propTypes = {
   classes: PropTypes.shape({
+    /** Class for wrapper */
     wrapper: PropTypes.string,
+    /** Class for redactor */
     redactor: PropTypes.string,
+    /** Class for title */
     title: PropTypes.string,
   }),
+  /** Write a new property for the Tools object and pass it to the Editor via the addTools variable */
   editorTools: PropTypes.object,
+  /** Note ID. To run Redactor, you need to assign an ID to the note */
   initId: PropTypes.string,
+  /** Note Placeholder */
   placeholder: PropTypes.string,
+  /** An object that contains all the properties of the note */
   activeNote: PropTypes.object,
+  /** Pass a new note object to the setter */
   setActiveNote: PropTypes.func,
+  /** If true, then the content is read-only */
   readOnly: PropTypes.bool,
+  /** If true, then the title is not displayed */
   disableTitle: PropTypes.bool,
+  /** Sets the title value if the title is empty */
   emptyTitle: PropTypes.string,
+  /** If true, then the title selected by click */
   isSelectableTitle: PropTypes.bool,
 };
 
