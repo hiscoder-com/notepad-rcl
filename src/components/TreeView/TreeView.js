@@ -1,6 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Tree } from 'react-arborist';
 import PropTypes from 'prop-types';
+import { calculateRtlDirection } from '../helpers';
+import useRtlDirection from '../Redactor/useRtlDirection';
 
 function TreeView({
   data,
@@ -23,7 +25,6 @@ function TreeView({
   showRenameButton = false,
   showRemoveButton = false,
   openByDefault = true,
-  isRtl = false,
   maxDraggingNodeWidth = '20%',
   minTreeHeight = 400,
   treeWidth = 300,
@@ -43,7 +44,6 @@ function TreeView({
   const [visibleNodesCount, setVisibleNodesCount] = useState(0);
   const clickCountRef = useRef(0);
   const clickTimer = useRef(null);
-  const direction = isRtl ? 'rtl' : 'ltr';
   useEffect(() => {
     setCalcTreeHeight((visibleNodesCount + 1) * nodeHeight);
   }, [visibleNodesCount]);
@@ -147,10 +147,19 @@ function TreeView({
           useEffect(() => {
             setVisibleNodesCount(nodeProps.tree.visibleNodes.length);
           }, [nodeProps.tree.visibleNodes.length]);
+          const titleDirection = useMemo(
+            () => calculateRtlDirection(nodeProps.node.data.name),
+            []
+          );
 
+          const [inputValue, setInputValue] = useState(nodeProps.node.data.name);
+          const editingTitleDirection = useRtlDirection(
+            nodeProps.node.isEditing && inputValue ? inputValue : ''
+          );
           return (
             <div className={classes?.nodeContainer} style={style?.nodeContainer}>
               <div
+                dir={titleDirection}
                 ref={nodeProps.dragHandle}
                 className={classes?.nodeWrapper}
                 style={{
@@ -196,7 +205,7 @@ function TreeView({
                     gap: '7px',
                     zIndex: '10',
                   }}
-                  dir={direction}
+                  dir={titleDirection}
                 >
                   {!isFile ? (
                     nodeProps.node.children.length > 0 ? (
@@ -213,7 +222,8 @@ function TreeView({
                   {nodeProps.node.isEditing ? (
                     <input
                       type="text"
-                      defaultValue={nodeProps.node.data.name}
+                      value={inputValue}
+                      onChange={(e) => setInputValue(e.currentTarget.value)}
                       onFocus={(e) => e.currentTarget.select()}
                       onBlur={() => nodeProps.node.reset()}
                       onKeyDown={(e) => {
@@ -228,6 +238,7 @@ function TreeView({
                       autoFocus
                       style={style?.renameInput}
                       className={classes?.renameInput}
+                      dir={editingTitleDirection}
                     />
                   ) : (
                     <div className={classes?.nodeText} style={style?.nodeText}>
@@ -397,8 +408,7 @@ TreeView.propTypes = {
     content: PropTypes.node,
     title: PropTypes.string,
   }),
-  /** if true, display nodes in rtl direction */
-  isRtl: PropTypes.bool,
+
   /** max width of draggable node */
   maxDraggingNodeWidth: PropTypes.string,
 };
