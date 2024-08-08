@@ -1,7 +1,7 @@
 {
   "name": "@texttree/notepad-rcl",
   "author": "TextTree.org",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "description": "",
   "keywords": [
     "rcl",
@@ -37,7 +37,7 @@
     "build": "styleguidist build",
     "lint": "eslint --fix .",
     "prettier": "prettier --write .",
-    "build:babel": "babel src --out-dir dist --ignore src/components/**/*.jsx",
+    "build:babel": "babel src --out-dir dist --ignore src/**/*.jsx",
     "prepublishOnly": "rm -fr ./dist & yarn build:babel",
     "precommit": "lint-staged"
   },
