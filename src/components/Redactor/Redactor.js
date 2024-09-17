@@ -61,11 +61,10 @@ function Redactor({
   };
 
   const selectTitle = () => {
-    const range = document.createRange();
-    const selection = window.getSelection();
-    range.selectNodeContents(titleRef.current);
-    selection.removeAllRanges();
-    selection.addRange(range);
+    const element = titleRef.current;
+    if (element) {
+      element.select();
+    }
   };
 
   return (
