@@ -17,6 +17,7 @@ function Redactor({
 }) {
   const titleRef = useRef(null);
   const ReactEditorJS = createReactEditorJS();
+  const [isFirstClick, setIsFirstClick] = useState(true);
   const [title, setTitle] = useState(activeNote?.title || emptyTitle);
   const titleDirection = useRtlDirection(title);
   const [editorContent, setEditorContent] = useState(
@@ -66,6 +67,18 @@ function Redactor({
       element.select();
     }
   };
+  const handleClick = () => {
+    if (isSelectableTitle && isFirstClick) {
+      selectTitle();
+      setIsFirstClick(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isSelectableTitle) {
+      selectTitle();
+    }
+  }, []);
 
   return (
     <div className={classes.wrapper}>
@@ -79,7 +92,7 @@ function Redactor({
           value={title}
           onChange={handleTitleChange}
           onBlur={handleTitleBlur}
-          onClick={() => isSelectableTitle && selectTitle()}
+          onClick={handleClick}
           ref={titleRef}
           dir={titleDirection}
         />
