@@ -39,6 +39,7 @@ function TreeView({
   },
   removeButton = { content: '🗑️', title: 'Delete' },
   renameButton = { content: '✏️', title: 'Rename...' },
+  setParentId,
 }) {
   const [calcTreeHeight, setCalcTreeHeight] = useState(0);
   const [visibleNodesCount, setVisibleNodesCount] = useState(0);
@@ -119,7 +120,9 @@ function TreeView({
       className={classes?.treeContainer}
       style={style?.treeContainer}
       onContextMenu={(event) => {
-        handleContextMenu && event.preventDefault();
+        event.preventDefault();
+        setParentId(null);
+        handleContextMenu && handleContextMenu(event);
       }}
     >
       <Tree
@@ -181,9 +184,13 @@ function TreeView({
                   }
                 }}
                 onContextMenu={(event) => {
-                  handleContextMenu && event.preventDefault();
+                  event.preventDefault();
+                  event.stopPropagation();
                   nodeProps.node.select();
-                  nodeProps.node.tree.props.onContextMenu(event);
+                  if (typeof setParentId === 'function') {
+                    setParentId(!isFile ? nodeProps.node.id : null);
+                  }
+                  handleContextMenu && handleContextMenu(event);
                   getCurrentNodeProps && getCurrentNodeProps(nodeProps);
                 }}
                 onMouseOver={() => {
@@ -225,7 +232,12 @@ function TreeView({
                       value={inputValue}
                       onChange={(e) => setInputValue(e.currentTarget.value)}
                       onFocus={(e) => e.currentTarget.select()}
-                      onBlur={() => nodeProps.node.reset()}
+                      onBlur={() => {
+                        nodeProps.node.submit(inputValue);
+                        if (typeof handleRenameNode === 'function') {
+                          handleRenameNode(inputValue, nodeProps.node.id);
+                        }
+                      }}
                       onKeyDown={(e) => {
                         if (e.key === 'Escape') nodeProps.node.reset();
                         if (e.key === 'Enter') {
