@@ -11,12 +11,10 @@ function TreeView({
   handleDoubleClick,
   handleTripleClick,
   handleDeleteNode,
-  setHoveredNodeId,
   handleRenameNode,
   selectedNodeId,
   handleDragDrop,
   handleOnClick,
-  hoveredNodeId,
   selection = '',
   term = '',
   style = {},
@@ -39,6 +37,7 @@ function TreeView({
   },
   removeButton = { content: '🗑️', title: 'Delete' },
   renameButton = { content: '✏️', title: 'Rename...' },
+  setParentId,
 }) {
   const [calcTreeHeight, setCalcTreeHeight] = useState(0);
   const [visibleNodesCount, setVisibleNodesCount] = useState(0);
@@ -119,7 +118,9 @@ function TreeView({
       className={classes?.treeContainer}
       style={style?.treeContainer}
       onContextMenu={(event) => {
-        handleContextMenu && event.preventDefault();
+        event.preventDefault();
+        setParentId(null);
+        handleContextMenu && handleContextMenu(event);
       }}
     >
       <Tree
@@ -168,8 +169,6 @@ function TreeView({
                   backgroundColor: style?.nodeWrapper
                     ? nodeProps.node.id === selectedNodeId
                       ? style?.nodeWrapper.selectedColor
-                      : nodeProps.node.id === hoveredNodeId
-                      ? style?.nodeWrapper.hoveredColor
                       : style?.nodeWrapper.backgroundColor
                     : null,
                   maxWidth: isDragging ? maxDraggingNodeWidth : '',
@@ -181,20 +180,14 @@ function TreeView({
                   }
                 }}
                 onContextMenu={(event) => {
-                  handleContextMenu && event.preventDefault();
+                  event.preventDefault();
+                  event.stopPropagation();
                   nodeProps.node.select();
-                  nodeProps.node.tree.props.onContextMenu(event);
+                  if (typeof setParentId === 'function') {
+                    setParentId(!isFile ? nodeProps.node.id : null);
+                  }
+                  handleContextMenu && handleContextMenu(event);
                   getCurrentNodeProps && getCurrentNodeProps(nodeProps);
-                }}
-                onMouseOver={() => {
-                  if (typeof setHoveredNodeId === 'function') {
-                    setHoveredNodeId(nodeProps.node.id);
-                  }
-                }}
-                onMouseLeave={() => {
-                  if (typeof setHoveredNodeId === 'function') {
-                    setHoveredNodeId(null);
-                  }
                 }}
               >
                 <div
@@ -225,7 +218,12 @@ function TreeView({
                       value={inputValue}
                       onChange={(e) => setInputValue(e.currentTarget.value)}
                       onFocus={(e) => e.currentTarget.select()}
-                      onBlur={() => nodeProps.node.reset()}
+                      onBlur={() => {
+                        nodeProps.node.submit(inputValue);
+                        if (typeof handleRenameNode === 'function') {
+                          handleRenameNode(inputValue, nodeProps.node.id);
+                        }
+                      }}
                       onKeyDown={(e) => {
                         if (e.key === 'Escape') nodeProps.node.reset();
                         if (e.key === 'Enter') {
@@ -239,6 +237,7 @@ function TreeView({
                       style={style?.renameInput}
                       className={classes?.renameInput}
                       dir={editingTitleDirection}
+                      onClick={(e) => e.stopPropagation()}
                     />
                   ) : (
                     <div className={classes?.nodeText} style={style?.nodeText}>
@@ -318,14 +317,10 @@ TreeView.propTypes = {
   handleContextMenu: PropTypes.func,
   /** Function to set the selected node */
   setSelectedNodeId: PropTypes.func.isRequired,
-  /** Function to set hover node */
-  setHoveredNodeId: PropTypes.func,
   /** Node rename handler function */
   handleRenameNode: PropTypes.func,
   /** Node drag handler function */
   handleDragDrop: PropTypes.func,
-  /** Hover node ID */
-  hoveredNodeId: PropTypes.string,
   /** Click handler function. By default, this is toggles the open/closed state of the folder. If you want to use the built-in function to rename or expand all nested elements, then pass a string with the corresponding 'rename' or 'openAll' values. If you want to pass a function that handles a node, whether it is a file or a folder, then you should provide the object with a "changeNode" function. */
   handleOnClick: PropTypes.oneOfType([
     PropTypes.func,
